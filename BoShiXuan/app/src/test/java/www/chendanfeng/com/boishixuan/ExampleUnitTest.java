@@ -1,4 +1,4 @@
-package www.boshixuan.com.boshixuan;
+package www.chendanfeng.com.boishixuan;
 
 import org.junit.Test;
 

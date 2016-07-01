@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "www.boshixuan.com.boshixuan"
+        applicationId "www.chendanfeng.com.boishixuan"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1

@@ -1,4 +1,4 @@
-package www.boshixuan.com.boshixuan;
+package www.chendanfeng.com.boishixuan;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
