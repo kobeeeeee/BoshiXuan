@@ -54,14 +54,11 @@ public class MainActivity extends BaseActivity {
 
         mFragmentList.add(mHomeFragment);
         mFragmentList.add(mNewsFragment);
-        mFragmentList.add(mSettingFragment);
         mFragmentList.add(mWalletFragment);
+        mFragmentList.add(mSettingFragment);
         homeTab.setChecked(true);
+        homeTab.setTextColor(getResources().getColor(R.color.coffee));
         mTabFragmentAdapter = new MainTabFragmentAdapter(this, mFragmentList, R.id.main_tab, mainGroup);
-
-    }
-    private void showFragments() {
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
 
     }
 }

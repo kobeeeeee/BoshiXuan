@@ -3,9 +3,12 @@ package www.chendanfeng.com.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import java.util.List;
+
+import www.chendanfeng.com.boishixuan.R;
 
 /**
  * Created by Administrator on 2016/7/2 0002.
@@ -33,10 +36,12 @@ public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListene
    @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
        for (int i = 0; i < this.mRadioGroup.getChildCount(); i++) {
+           RadioButton button = (RadioButton) this.mRadioGroup.getChildAt(i);
            if (this.mRadioGroup.getChildAt(i).getId() == checkedId) {
-
+               button.setTextColor(this.mFragmentActivity.getResources().getColor(R.color.coffee));
                Fragment fragment = this.mFragmentList.get(i);
                FragmentTransaction ft = obtainFragmentTransaction(i);
+
 
                getCurrentFragment().onPause();
                if (fragment.isAdded()) {
@@ -48,6 +53,8 @@ public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListene
                ft.commit();
 
 
+           } else {
+               button.setTextColor(this.mFragmentActivity.getResources().getColor(R.color.white));
            }
        }
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="www.chendanfeng.com.boishixuan.MainActivity">
-
+    <include layout="@layout/layout_title_bar"/>
     <RadioGroup
         android:id="@+id/tab_group"
         android:layout_width="match_parent"
