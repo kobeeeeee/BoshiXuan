@@ -152,5 +152,7 @@
     <color name="coffee">#c1a25f</color><!--咖啡色 -->
     <color name="black_for_font">#050508</color><!--黑色字体 -->
     <color name="white_for_background">#f4f4f4</color><!--白色背景 -->
+    <color name="boldwhite">#fbfbfb</color><!--白色 -->
+    <color name="dullgray">#908b8b</color><!--灰色 -->
 
 </resources>
