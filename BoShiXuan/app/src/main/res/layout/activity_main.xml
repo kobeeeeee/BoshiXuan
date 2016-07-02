@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="www.chendanfeng.com.boishixuan.MainActivity">
-    <include layout="@layout/layout_title_bar"/>
     <RadioGroup
         android:id="@+id/tab_group"
         android:layout_width="match_parent"
@@ -23,7 +22,7 @@
             android:textSize="9dp"
             android:gravity="center"
             android:text="首页"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:button="@null"/>
         <RadioButton
             android:id="@+id/tab_news"
@@ -35,7 +34,7 @@
             android:textSize="9dp"
             android:gravity="center"
             android:text="消息"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:button="@null"/>
         <RadioButton
             android:id="@+id/tab_wallet"
@@ -47,7 +46,7 @@
             android:textSize="9dp"
             android:gravity="center"
             android:text="钱包"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:button="@null" />
         <RadioButton
             android:id="@+id/tab_setting"
@@ -59,7 +58,7 @@
             android:paddingTop="6dp"
             android:textSize="9dp"
             android:gravity="center"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:button="@null" />
     </RadioGroup>
     <View

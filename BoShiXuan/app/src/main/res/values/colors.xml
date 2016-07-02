@@ -149,6 +149,8 @@
     <color name="darkblue">#00008B</color><!--暗蓝色 -->
     <color name="navy">#000080</color><!--海军色 -->
     <color name="black">#000000</color><!--黑色 -->
-    <color name="coffee">#c1a25f</color><!--黑色 -->
+    <color name="coffee">#c1a25f</color><!--咖啡色 -->
+    <color name="black_for_font">#050508</color><!--黑色字体 -->
+    <color name="white_for_background">#f4f4f4</color><!--白色背景 -->
 
 </resources>
