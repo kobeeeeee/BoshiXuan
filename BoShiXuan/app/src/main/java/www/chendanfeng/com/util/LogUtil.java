@@ -27,17 +27,17 @@ public class LogUtil {
             }
             return false;
         }
-        public static void i(Context context,String msg){
+        public static void i(Object context,String msg){
             if(APP_DBG) {
                 Log.i(context.getClass().getName(),msg);
             }
         }
-        public static void e(Context context,String msg){
+        public static void e(Object context,String msg){
             if(APP_DBG) {
                 Log.e(context.getClass().getName(),msg);
             }
         }
-        public static void d(Context context,String msg){
+        public static void d(Object context,String msg){
             if(APP_DBG) {
                 Log.d(context.getClass().getName(),msg);
             }
