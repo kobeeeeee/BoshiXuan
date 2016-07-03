@@ -12,7 +12,13 @@
         android:background="@drawable/login_user"
         android:layout_alignParentTop="true"
         android:layout_marginTop="200dp"
-        android:layout_marginLeft="65dp"/>
+        android:layout_marginLeft="65dp"
+        android:hint="请输入手机号"
+        android:gravity="center"
+        android:textColorHint="@color/dullgray"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:inputType="phone"/>
     <EditText
         android:id="@+id/login_password"
         android:layout_width="wrap_content"
@@ -24,20 +30,10 @@
         android:hint="请输入登录密码"
         android:gravity="center"
         android:textColorHint="@color/dullgray"
-        android:textSize="13sp"/>
+        android:textSize="13sp"
+        android:inputType="textPassword"
+        android:textColor="@color/white"/>
 
-    <!--Button
-        android:id="@+id/login_press"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:background="@drawable/login_normal"
-        android:button="@null"
-        android:text="登     录"
-        android:textSize="16sp"
-        android:textColor="@color/white"
-        android:layout_below="@+id/login_password"
-        android:layout_marginTop="17dp"
-        android:layout_marginLeft="65dp" /-->
     <ImageView
         android:id="@+id/login_press"
         android:layout_width="wrap_content"
