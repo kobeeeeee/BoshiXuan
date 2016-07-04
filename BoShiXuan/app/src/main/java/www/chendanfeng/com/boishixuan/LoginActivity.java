@@ -2,6 +2,9 @@ package www.chendanfeng.com.boishixuan;
 
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.util.LogUtil;
 
 public class LoginActivity extends BaseActivity {
@@ -30,6 +34,7 @@ public class LoginActivity extends BaseActivity {
     TextView registerTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initUserInfoBean();
         LogUtil.init(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -37,6 +42,32 @@ public class LoginActivity extends BaseActivity {
         registerTextView.setOnClickListener(new MyOnClickListener(TYPE_REGISTER));
         loginButton.setOnClickListener(new MyOnClickListener(TYPE_LOGIN));
         forgetTextView.setOnClickListener(new MyOnClickListener(TYPE_FORGET));
+    }
+
+    /**
+     * 当进入登录画面时，初始化userBean的信息
+     */
+    public void initUserInfoBean() {
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        userInfoBean.setSysType("1");
+
+        String systemType = Build.VERSION.SDK;
+        userInfoBean.setSysVersion(systemType);
+
+        PackageManager manager;
+        manager = getPackageManager();
+        String applicationVersion = "";
+        PackageInfo info = null;
+        try {
+            info = manager.getPackageInfo(getPackageName(),0);
+            applicationVersion = String.valueOf(info.versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        userInfoBean.setAppVersion(applicationVersion);
+
+        String no = android.os.Build.VERSION.RELEASE;
+        userInfoBean.setSysTerNo(no);
     }
     class MyOnClickListener implements  View.OnClickListener {
         public int mType;
