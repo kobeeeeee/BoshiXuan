@@ -51,12 +51,12 @@ public class LoginActivity extends BaseActivity {
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         userInfoBean.setSysType("1");
 
-        String systemType = Build.VERSION.SDK;
+        String systemType = Build.VERSION.RELEASE;
         userInfoBean.setSysVersion(systemType);
 
         PackageManager manager;
-        manager = getPackageManager();
         String applicationVersion = "";
+        manager = getPackageManager();
         PackageInfo info = null;
         try {
             info = manager.getPackageInfo(getPackageName(),0);
