@@ -154,5 +154,8 @@
     <color name="white_for_background">#f4f4f4</color><!--白色背景 -->
     <color name="boldwhite">#fbfbfb</color><!--白色 -->
     <color name="dullgray">#908b8b</color><!--灰色 -->
+    <color name="wallet_black">#333333</color><!--钱包画面黑色字体 -->
+    <color name="wallet_white">#dedede</color><!--钱包画面灰色 -->
+
 
 </resources>
