@@ -22,9 +22,9 @@ public class LoginActivity extends BaseActivity {
     public static final int TYPE_LOGIN = 1;
     public static final int TYPE_FORGET = 2;
     public static final int TYPE_REGISTER = 3;
-    @Bind(R.id.login_user)
+    @Bind(R.id.input_user)
     EditText userEditText;
-    @Bind(R.id.login_password)
+    @Bind(R.id.input_password)
     EditText passwordEditText;
     @Bind(R.id.login_press)
     ImageView loginButton;
