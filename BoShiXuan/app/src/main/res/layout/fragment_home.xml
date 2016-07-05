@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/home_rent"
-            android:id="@+id/imageView"
+            android:id="@+id/leaseImage"
             android:layout_below="@+id/relativeLayout"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -131,19 +131,19 @@
             android:layout_marginLeft="53.5dp"
             android:layout_marginTop="10.5dp"
             android:id="@+id/textView"
-            android:layout_below="@+id/imageView"
+            android:layout_below="@+id/leaseImage"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView2"
+            android:id="@+id/withdrawImage"
             android:src="@drawable/home_withdraw"
             android:layout_marginLeft="50dp"
-            android:layout_alignTop="@+id/imageView"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" />
+            android:layout_alignTop="@+id/leaseImage"
+            android:layout_toRightOf="@+id/leaseImage"
+            android:layout_toEndOf="@+id/leaseImage" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -153,19 +153,19 @@
             android:layout_marginTop="10.5dp"
             android:textSize="17sp"
             android:layout_marginLeft="65dp"
-            android:layout_below="@+id/imageView2"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" />
+            android:layout_below="@+id/withdrawImage"
+            android:layout_toRightOf="@+id/leaseImage"
+            android:layout_toEndOf="@+id/leaseImage" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView3"
+            android:id="@+id/rechargeImage"
             android:src="@drawable/home_recharger"
             android:layout_marginLeft="50dp"
-            android:layout_alignTop="@+id/imageView2"
-            android:layout_toRightOf="@+id/imageView2"
-            android:layout_toEndOf="@+id/imageView2" />
+            android:layout_alignTop="@+id/withdrawImage"
+            android:layout_toRightOf="@+id/withdrawImage"
+            android:layout_toEndOf="@+id/withdrawImage" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -175,8 +175,8 @@
             android:textSize="17sp"
             android:layout_marginLeft="65dp"
             android:layout_alignTop="@+id/textView5"
-            android:layout_toRightOf="@+id/imageView2"
-            android:layout_toEndOf="@+id/imageView2" />
+            android:layout_toRightOf="@+id/withdrawImage"
+            android:layout_toEndOf="@+id/withdrawImage" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="16dp"
             android:src="@drawable/home_deposit"
-            android:id="@+id/imageView4"
+            android:id="@+id/depositImage"
             android:layout_below="@+id/textView"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -197,19 +197,19 @@
             android:textSize="17sp"
             android:id="@+id/textView7"
             android:layout_marginTop="12dp"
-            android:layout_below="@+id/imageView4"
+            android:layout_below="@+id/depositImage"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView5"
+            android:id="@+id/orderImage"
             android:src="@drawable/home_order"
             android:layout_marginLeft="50dp"
-            android:layout_alignTop="@+id/imageView4"
-            android:layout_toRightOf="@+id/imageView4"
-            android:layout_toEndOf="@+id/imageView4" />
+            android:layout_alignTop="@+id/depositImage"
+            android:layout_toRightOf="@+id/depositImage"
+            android:layout_toEndOf="@+id/depositImage" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -219,18 +219,18 @@
             android:textSize="17sp"
             android:layout_marginLeft="65dp"
             android:layout_alignTop="@+id/textView7"
-            android:layout_toRightOf="@+id/imageView4"
-            android:layout_toEndOf="@+id/imageView4" />
+            android:layout_toRightOf="@+id/depositImage"
+            android:layout_toEndOf="@+id/depositImage" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/home_more"
-            android:id="@+id/imageView6"
+            android:id="@+id/moreImage"
             android:layout_marginLeft="50dp"
-            android:layout_alignTop="@+id/imageView5"
-            android:layout_toRightOf="@+id/imageView5"
-            android:layout_toEndOf="@+id/imageView5" />
+            android:layout_alignTop="@+id/orderImage"
+            android:layout_toRightOf="@+id/orderImage"
+            android:layout_toEndOf="@+id/orderImage" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -240,9 +240,9 @@
             android:textSize="17sp"
             android:layout_marginLeft="65dp"
             android:layout_marginTop="10.5dp"
-            android:layout_below="@+id/imageView5"
-            android:layout_toRightOf="@+id/imageView5"
-            android:layout_toEndOf="@+id/imageView5" />
+            android:layout_below="@+id/orderImage"
+            android:layout_toRightOf="@+id/orderImage"
+            android:layout_toEndOf="@+id/orderImage" />
 
     </RelativeLayout>
 </LinearLayout>
