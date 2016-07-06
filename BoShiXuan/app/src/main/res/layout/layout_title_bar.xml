@@ -24,6 +24,7 @@
             android:id="@+id/tv_head"
             android:layout_width="200dp"
             android:layout_height="34dp"
+            android:visibility="gone"
             android:gravity="center"
             android:lines="1"
             android:ellipsize="end"

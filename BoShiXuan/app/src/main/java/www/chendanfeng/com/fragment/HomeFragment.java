@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.BannerViewPagerAdapter;
 import www.chendanfeng.com.boishixuan.LeaseActivity;
 import www.chendanfeng.com.boishixuan.R;
+import www.chendanfeng.com.boishixuan.WithdrawActivity;
 
 /**
  * Created by Administrator on 2016/7/2 0002.
@@ -270,6 +271,8 @@ public class HomeFragment extends BaseFragment{
                     startActivity(intent);
                     break;
                 case TYPE_WITHDRAW:
+                    intent = new Intent(getActivity(), WithdrawActivity.class);
+                    startActivity(intent);
                     break;
                 case TYPE_RECHARGE:
                     break;

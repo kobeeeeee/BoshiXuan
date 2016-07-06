@@ -28,6 +28,8 @@
         </activity>
         <activity android:name=".LeaseActivity">
         </activity>
+        <activity android:name=".WithdrawActivity">
+        </activity>
     </application>
 
 </manifest>

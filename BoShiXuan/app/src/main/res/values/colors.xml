@@ -156,6 +156,6 @@
     <color name="dullgray">#908b8b</color><!--灰色 -->
     <color name="wallet_black">#333333</color><!--钱包画面黑色字体 -->
     <color name="wallet_white">#dedede</color><!--钱包画面灰色 -->
-
+    <color name="withdraw_gray">#dddddd</color><!--体现画面灰色背景 -->
 
 </resources>
