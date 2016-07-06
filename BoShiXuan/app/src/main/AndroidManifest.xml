@@ -28,8 +28,6 @@
         </activity>
         <activity android:name=".LeaseActivity">
         </activity>
-        <activity android:name=".SettingActivity">
-        </activity>
     </application>
 
 </manifest>
