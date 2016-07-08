@@ -6,7 +6,7 @@
     <include layout="@layout/layout_title_bar"
         android:id="@+id/include" />
 
-    <ImageView
+    <!--ImageView
         android:id="@+id/left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:layout_alignTop="@+id/left"
         android:layout_centerHorizontal="true"
         android:textColor="@color/boldwhite"
-        android:textSize="18sp" />
+        android:textSize="18sp" /-->
     <TextView
         android:id="@+id/phone"
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         android:textColor="@color/boldwhite"
         android:textSize="18sp"
         android:layout_below="@+id/include"
-        android:layout_alignLeft="@+id/left"
+        android:layout_marginLeft="19dp"
         android:layout_marginTop="38.5dp" />
     <EditText
         android:id="@+id/inputPhone"

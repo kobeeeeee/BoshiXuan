@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
+        <!--ImageView
             android:id="@+id/left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,22 +22,20 @@
             android:layout_alignTop="@+id/left"
             android:layout_centerHorizontal="true"
             android:textColor="@color/boldwhite"
-            android:textSize="18sp" />
+            android:textSize="18sp" /-->
         <ImageView
             android:id="@+id/list01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/setting_list1"
-            android:layout_marginTop="16dp"
-            android:layout_below="@+id/include2"/>
+            android:layout_marginTop="16dp"/>
         <TextView
             android:id="@+id/share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="分享"
             android:textSize="18sp"
-            android:layout_below="@+id/include2"
-            android:layout_marginTop="29dp"
+            android:layout_marginTop="26dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/wallet_black"/>
         <TextView
@@ -47,7 +45,7 @@
             android:text="意见反馈"
             android:textSize="18sp"
             android:layout_below="@+id/share"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="14dp"
             android:layout_alignLeft="@+id/share"
             android:textColor="@color/wallet_black"/>
         <TextView
@@ -57,7 +55,7 @@
             android:text="使用帮助"
             android:textSize="18sp"
             android:layout_below="@+id/feedback"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="16dp"
             android:layout_alignLeft="@+id/share"
             android:textColor="@color/wallet_black"/>
         <ImageView
@@ -74,7 +72,7 @@
             android:text="联系客服"
             android:textSize="18sp"
             android:layout_below="@+id/usehelp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="33dp"
             android:layout_alignLeft="@+id/share"
             android:textColor="@color/wallet_black"/>
         <TextView
@@ -84,7 +82,7 @@
             android:text="400-8597-333"
             android:textSize="18sp"
             android:layout_alignTop="@+id/contact"
-            android:layout_marginLeft="260dp"/>
+            android:layout_marginLeft="230dp"/>
         <ImageView
             android:id="@+id/list03"
             android:layout_width="match_parent"
@@ -99,7 +97,7 @@
             android:text="关于我们"
             android:textSize="18sp"
             android:layout_below="@+id/contact"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="30dp"
             android:layout_alignLeft="@+id/share"
             android:textColor="@color/wallet_black"/>
         <TextView
@@ -109,7 +107,7 @@
             android:text="清理缓存"
             android:textSize="18sp"
             android:layout_below="@+id/aboutus"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="16dp"
             android:layout_alignLeft="@+id/share"
             android:textColor="@color/wallet_black"/>
         <ImageView
