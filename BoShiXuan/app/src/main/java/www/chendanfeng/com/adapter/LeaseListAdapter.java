@@ -1,6 +1,7 @@
 package www.chendanfeng.com.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import www.chendanfeng.com.boishixuan.LeaseProductActivity;
 import www.chendanfeng.com.boishixuan.R;
 
 /**
@@ -62,6 +64,15 @@ public class LeaseListAdapter extends BaseAdapter{
         holder.leaseLayout.setBackgroundResource(this.mLeaseBgList.get(position));
         holder.leaseTextEN.setText(this.mLeaseTextENList.get(position));
         holder.leaseTextEN.setTextColor(this.mContext.getResources().getColor(R.color.white));
+        final int index = position;
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LeaseListAdapter.this.mContext, LeaseProductActivity.class);
+                intent.putExtra("type",index);
+                LeaseListAdapter.this.mContext.startActivity(intent);
+            }
+        });
         return convertView;
     }
     class ViewHolder{

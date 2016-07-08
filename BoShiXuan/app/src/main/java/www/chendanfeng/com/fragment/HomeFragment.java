@@ -22,6 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.BannerViewPagerAdapter;
 import www.chendanfeng.com.boishixuan.LeaseActivity;
+import www.chendanfeng.com.boishixuan.MoreActivity;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.WithdrawActivity;
 
@@ -281,6 +282,8 @@ public class HomeFragment extends BaseFragment{
                 case TYPE_ORDER:
                     break;
                 case TYPE_MORE:
+                    intent = new Intent(getActivity(), MoreActivity.class);
+                    startActivity(intent);
                     break;
             }
         }

@@ -157,5 +157,8 @@
     <color name="wallet_black">#333333</color><!--钱包画面黑色字体 -->
     <color name="wallet_white">#dedede</color><!--钱包画面灰色 -->
     <color name="withdraw_gray">#dddddd</color><!--体现画面灰色背景 -->
+    <color name="bank_add_gray">#888888</color><!--添加银行卡画面灰色字体 -->
+    <color name="grid_gray">#f2f2f2</color><!--商品详情灰色背景 -->
+    <color name="lease_product_gray">#666666</color><!--商品详情灰色字体 -->
 
 </resources>

@@ -33,5 +33,23 @@
             android:text="@string/app_name"
             android:textSize="17sp"
             />
+
+        <RelativeLayout
+            android:id="@+id/addLayout"
+            android:layout_width="50dp"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bank_card_add"
+                android:id="@+id/imageView"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>
