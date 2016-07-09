@@ -85,6 +85,8 @@ public class LoginActivity extends BaseActivity {
                     LoginActivity.this.finish();
                     break;
                 case TYPE_FORGET:
+                    intent = new Intent(LoginActivity.this,PasswordActivity.class);
+                    startActivity(intent);
                     break;
                 case TYPE_REGISTER:
                     intent = new Intent(LoginActivity.this,RegisterActivity.class);

@@ -34,11 +34,11 @@
         android:layout_marginTop="38.5dp" />
     <EditText
         android:id="@+id/inputPhone"
-        android:layout_width="wrap_content"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:background="@drawable/register_input"
         android:layout_below="@+id/include"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="30dp"
         android:layout_toRightOf="@+id/phone"
         android:layout_marginLeft="24dp"
         android:hint="请输入手机号码"
@@ -59,12 +59,12 @@
         android:layout_marginTop="60dp"/>
     <EditText
         android:id="@+id/inputPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:background="@drawable/register_input"
         android:layout_below="@+id/inputPhone"
         android:layout_alignLeft="@+id/inputPhone"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="45dp"
         android:hint="登录密码            "
         android:gravity="center"
         android:textColorHint="@color/dullgray"
@@ -83,12 +83,12 @@
         android:layout_marginTop="60dp"/>
     <EditText
         android:id="@+id/confirmPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:background="@drawable/register_input"
         android:layout_below="@+id/inputPassword"
         android:layout_alignLeft="@+id/inputPassword"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="45dp"
         android:hint="再次输入密码    "
         android:gravity="center"
         android:textColorHint="@color/dullgray"
@@ -107,12 +107,12 @@
         android:layout_marginTop="60dp"/>
     <EditText
         android:id="@+id/inputCode"
-        android:layout_width="wrap_content"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:background="@drawable/register_input_version"
         android:layout_below="@+id/confirmPassword"
         android:layout_alignLeft="@+id/confirmPassword"
-        android:layout_marginTop="35dp"/>
+        android:layout_marginTop="45dp"/>
     <ImageView
         android:id="@+id/buttonCode"
         android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
         android:layout_below="@+id/confirmPassword"
         android:layout_alignRight="@+id/inputCode"
         android:clickable="true"
-        android:layout_marginTop="35dp"/>
+        android:layout_marginTop="45dp"/>
     <CheckBox
         android:id="@+id/checkagree"
         android:layout_width="wrap_content"
