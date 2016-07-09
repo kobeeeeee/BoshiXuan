@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import www.chendanfeng.com.util.LogUtil;
 
 
@@ -41,7 +43,8 @@ public class StartupActivity extends BaseActivity{
         LogUtil.init(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        ViewGroup group = (ViewGroup) findViewById(R.id.viewGroup);
+        ButterKnife.bind(this);
+        LinearLayout group = (LinearLayout) findViewById(R.id.viewGroup);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         this.mParams = new ViewPager.LayoutParams();
         this.mParams.width = 10;
@@ -50,7 +53,7 @@ public class StartupActivity extends BaseActivity{
         //载入图片资源ID
         imgIdArray = new int[]
                 {R.drawable.startpage_1, R.drawable.startpage_2, R.drawable.startpage_3, R.drawable.startpage_4};
-
+        group.removeAllViews();
         //将点点加入到ViewGroup中
         tips = new ImageView[imgIdArray.length];
         for (int i = 0; i < tips.length; i++) {
@@ -58,12 +61,12 @@ public class StartupActivity extends BaseActivity{
             imageView.setLayoutParams(mParams);
             tips[i] = imageView;
             if (i == 0) {
-                tips[i].setBackgroundResource(R.drawable.point_sel);
+                tips[i].setBackgroundResource(R.drawable.dot_select);
             } else {
-                tips[i].setBackgroundResource(R.drawable.point_nor);
+                tips[i].setBackgroundResource(R.drawable.dot_normal);
             }
             LogUtil.i(this,"test");
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewPager.LayoutParams.WRAP_CONTENT, ViewPager.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             layoutParams.leftMargin = 5;
             layoutParams.rightMargin = 5;
             group.addView(imageView, layoutParams);
@@ -81,7 +84,7 @@ public class StartupActivity extends BaseActivity{
         viewPager.setAdapter(new MyAdapter());
         //设置监听，主要设置点点的北背景
         viewPager.addOnPageChangeListener(new GuidePageChangeListener());
-        viewPager.setCurrentItem((mImageViews.length) * 100);
+        viewPager.setCurrentItem(0);
     }
 
     public  class  MyAdapter extends PagerAdapter{
@@ -139,9 +142,9 @@ public class StartupActivity extends BaseActivity{
        private  void setImageBackground(int selectItems){
            for(int i = 0; i < tips.length; i++){
                if(i == selectItems){
-                   tips[i].setBackgroundResource(R.drawable.point_sel);
+                   tips[i].setBackgroundResource(R.drawable.dot_select);
                }else{
-                   tips[i].setBackgroundResource(R.drawable.point_nor);
+                   tips[i].setBackgroundResource(R.drawable.dot_normal);
                }
            }
        }
