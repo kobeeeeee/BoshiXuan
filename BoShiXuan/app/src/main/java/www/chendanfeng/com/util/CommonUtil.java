@@ -118,7 +118,7 @@ public class CommonUtil {
         }
         return path;
     };
-    public static HashMap<String,Object> putBaseFieldIntoMap(HashMap<String,Object> map) {
+    public static Map<String,String> putBaseFieldIntoMap(Map<String,String> map) {
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         map.put("sysType",userInfoBean.getSysType());
         map.put("sysVersion",userInfoBean.getSysVersion());
