@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">boishixuan</string>
+    <string name="loading">正在加载…</string>
+    <string name="refreshing">正在刷新…</string>
 </resources>

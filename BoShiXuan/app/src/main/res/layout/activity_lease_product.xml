@@ -10,12 +10,12 @@
         <include layout="@layout/layout_title_bar"
             android:id="@+id/include6" />
 
-        <GridView
+        <www.chendanfeng.com.view.RefreshRecyclerView
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numColumns="2"
-            android:id="@+id/leaseProductGridView"
+            android:id="@+id/leaseProductRecyclerView"
             android:horizontalSpacing="5dp"
             android:verticalSpacing="5dp"
             android:layout_below="@+id/include6"

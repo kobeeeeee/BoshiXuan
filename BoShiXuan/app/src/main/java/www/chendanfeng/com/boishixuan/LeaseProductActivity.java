@@ -3,6 +3,8 @@ package www.chendanfeng.com.boishixuan;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
@@ -14,6 +16,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.LeaseProductAdapter;
+import www.chendanfeng.com.view.RefreshRecyclerView;
 
 /**
  * Created by Administrator on 2016/7/9 0009.
@@ -27,8 +30,8 @@ public class LeaseProductActivity extends BaseActivity{
     TextView mHeader;
     @Bind(R.id.bar_left_btn)
     RelativeLayout mBackBtn;
-    @Bind(R.id.leaseProductGridView)
-    GridView mGridView;
+    @Bind(R.id.leaseProductRecyclerView)
+    RefreshRecyclerView mRefreshRecyclerView;
     private List<String> mProductNameList;
     private LeaseProductAdapter mLeaseProductAdapter;
     @Override
@@ -37,7 +40,7 @@ public class LeaseProductActivity extends BaseActivity{
         setContentView(R.layout.activity_lease_product);
         ButterKnife.bind(this);
         initHeader();
-        initGridView();
+        initRecyclerView();
     }
     private void initHeader() {
         Intent intent = getIntent();
@@ -67,7 +70,7 @@ public class LeaseProductActivity extends BaseActivity{
             }
         });
     }
-    private void initGridView() {
+    private void initRecyclerView() {
         this.mProductNameList = new ArrayList<>();
         this.mProductNameList.add("甲");
         this.mProductNameList.add("乙");
@@ -81,6 +84,17 @@ public class LeaseProductActivity extends BaseActivity{
         this.mProductNameList.add("葵");
 
         this.mLeaseProductAdapter = new LeaseProductAdapter(this,this.mProductNameList);
-        this.mGridView.setAdapter(this.mLeaseProductAdapter);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        this.mRefreshRecyclerView.onCreateSet(this.mLeaseProductAdapter, staggeredGridLayoutManager, new RefreshRecyclerView.OnBothRefreshListener() {
+            @Override
+            public void onPullDown() {
+            }
+
+            @Override
+            public void onLoadMore() {
+
+            }
+        });
     }
 }
