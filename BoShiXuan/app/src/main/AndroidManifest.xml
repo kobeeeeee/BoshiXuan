@@ -49,6 +49,18 @@
         </activity>
         <activity android:name=".AboutActivity">
         </activity>
+        <activity android:name=".ProductDetailActivity">
+        </activity>
+        <activity android:name=".PasswordManageActivity">
+        </activity>
+        <activity android:name=".WithdrawRecordActivity">
+        </activity>
+        <activity android:name=".RechargeRecordActivity">
+        </activity>
+        <activity android:name=".CertificationActivity">
+        </activity>
+        <activity android:name=".MatterRecordActivity">
+        </activity>
     </application>
 
 </manifest>

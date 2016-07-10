@@ -1,16 +1,20 @@
 package www.chendanfeng.com.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import www.chendanfeng.com.boishixuan.ProductDetailActivity;
 import www.chendanfeng.com.boishixuan.R;
 
 /**
@@ -44,11 +48,16 @@ public class LeaseProductAdapter extends RecyclerView.Adapter<LeaseProductAdapte
     public void onBindViewHolder(ProductView holder, int position) {
         holder.itemView.setTag(this.mProductNameList.get(position));
         holder.productName.setText(this.mProductNameList.get(position));
+
     }
     public class ProductView extends RecyclerView.ViewHolder {
         @Bind(R.id.productName)
         TextView productName;
-
+        @OnClick(R.id.productLayout)
+        public void OnClick(View view) {
+            Intent intent = new Intent(LeaseProductAdapter.this.mContext, ProductDetailActivity.class);
+            LeaseProductAdapter.this.mContext.startActivity(intent);
+        }
         public ProductView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
