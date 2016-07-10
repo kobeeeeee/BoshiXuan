@@ -10,7 +10,7 @@
         <include layout="@layout/layout_title_bar"
             android:id="@+id/include6" />
 
-        <www.chendanfeng.com.view.RefreshRecyclerView
+        <www.chendanfeng.com.xrecyclerview.XRecyclerView
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -2,21 +2,27 @@ package www.chendanfeng.com.boishixuan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Delayed;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.LeaseProductAdapter;
 import www.chendanfeng.com.view.RefreshRecyclerView;
+import www.chendanfeng.com.xrecyclerview.ProgressStyle;
+import www.chendanfeng.com.xrecyclerview.XRecyclerView;
 
 /**
  * Created by Administrator on 2016/7/9 0009.
@@ -31,7 +37,7 @@ public class LeaseProductActivity extends BaseActivity{
     @Bind(R.id.bar_left_btn)
     RelativeLayout mBackBtn;
     @Bind(R.id.leaseProductRecyclerView)
-    RefreshRecyclerView mRefreshRecyclerView;
+    XRecyclerView mRecyclerView;
     private List<String> mProductNameList;
     private LeaseProductAdapter mLeaseProductAdapter;
     @Override
@@ -86,15 +92,36 @@ public class LeaseProductActivity extends BaseActivity{
         this.mLeaseProductAdapter = new LeaseProductAdapter(this,this.mProductNameList);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-        this.mRefreshRecyclerView.onCreateSet(this.mLeaseProductAdapter, staggeredGridLayoutManager, new RefreshRecyclerView.OnBothRefreshListener() {
+        this.mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+        this.mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        this.mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
+        mRecyclerView.setArrowImageView(R.drawable.icon_font_down_grey);
+
+
+        this.mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
-            public void onPullDown() {
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO
+                        LeaseProductActivity.this.mRecyclerView.refreshComplete();
+                    }
+                },3000);
             }
 
             @Override
             public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO
+                        LeaseProductActivity.this.mRecyclerView.loadMoreComplete();
+                    }
+                },3000);
 
             }
         });
+        this.mRecyclerView.setAdapter(this.mLeaseProductAdapter);
     }
 }
