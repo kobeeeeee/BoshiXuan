@@ -1,5 +1,6 @@
 package www.chendanfeng.com.boishixuan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -11,9 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.util.LogUtil;
+
+import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 
 
 /**
@@ -35,8 +41,7 @@ public class StartupActivity extends BaseActivity{
      */
     private int[] imgIdArray;
     private ViewPager.LayoutParams mParams;
-    private int oldPosition = 0;// 记录上一次点的位置
-    private int currentItem; // 当前页面
+    private boolean misScrolled = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +79,7 @@ public class StartupActivity extends BaseActivity{
 
         //将图片装载到数组中
         mImageViews = new ImageView[imgIdArray.length];
-        for (int i = 0; i < mImageViews.length; i++) {
+        for (int i = 0; i <imgIdArray.length; i++) {
             ImageView imageView = new ImageView(this);
             mImageViews[i] = imageView;
             imageView.setBackgroundResource(imgIdArray[i]);
@@ -88,10 +93,10 @@ public class StartupActivity extends BaseActivity{
     }
 
     public  class  MyAdapter extends PagerAdapter{
-
         @Override
         public  int getCount(){
-            return Integer.MAX_VALUE;
+       //     return Integer.MAX_VALUE;
+            return mImageViews.length;
         }
 
         @Override
@@ -100,6 +105,7 @@ public class StartupActivity extends BaseActivity{
         }
 
         public  void destroyItem(ViewGroup container, int position, Object object){
+            LogUtil.i(this,position+"delatepage");
             ((ViewPager)container).removeView(mImageViews[position % mImageViews.length]);
         }
 
@@ -107,22 +113,49 @@ public class StartupActivity extends BaseActivity{
          * 载入图片进去，用当前position 除以图片数组长度取余数是关键
          */
         public  Object instantiateItem(ViewGroup container, int position){
+            LogUtil.i(this,position+"pageaaa");
             try {
                 ((ViewPager) container).addView(mImageViews[position % mImageViews.length], 0);
             }catch (Exception e){
 
             }
-                return mImageViews[position % mImageViews.length];
+            LogUtil.i(this,position+"pagebbb");
+            return mImageViews[position % mImageViews.length];
         }
         protected Object clone() throws CloneNotSupportedException {
             return super.clone();
         }
     }
 
+
    public class GuidePageChangeListener implements OnPageChangeListener{
 
        @Override
-       public  void onPageScrollStateChanged(int arg0){
+       public  void onPageScrollStateChanged(int state){
+           switch(state){
+               case ViewPager.SCROLL_STATE_DRAGGING:
+                   misScrolled = false;
+                   break;
+               case ViewPager.SCROLL_STATE_SETTLING:
+                   misScrolled = true;
+                   break;
+               case ViewPager.SCROLL_STATE_IDLE:
+                   LogUtil.i(this,"case3");
+                   if(viewPager.getCurrentItem() == viewPager.getAdapter().getCount() - 1 && !misScrolled){
+                       startActivity(new Intent(StartupActivity.this,LoginActivity.class));
+                       StartupActivity.this.finish();
+                   }
+                   misScrolled = true;
+                   break;
+           }
+//           LogUtil.i(this,arg0+"last");
+//           if(arg0  == (tips.length - 1 ))
+//           {
+//               Intent intent;
+//               intent = new Intent(StartupActivity.this,LoginActivity.class);
+//               startActivity(intent);
+//               StartupActivity.this.finish();
+//           }
 
        }
 
@@ -133,7 +166,7 @@ public class StartupActivity extends BaseActivity{
 
        @Override
        public  void onPageSelected(int arg0){
-           setImageBackground(arg0 % mImageViews.length);
+           setImageBackground(arg0 );
        }
 
        /**
