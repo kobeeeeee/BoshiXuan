@@ -134,9 +134,11 @@ public class StartupActivity extends BaseActivity{
        public  void onPageScrollStateChanged(int state){
            switch(state){
                case ViewPager.SCROLL_STATE_DRAGGING:
+                   LogUtil.i(this,"case1");
                    misScrolled = false;
                    break;
                case ViewPager.SCROLL_STATE_SETTLING:
+                   LogUtil.i(this,"case2");
                    misScrolled = true;
                    break;
                case ViewPager.SCROLL_STATE_IDLE:
@@ -148,15 +150,6 @@ public class StartupActivity extends BaseActivity{
                    misScrolled = true;
                    break;
            }
-//           LogUtil.i(this,arg0+"last");
-//           if(arg0  == (tips.length - 1 ))
-//           {
-//               Intent intent;
-//               intent = new Intent(StartupActivity.this,LoginActivity.class);
-//               startActivity(intent);
-//               StartupActivity.this.finish();
-//           }
-
        }
 
        @Override
