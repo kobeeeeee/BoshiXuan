@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="match_parent">
     <RelativeLayout
-        android:layout_marginTop="3.5dp"
-        android:background="@drawable/withdraw_record_bg"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/matter_record_bg"
         android:layout_width="match_parent"
         android:layout_height="147dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="提现金额"
+            android:text="产品名称"
             android:textSize="16sp"
             android:textColor="@color/white"
-            android:layout_marginTop="17.5dp"
+            android:layout_marginTop="15.5dp"
             android:id="@+id/textView36"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -26,12 +25,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="￥800.00元"
+            android:text="360天长期理财"
             android:textSize="14sp"
             android:textColor="@color/white"
-            android:layout_marginTop="18.5dp"
-            android:layout_marginLeft="50dp"
-            android:id="@+id/withdrawMoney"
+            android:layout_marginTop="14.5dp"
+            android:layout_marginLeft="49dp"
+            android:id="@+id/matterName"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView36"
             android:layout_toEndOf="@+id/textView36" />
@@ -39,7 +38,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="提现时间"
+            android:text="购买时间"
             android:textSize="16sp"
             android:textColor="@color/white"
             android:layout_marginTop="27dp"
@@ -54,47 +53,35 @@
             android:text="2016.06.07     11:55:09"
             android:textColor="@color/white"
             android:textSize="14sp"
-            android:layout_marginTop="28dp"
-            android:id="@+id/withdrawTime"
-            android:layout_below="@+id/withdrawMoney"
-            android:layout_alignLeft="@+id/withdrawMoney"
-            android:layout_alignStart="@+id/withdrawMoney" />
+            android:layout_marginTop="30dp"
+            android:id="@+id/buyTime"
+            android:layout_below="@+id/matterName"
+            android:layout_alignLeft="@+id/matterName"
+            android:layout_alignStart="@+id/matterName" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="提现银行卡"
+            android:text="购买金额"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:layout_marginTop="31dp"
             android:id="@+id/textView38"
-            android:layout_below="@+id/withdrawTime"
+            android:layout_below="@+id/buyTime"
             android:layout_alignLeft="@+id/textView37"
             android:layout_alignStart="@+id/textView37" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="622************2115"
+            android:text="0.00元"
             android:textSize="14sp"
             android:textColor="@color/white"
-            android:layout_marginTop="32dp"
-            android:id="@+id/withdrawBankNo"
+            android:layout_marginTop="30dp"
+            android:id="@+id/buyMoney"
             android:layout_below="@+id/textView37"
-            android:layout_alignLeft="@+id/withdrawTime"
-            android:layout_alignStart="@+id/withdrawTime" />
+            android:layout_alignLeft="@+id/buyTime"
+            android:layout_alignStart="@+id/buyTime" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="工商银行"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:layout_marginBottom="7.5dp"
-            android:layout_marginRight="6.5dp"
-            android:id="@+id/withdrawBankName"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 </LinearLayout>

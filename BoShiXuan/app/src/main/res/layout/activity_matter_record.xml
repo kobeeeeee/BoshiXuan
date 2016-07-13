@@ -6,6 +6,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include layout="@layout/layout_title_bar"/>
+        <include layout="@layout/layout_title_bar"
+            android:id="@+id/include6"/>
+        <www.chendanfeng.com.xrecyclerview.XRecyclerView
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/matterRecyclerView"
+            android:layout_marginLeft="12dp"
+            android:layout_below="@+id/include6"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </LinearLayout>

@@ -84,8 +84,12 @@ public class PasswordManageActivity extends BaseActivity{
                     startActivity(intent);
                     break;
                 case TYPE_MODIFY_PAY_PSW:
+                    intent = new Intent(PasswordManageActivity.this,ModifyPayPswActivity.class);
+                    startActivity(intent);
                     break;
                 case TYPE_FORGET_PAY_PSW:
+                    intent = new Intent(PasswordManageActivity.this,ForgetPayPswActivity.class);
+                    startActivity(intent);
                     break;
             }
         }

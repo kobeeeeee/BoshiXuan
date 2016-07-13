@@ -52,7 +52,7 @@ public class WithdrawRecordAdapter extends RecyclerView.Adapter<WithdrawRecordAd
         TextView mWithdrawMoney;
         @Bind(R.id.withdrawTime)
         TextView mWithdrawTime;
-        @Bind(R.id.withdrawBankCard)
+        @Bind(R.id.withdrawBankNo)
         TextView mWithdrawBankCard;
         @Bind(R.id.withdrawBankName)
         TextView mWithdrawBankName;

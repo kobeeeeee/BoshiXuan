@@ -63,6 +63,10 @@
         </activity>
         <activity android:name=".ModifyLoginPswActivity">
         </activity>
+        <activity android:name=".ModifyPayPswActivity">
+        </activity>
+        <activity android:name=".ForgetPayPswActivity">
+        </activity>
     </application>
 
 </manifest>
