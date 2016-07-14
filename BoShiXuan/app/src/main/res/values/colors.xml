@@ -161,5 +161,6 @@
     <color name="grid_gray">#f2f2f2</color><!--商品详情灰色背景 -->
     <color name="lease_product_gray">#666666</color><!--商品详情灰色字体 -->
     <color name="modify_gray">#908b8b</color><!--修改密码灰色字体 -->
+    <color name="recharge_red">#e01111</color><!--充值页面红色字体 -->
 
 </resources>

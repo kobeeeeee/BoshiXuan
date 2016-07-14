@@ -67,6 +67,8 @@
         </activity>
         <activity android:name=".ForgetPayPswActivity">
         </activity>
+        <activity android:name=".RechargeActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -24,6 +24,7 @@ import www.chendanfeng.com.adapter.BannerViewPagerAdapter;
 import www.chendanfeng.com.boishixuan.LeaseActivity;
 import www.chendanfeng.com.boishixuan.MoreActivity;
 import www.chendanfeng.com.boishixuan.R;
+import www.chendanfeng.com.boishixuan.RechargeActivity;
 import www.chendanfeng.com.boishixuan.WithdrawActivity;
 
 /**
@@ -276,6 +277,8 @@ public class HomeFragment extends BaseFragment{
                     startActivity(intent);
                     break;
                 case TYPE_RECHARGE:
+                    intent = new Intent(getActivity(), RechargeActivity.class);
+                    startActivity(intent);
                     break;
                 case TYPE_DEPOSIT:
                     break;

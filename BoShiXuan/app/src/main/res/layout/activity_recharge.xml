@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/layout_title_bar"
+            android:id="@+id/include10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="账户余额"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:textColor="@color/wallet_black"
+            android:id="@+id/textView43"
+            android:layout_below="@+id/include10"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            android:textSize="16sp"
+            android:layout_marginLeft="112dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/peru"
+            android:id="@+id/accountBalanceText"
+            android:layout_below="@+id/include10"
+            android:layout_toRightOf="@+id/textView43"
+            android:layout_toEndOf="@+id/textView43" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView5"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/recharge_divide_line"
+            android:layout_below="@+id/textView43"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="支付方式"
+            android:textSize="16sp"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/wallet_black"
+            android:id="@+id/textView44"
+            android:layout_below="@+id/imageView5"
+            android:layout_alignLeft="@+id/textView43"
+            android:layout_alignStart="@+id/textView43" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12.5dp"
+            android:background="@drawable/recharge_bg1"
+            android:layout_below="@+id/textView44"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/relativeLayout7">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="门店现金充值"
+                android:id="@+id/textView45"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="16.5dp"
+                android:textSize="16sp"
+                android:textColor="@color/wallet_black"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="温岭市万昌中路创业大厦一幢1315号"
+                android:layout_marginTop="12.5dp"
+                android:textSize="14sp"
+                android:textColor="@color/bank_add_gray"
+                android:id="@+id/textView46"
+                android:layout_below="@+id/textView45"
+                android:layout_alignLeft="@+id/textView45"
+                android:layout_alignStart="@+id/textView45" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8.5dp"
+            android:background="@drawable/recharge_bg2"
+            android:layout_below="@+id/relativeLayout7"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/relativeLayout8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="门店刷卡充值"
+                android:id="@+id/textView47"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="16.5dp"
+                android:textSize="16sp"
+                android:textColor="@color/wallet_black"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="温岭市万昌中路创业大厦一幢1315号"
+                android:layout_marginTop="12.5dp"
+                android:textSize="14sp"
+                android:textColor="@color/bank_add_gray"
+                android:id="@+id/textView48"
+                android:layout_below="@+id/textView47"
+                android:layout_alignLeft="@+id/textView47"
+                android:layout_alignStart="@+id/textView47" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8.5dp"
+            android:background="@drawable/recharge_bg3"
+            android:layout_below="@+id/relativeLayout8"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/relativeLayout9">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="银行卡转账充值"
+                android:id="@+id/textView49"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="14dp"
+                android:textSize="16sp"
+                android:textColor="@color/wallet_black"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="银行卡号 ： 6222081207002022330"
+                android:id="@+id/textView50"
+                android:layout_marginTop="12dp"
+                android:textSize="14sp"
+                android:textColor="@color/bank_add_gray"
+                android:layout_below="@+id/textView49"
+                android:layout_alignLeft="@+id/textView49"
+                android:layout_alignStart="@+id/textView49" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="账户名 ： 沈海永"
+                android:id="@+id/textView51"
+                android:layout_marginTop="12dp"
+                android:textSize="14sp"
+                android:textColor="@color/bank_add_gray"
+                android:layout_below="@+id/textView50"
+                android:layout_alignLeft="@+id/textView50"
+                android:layout_alignStart="@+id/textView50" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开户行 ： 工商银行温岭支行"
+                android:id="@+id/textView52"
+                android:layout_marginTop="12dp"
+                android:textSize="14sp"
+                android:textColor="@color/bank_add_gray"
+                android:layout_below="@+id/textView51"
+                android:layout_alignLeft="@+id/textView51"
+                android:layout_alignStart="@+id/textView51" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkMoreBtn"
+            android:clickable="true"
+            android:layout_marginTop="27.5dp"
+            android:src="@drawable/recharge_check_more_selectore"
+            android:layout_below="@+id/relativeLayout9"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注 ： 银行转账后请与400客服联系，客服核对充值金额后立即到账，客服热线 ： 400-8597-333"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textSize="13sp"
+            android:textColor="@color/recharge_red"
+            android:id="@+id/textView53"
+            android:layout_below="@+id/checkMoreBtn"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="27.5dp" />
+
+    </RelativeLayout>
+</LinearLayout>
