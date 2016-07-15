@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.BannerViewPagerAdapter;
 import www.chendanfeng.com.boishixuan.LeaseActivity;
 import www.chendanfeng.com.boishixuan.MoreActivity;
+import www.chendanfeng.com.boishixuan.MyOrderActivity;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.RechargeActivity;
 import www.chendanfeng.com.boishixuan.WithdrawActivity;
@@ -283,6 +284,8 @@ public class HomeFragment extends BaseFragment{
                 case TYPE_DEPOSIT:
                     break;
                 case TYPE_ORDER:
+                    intent = new Intent(getActivity(), MyOrderActivity.class);
+                    startActivity(intent);
                     break;
                 case TYPE_MORE:
                     intent = new Intent(getActivity(), MoreActivity.class);

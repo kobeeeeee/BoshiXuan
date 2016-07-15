@@ -23,7 +23,8 @@
             android:gravity="center"
             android:text="首页"
             android:textColor="@color/white"
-            android:button="@null"/>
+            android:button="@null"
+            android:checked="false" />
         <RadioButton
             android:id="@+id/tab_news"
             android:layout_width="wrap_content"

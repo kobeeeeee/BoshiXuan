@@ -1,10 +1,8 @@
 package www.chendanfeng.com.boishixuan;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,33 +10,23 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by Administrator on 2016/7/14 0014.
+ * Created by Administrator on 2016/7/15 0015.
  */
-public class RechargeActivity extends BaseActivity{
+public class RechargeMoreActivity extends BaseActivity{
     @Bind(R.id.tv_head)
     TextView mHeader;
     @Bind(R.id.bar_left_btn)
     RelativeLayout mBackBtn;
-    @Bind(R.id.checkMoreBtn)
-    ImageView mCheckMoreBtn;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recharge);
+        setContentView(R.layout.activity_more_bank_card);
         ButterKnife.bind(this);
         initHeader();
-
-        this.mCheckMoreBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RechargeActivity.this,RechargeMoreActivity.class);
-                startActivity(intent);
-            }
-        });
     }
     private void initHeader(){
         this.mHeader.setVisibility(View.VISIBLE);
-        this.mHeader.setText("充值");
+        this.mHeader.setText("更多银行卡");
         this.mBackBtn.setVisibility(View.VISIBLE);
         this.mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -139,7 +139,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="银行卡转账充值"
+                android:text="门店刷卡充值"
                 android:id="@+id/textView49"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="14dp"

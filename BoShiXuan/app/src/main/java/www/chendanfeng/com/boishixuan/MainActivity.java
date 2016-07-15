@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity {
         mFragmentList.add(mSettingFragment);
         homeTab.setChecked(true);
         homeTab.setTextColor(getResources().getColor(R.color.coffee));
-        mTabFragmentAdapter = new MainTabFragmentAdapter(this, mFragmentList, R.id.main_tab, mainGroup);
+        mTabFragmentAdapter = new MainTabFragmentAdapter(this, mFragmentList, R.id.main_tab, mainGroup,1);
 
     }
 }

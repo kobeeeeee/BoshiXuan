@@ -14,6 +14,9 @@ import www.chendanfeng.com.boishixuan.R;
  * Created by Administrator on 2016/7/2 0002.
  */
 public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListener{
+    public static final int TYPE_MAIN = 1;
+    public static final int TYPE_ORDER = 2;
+    private int mType;
     private List<Fragment> mFragmentList;
     private RadioGroup mRadioGroup;
     private FragmentActivity mFragmentActivity;
@@ -21,11 +24,12 @@ public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListene
 
     private int mCurrentTab;
 
-    public MainTabFragmentAdapter(FragmentActivity fragmentActivity, List<Fragment> fragments, int fragmentContentId, RadioGroup rgs) {
+    public MainTabFragmentAdapter(FragmentActivity fragmentActivity, List<Fragment> fragments, int fragmentContentId, RadioGroup rgs,int type) {
         this.mFragmentList = fragments;
         this.mRadioGroup = rgs;
         this.mFragmentActivity = fragmentActivity;
         this.mFragmentContentId = fragmentContentId;
+        this.mType = type;
         FragmentTransaction ft = fragmentActivity.getSupportFragmentManager().beginTransaction();
         ft.add(fragmentContentId, fragments.get(0));
         ft.commit();
@@ -38,7 +42,11 @@ public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListene
        for (int i = 0; i < this.mRadioGroup.getChildCount(); i++) {
            RadioButton button = (RadioButton) this.mRadioGroup.getChildAt(i);
            if (this.mRadioGroup.getChildAt(i).getId() == checkedId) {
-               button.setTextColor(this.mFragmentActivity.getResources().getColor(R.color.coffee));
+               if(this.mType == TYPE_MAIN) {
+                   button.setTextColor(this.mFragmentActivity.getResources().getColor(R.color.coffee));
+               } else {
+                   button.setTextColor(this.mFragmentActivity.getResources().getColor(R.color.white));
+               }
                Fragment fragment = this.mFragmentList.get(i);
                FragmentTransaction ft = obtainFragmentTransaction(i);
 
@@ -54,7 +62,11 @@ public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListene
 
 
            } else {
-               button.setTextColor(this.mFragmentActivity.getResources().getColor(R.color.white));
+               if(this.mType == TYPE_MAIN) {
+                   button.setTextColor(this.mFragmentActivity.getResources().getColor(R.color.white));
+               } else {
+                   button.setTextColor(this.mFragmentActivity.getResources().getColor(R.color.coffee));
+               }
            }
        }
     }

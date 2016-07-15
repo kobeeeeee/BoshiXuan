@@ -69,6 +69,10 @@
         </activity>
         <activity android:name=".RechargeActivity">
         </activity>
+        <activity android:name=".RechargeMoreActivity">
+        </activity>
+        <activity android:name=".MyOrderActivity">
+        </activity>
     </application>
 
 </manifest>
