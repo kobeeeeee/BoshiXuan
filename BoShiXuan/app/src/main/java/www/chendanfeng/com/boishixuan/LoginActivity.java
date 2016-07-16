@@ -8,12 +8,17 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,6 +65,18 @@ public class LoginActivity extends BaseActivity {
         forgetTextView.setOnClickListener(new MyOnClickListener(TYPE_FORGET));
     }
 
+    public static  boolean checkPhoneNumber(String phoneNumber){
+        Pattern pattern = Pattern.compile("^1[0-9]{10}$");
+        Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.matches();
+    }
+
+    public static  boolean checkPassword(String password){
+        Pattern pattern = Pattern.compile(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]");
+        //Pattern pattern = Pattern.compile("^[A-Za-z0-9]{6,20}$");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
     /**
      * 当进入登录画面时，初始化userBean的信息
      */
@@ -95,6 +112,15 @@ public class LoginActivity extends BaseActivity {
             Intent intent;
             switch (this.mType) {
                 case TYPE_LOGIN:
+                    String phoneNumber = userEditText.getText().toString();
+                    String password = passwordEditText.getText().toString();
+                    if(!checkPhoneNumber(phoneNumber)) {
+                        Toast toast = Toast.makeText(LoginActivity.this,"无效的手机号码",Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        break;
+                    }
+                    //TODO:根据输入的用户名、密码调用接口校验用户名密码是否正确
                     //TODO 测试跳转主页面代码
                     intent = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
