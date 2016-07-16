@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -30,10 +31,13 @@ public class SettingFragment extends BaseFragment{
     public static final int TYPE_ABOUT = 1;
     public static final int TYPE_SHARE = 2;
     public static final int TYPE_PHONE = 3;
+    public static final int TYPE_LOGOUT = 4;
     @Bind(R.id.aboutus)
     TextView aboutusText;
     @Bind(R.id.phone)
     TextView phoneText;
+    @Bind(R.id.logout)
+    ImageView logoutButton;
 
     @Nullable
     @Override
@@ -42,6 +46,7 @@ public class SettingFragment extends BaseFragment{
         ButterKnife.bind(this, this.mView);
         aboutusText.setOnClickListener(new MyOnClickListener(TYPE_ABOUT));
         phoneText.setOnClickListener(new MyOnClickListener(TYPE_PHONE));
+        logoutButton.setOnClickListener(new MyOnClickListener(TYPE_LOGOUT));
         return this.mView;
     }
 
@@ -87,6 +92,9 @@ public class SettingFragment extends BaseFragment{
                        }
                    });
                     builder.create().show();
+                    break;
+                case TYPE_LOGOUT:
+                    getActivity().finish();
             }
         }
     }

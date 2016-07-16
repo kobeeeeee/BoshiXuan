@@ -68,5 +68,5 @@
         <activity android:name=".LeasingProcessActivity">
         </activity>
     </application>
-
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 </manifest>
