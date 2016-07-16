@@ -162,5 +162,6 @@
     <color name="lease_product_gray">#666666</color><!--商品详情灰色字体 -->
     <color name="modify_gray">#908b8b</color><!--修改密码灰色字体 -->
     <color name="recharge_red">#e01111</color><!--充值页面红色字体 -->
+    <color name="font_for_black">#666666</color><!--灰黑色字体 -->
 
 </resources>

@@ -16,11 +16,13 @@ import www.chendanfeng.com.boishixuan.R;
 public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListener{
     public static final int TYPE_MAIN = 1;
     public static final int TYPE_ORDER = 2;
+    public static final int TYPE_NEWS = 3;
     private int mType;
     private List<Fragment> mFragmentList;
     private RadioGroup mRadioGroup;
     private FragmentActivity mFragmentActivity;
     private int mFragmentContentId;
+    private Fragment mFragment;
 
     private int mCurrentTab;
 
@@ -34,9 +36,21 @@ public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListene
         ft.add(fragmentContentId, fragments.get(0));
         ft.commit();
         rgs.setOnCheckedChangeListener(this);
-
-
     }
+
+    public MainTabFragmentAdapter(Fragment fragment, List<Fragment> fragments, int fragmentContentId, RadioGroup rgs,int type) {
+        this.mFragmentList = fragments;
+        this.mRadioGroup = rgs;
+        this.mFragment = fragment;
+        this.mFragmentActivity = fragment.getActivity();
+        this.mFragmentContentId = fragmentContentId;
+        this.mType = type;
+        FragmentTransaction ft = mFragment.getChildFragmentManager().beginTransaction();
+        ft.add(fragmentContentId, fragments.get(0));
+        ft.commit();
+        rgs.setOnCheckedChangeListener(this);
+    }
+
    @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
        for (int i = 0; i < this.mRadioGroup.getChildCount(); i++) {
@@ -96,6 +110,9 @@ public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListene
     }
     private FragmentTransaction obtainFragmentTransaction(int index) {
         FragmentTransaction ft = this.mFragmentActivity.getSupportFragmentManager().beginTransaction();
+        if(this.mType == TYPE_NEWS) {
+            ft = mFragment.getChildFragmentManager().beginTransaction();
+        }
         return ft;
     }
 }

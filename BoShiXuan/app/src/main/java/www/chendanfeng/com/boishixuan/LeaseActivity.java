@@ -1,5 +1,6 @@
 package www.chendanfeng.com.boishixuan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -26,7 +27,8 @@ public class LeaseActivity extends BaseActivity{
     TextView mLeaseHeader;
     @Bind(R.id.bar_left_btn)
     RelativeLayout mBackBtn;
-
+    @Bind(R.id.rentLayout)
+    RelativeLayout mRentLayout;
     private LeaseListAdapter mLeaseListAdapter;
     private List<String> mLeaseTextCHList;
     private List<String> mLeaseTextENList;
@@ -69,6 +71,15 @@ public class LeaseActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        this.mRentLayout.setVisibility(View.VISIBLE);
+        this.mRentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LeaseActivity.this,LeasingProcessActivity.class);
+                startActivity(intent);
             }
         });
     }

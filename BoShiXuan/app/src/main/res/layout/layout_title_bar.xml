@@ -51,5 +51,24 @@
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rentLayout"
+            android:layout_width="100dp"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="租赁流程"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:id="@+id/textView"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>
