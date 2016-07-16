@@ -1,7 +1,9 @@
 package www.chendanfeng.com.boishixuan;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -22,6 +24,8 @@ public class LoginActivity extends BaseActivity {
     public static final int TYPE_LOGIN = 1;
     public static final int TYPE_FORGET = 2;
     public static final int TYPE_REGISTER = 3;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     @Bind(R.id.input_user)
     EditText userEditText;
     @Bind(R.id.input_password)
@@ -39,6 +43,18 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        preferences = getSharedPreferences("firststart", Context.MODE_PRIVATE);
+        if(preferences.getBoolean("firststart",true))
+        {
+            LogUtil.i(this,"logintest1");
+            editor = preferences.edit();
+            editor.putBoolean("firststart",false);
+            editor.commit();
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(),StartupActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
         registerTextView.setOnClickListener(new MyOnClickListener(TYPE_REGISTER));
         loginButton.setOnClickListener(new MyOnClickListener(TYPE_LOGIN));
         forgetTextView.setOnClickListener(new MyOnClickListener(TYPE_FORGET));
