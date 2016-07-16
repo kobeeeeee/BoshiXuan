@@ -2,16 +2,20 @@ package www.chendanfeng.com.boishixuan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.loopj.android.http.RequestParams;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,8 +43,8 @@ public class RegisterActivity extends BaseActivity {
     EditText CodeEditText;
     @Bind(R.id.buttonCode)
     ImageView codeButton;
-    @Bind(R.id.checkagree)
-    CheckBox checkagreeBox;
+    @Bind(R.id.checkAgree)
+    CheckBox checkAgreeBox;
     @Bind(R.id.register)
     ImageView registerButton;
     public NetWorkCallBack mNetWorkCallBack;
@@ -52,7 +56,22 @@ public class RegisterActivity extends BaseActivity {
         ButterKnife.bind(this);
         codeButton.setOnClickListener(new MyOnClickListener(TYPE_SEND_VERIFY_CODE));
         this.mNetWorkCallBack = new NetWorkCallBack();
+        registerButton.setOnClickListener(new MyOnClickListener(TYPE_REGISTER));
     }
+
+    public static  boolean checkPhoneNumber(String phoneNumber){
+        Pattern pattern = Pattern.compile("^1[0-9]{10}$");
+        Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.matches();
+    }
+
+    public static  boolean checkPassword(String password){
+        Pattern pattern = Pattern.compile(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]");
+        //Pattern pattern = Pattern.compile("^[A-Za-z0-9]{6,20}$");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
     class MyOnClickListener implements  View.OnClickListener {
         public int mType;
         public MyOnClickListener(int type) {
@@ -60,7 +79,7 @@ public class RegisterActivity extends BaseActivity {
         }
         @Override
         public void onClick(View v) {
-            Intent intent;
+            Intent intent = new Intent();
             switch (this.mType) {
                 case TYPE_SEND_VERIFY_CODE:
                     Map<String,Object> map = new HashMap<>();
@@ -68,6 +87,45 @@ public class RegisterActivity extends BaseActivity {
                     RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,RegisterActivity.this.mNetWorkCallBack, RegisterResponse.class);
                     break;
                 case TYPE_REGISTER:
+                    String phoneNumber = phoneEditText.getText().toString();
+                    String password = passwordEditText.getText().toString();
+                    String confirmPassword = confirmPasswordEditText.getText().toString();
+                    String code = CodeEditText.getText().toString();
+                    LogUtil.i(this,"register");
+                    LogUtil.i(this,phoneNumber+"test");
+                    LogUtil.i(this,password+"test1");
+                    LogUtil.i(this,confirmPassword+"test2");
+                    if(!checkPhoneNumber(phoneNumber)) {
+                        Toast toast = Toast.makeText(RegisterActivity.this,"无效的手机号码",Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        break;
+                    }
+                    if(!checkPassword(password)){
+                        Toast toast = Toast.makeText(RegisterActivity.this,"密码长度为6-20位字母或有效数字组成",Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        break;
+                    }
+                    if(!password.equals(confirmPassword)){
+                        Toast toast = Toast.makeText(RegisterActivity.this,"两次输入密码不一致",Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        break;
+                    }
+                    if(!checkAgreeBox.isChecked()){
+                        Toast toast = Toast.makeText(RegisterActivity.this,"请先同意支付协议",Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        break;
+                    }
+                    //TODO:获取验证码
+                    //TODO:输入的验证码和获取到的验证码不一致，则报错“请输入正确的验证码”
+                    Toast toast = Toast.makeText(RegisterActivity.this,"注册成功！",Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    intent.setClass(RegisterActivity.this,LoginActivity.class);
+                    startActivity(intent);
                     break;
             }
         }

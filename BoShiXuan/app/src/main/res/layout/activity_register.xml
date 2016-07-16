@@ -123,14 +123,15 @@
         android:clickable="true"
         android:layout_marginTop="45dp"/>
     <CheckBox
-        android:id="@+id/checkagree"
+        android:id="@+id/checkAgree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:button="@drawable/registercheck_selector"
         android:layout_below="@+id/code"
         android:layout_alignLeft="@+id/code"
         android:layout_marginTop="30dp"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:checked="true"/>
     <TextView
         android:id="@+id/agree"
         android:layout_width="wrap_content"
