@@ -107,7 +107,7 @@
         android:layout_marginTop="60dp"/>
     <EditText
         android:id="@+id/inputCode"
-        android:layout_width="230dp"
+        android:layout_width="113dp"
         android:layout_height="wrap_content"
         android:background="@drawable/register_input_version"
         android:layout_below="@+id/confirmPassword"
@@ -119,18 +119,19 @@
         android:layout_height="wrap_content"
         android:src="@drawable/registercode_selector"
         android:layout_below="@+id/confirmPassword"
-        android:layout_alignRight="@+id/inputCode"
+        android:layout_alignRight="@+id/confirmPassword"
         android:clickable="true"
         android:layout_marginTop="45dp"/>
     <CheckBox
-        android:id="@+id/checkagree"
+        android:id="@+id/checkAgree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:button="@drawable/registercheck_selector"
         android:layout_below="@+id/code"
         android:layout_alignLeft="@+id/code"
         android:layout_marginTop="30dp"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:checked="true"/>
     <TextView
         android:id="@+id/agree"
         android:layout_width="wrap_content"
