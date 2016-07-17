@@ -22,6 +22,7 @@ import www.chendanfeng.com.boishixuan.MainActivity;
 import www.chendanfeng.com.boishixuan.PasswordActivity;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.RegisterActivity;
+import www.chendanfeng.com.view.CustomDialog;
 
 /**
  * Created by Administrator on 2016/7/2 0002.
@@ -70,7 +71,8 @@ public class SettingFragment extends BaseFragment{
                     final String phone =  phoneText.getText().toString();
                     StringBuffer message = new StringBuffer();
                     message.append("确定要拨打").append(phone).append("么？");
-                    AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+                    //AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+                    CustomDialog.Builder builder=new CustomDialog.Builder(getActivity());
                     builder.setTitle("温馨提示");
                     //builder.setMessage("确定要拨打4008-597-333么？");
                     builder.setMessage(message.toString());
