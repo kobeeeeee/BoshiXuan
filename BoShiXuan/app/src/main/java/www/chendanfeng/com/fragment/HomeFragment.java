@@ -21,6 +21,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.BannerViewPagerAdapter;
+import www.chendanfeng.com.boishixuan.DepositActivity;
 import www.chendanfeng.com.boishixuan.LeaseActivity;
 import www.chendanfeng.com.boishixuan.MoreActivity;
 import www.chendanfeng.com.boishixuan.MyOrderActivity;
@@ -282,6 +283,8 @@ public class HomeFragment extends BaseFragment{
                     startActivity(intent);
                     break;
                 case TYPE_DEPOSIT:
+                    intent = new Intent(getActivity(), DepositActivity.class);
+                    startActivity(intent);
                     break;
                 case TYPE_ORDER:
                     intent = new Intent(getActivity(), MyOrderActivity.class);
