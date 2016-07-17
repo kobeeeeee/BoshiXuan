@@ -16,5 +16,8 @@
         3) 违约处罚：未到期限前提现，需提前五个工作日与客服预约提现（法定节假日不到账）\n
         违约则扣除2%违约金，0利息
     </string>
+    <string name="title_alert">温馨提示</string>
+    <string name="cancel">取消</string>
+    <string name="call">拨打</string>
 </resources>
 
