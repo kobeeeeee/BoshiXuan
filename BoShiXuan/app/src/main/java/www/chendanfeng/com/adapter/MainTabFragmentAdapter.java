@@ -17,6 +17,7 @@ public class MainTabFragmentAdapter implements RadioGroup.OnCheckedChangeListene
     public static final int TYPE_MAIN = 1;
     public static final int TYPE_ORDER = 2;
     public static final int TYPE_NEWS = 3;
+    public static final int TYPE_DEPOSIT = 4;
     private int mType;
     private List<Fragment> mFragmentList;
     private RadioGroup mRadioGroup;
