@@ -5,7 +5,7 @@ package www.chendanfeng.com.config;
  */
 public class Config {
     //路径
-    public static String URL = "http://218.5.74.172:8888/bosx/app";
+    public static String URL = "http://218.5.74.172:7890/bosx/app";
     public static String SLASH = "/";
     /**
      * 连接字符串

@@ -12,15 +12,22 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.MainTabFragmentAdapter;
+import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.fragment.HomeFragment;
 import www.chendanfeng.com.fragment.NewsFragment;
 import www.chendanfeng.com.fragment.SettingFragment;
 import www.chendanfeng.com.fragment.WalletFragment;
+import www.chendanfeng.com.network.RegisterResponse;
+import www.chendanfeng.com.network.RequestListener;
+import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.AccountBalanceResponse;
 import www.chendanfeng.com.util.LogUtil;
 
 public class MainActivity extends BaseActivity {
@@ -41,6 +48,7 @@ public class MainActivity extends BaseActivity {
     private SettingFragment mSettingFragment;
     private WalletFragment mWalletFragment;
     MainTabFragmentAdapter mTabFragmentAdapter;
+    private NetWorkCallBack mNetWorkCallBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LogUtil.init(this);
@@ -48,7 +56,13 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mFragmentManager = getSupportFragmentManager();
+        this.mNetWorkCallBack = new NetWorkCallBack();
         initFragments();
+    }
+    private void getData() {
+        Map<String,Object> map = new HashMap<>();
+        map.put("user_phone","18757118127");
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_BALANCE_STATISTIC,map,MainActivity.this.mNetWorkCallBack, AccountBalanceResponse.class);
     }
     private void initFragments() {
         mHomeFragment = new HomeFragment();
@@ -64,5 +78,24 @@ public class MainActivity extends BaseActivity {
         homeTab.setTextColor(getResources().getColor(R.color.coffee));
         mTabFragmentAdapter = new MainTabFragmentAdapter(this, mFragmentList, R.id.main_tab, mainGroup,1);
 
+    }
+    private class NetWorkCallBack implements RequestListener {
+
+        @Override
+        public void onBegin() {
+
+        }
+
+        @Override
+        public void onResponse(Object object) {
+            if (object != null && object instanceof AccountBalanceResponse) {
+
+            }
+        }
+
+        @Override
+        public void onFailure(Object message) {
+
+        }
     }
 }
