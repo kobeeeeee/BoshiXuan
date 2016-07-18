@@ -1,10 +1,8 @@
 package www.chendanfeng.com.boishixuan;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,11 +10,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by Administrator on 2016/7/17 0017.
+ * Created by Administrator on 2016/7/18 0018.
  */
-public class RegularBuyActivity extends BaseActivity{
-    @Bind(R.id.checkProtocolBtn)
-    ImageView mCheckProtocolBtn;
+public class PayProtocolActivity extends BaseActivity{
     @Bind(R.id.tv_head)
     TextView mHeader;
     @Bind(R.id.bar_left_btn)
@@ -24,28 +20,18 @@ public class RegularBuyActivity extends BaseActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_regular_buy);
+        setContentView(R.layout.activity_pay_protocol);
         ButterKnife.bind(this);
         initHeader();
-        initClick();
     }
     private void initHeader() {
         this.mHeader.setVisibility(View.VISIBLE);
-        this.mHeader.setText("购买");
+        this.mHeader.setText("博时轩支付服务协议");
         this.mBackBtn.setVisibility(View.VISIBLE);
         this.mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-    }
-    private void initClick() {
-        this.mCheckProtocolBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RegularBuyActivity.this,PayProtocolActivity.class);
-                startActivity(intent);
             }
         });
     }
