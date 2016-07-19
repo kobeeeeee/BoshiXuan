@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.alibaba.fastjson.JSONObject;
 import com.loopj.android.http.RequestParams;
@@ -133,5 +135,17 @@ public class CommonUtil {
         map.put("txnDate",systemDate);
         map.put("txnTime",systemTime);
         return map;
+    }
+    public static  boolean checkPhoneNumber(String phoneNumber){
+        Pattern pattern = Pattern.compile("^1[0-9]{10}$");
+        Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.matches();
+    }
+
+    public static  boolean checkPassword(String password){
+        Pattern pattern = Pattern.compile(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]");
+        //Pattern pattern = Pattern.compile("^[A-Za-z0-9]{6,20}$");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 }

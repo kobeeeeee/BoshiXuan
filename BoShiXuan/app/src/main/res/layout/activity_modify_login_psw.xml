@@ -26,7 +26,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/phoneNoText"
+            android:id="@+id/oldPswText"
             android:layout_marginTop="23.5dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="19dp"
@@ -63,12 +63,12 @@
             android:gravity="center"
             android:textSize="13sp"
             android:layout_marginTop="30.5dp"
-            android:layout_below="@+id/phoneNoText"
+            android:layout_below="@+id/oldPswText"
             android:layout_marginRight="19dp"
             android:inputType="textPassword"
             android:layout_alignParentRight="true"
-            android:layout_alignLeft="@+id/phoneNoText"
-            android:layout_alignStart="@+id/phoneNoText" />
+            android:layout_alignLeft="@+id/oldPswText"
+            android:layout_alignStart="@+id/oldPswText" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView3"
+            android:id="@+id/modifyLoginPsw"
             android:src="@drawable/passwordmodify_selector"
             android:clickable="true"
             android:layout_below="@+id/confirmPswText"

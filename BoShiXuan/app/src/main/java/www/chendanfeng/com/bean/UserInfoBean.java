@@ -26,6 +26,8 @@ public class UserInfoBean {
     private static String txnDate = "";
     //交易时间
     private static String txnTime = "";
+    //密码
+    private static String password = "";
     public static UserInfoBean getUserInfoBeanInstance() {
         if(userInfoBean == null) {
             userInfoBean = new UserInfoBean();
@@ -88,5 +90,11 @@ public class UserInfoBean {
 
     public String getAppVersion() {
         return appVersion;
+    }
+    public void setPassword(String psw) {
+        password = psw;
+    }
+    public String getPassword() {
+        return  password;
     }
 }

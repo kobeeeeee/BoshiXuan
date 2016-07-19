@@ -16,11 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.BannerViewPagerAdapter;
+import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.boishixuan.DepositActivity;
 import www.chendanfeng.com.boishixuan.LeaseActivity;
 import www.chendanfeng.com.boishixuan.MoreActivity;
@@ -28,6 +31,10 @@ import www.chendanfeng.com.boishixuan.MyOrderActivity;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.RechargeActivity;
 import www.chendanfeng.com.boishixuan.WithdrawActivity;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.RequestListener;
+import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.AccountBalanceResponse;
 
 /**
  * Created by Administrator on 2016/7/2 0002.
@@ -69,10 +76,16 @@ public class HomeFragment extends BaseFragment{
     @Bind(R.id.moreImage)
     ImageView mMoreImage;
 
+    @Bind(R.id.accountBalance)
+    TextView mAccountBalance;
+    @Bind(R.id.financialIncome)
+    TextView mFinancialIncome;
+
     List<ImageView> mAdvancePicList = new ArrayList<>();
     private ViewPager.LayoutParams mParams;
     private List<ImageView> mDotList = new ArrayList<>();
     private List<Integer> mBannerResList = new ArrayList<>();
+    private NetWorkCallBack mNetWorkCallBack;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,19 +94,35 @@ public class HomeFragment extends BaseFragment{
         this.mParams = new ViewPager.LayoutParams();
         this.mParams.width = ViewPager.LayoutParams.MATCH_PARENT;
         this.mParams.height = ViewPager.LayoutParams.MATCH_PARENT;
+        this.mNetWorkCallBack = new NetWorkCallBack();
         return this.mView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //初始化广告资源
         initBannerRes();
+        //初始化小点点
         initDot();
+        //初始化ViewPager
         initViewPager();
+        //初始化标题栏
         initHeader();
+        //初始化监听器
         initClickListener();
+        //获取账户余额
+        getData();
     }
-
+    private void getData() {
+        Map<String,Object> map = new HashMap<>();
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userId = userInfoBean.getCustId();
+        String userPhone = userInfoBean.getCustMobile();
+        map.put("user_id",userId);
+        map.put("user_phone",userPhone);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_BALANCE_STATISTIC,map,HomeFragment.this.mNetWorkCallBack, AccountBalanceResponse.class);
+    }
     private void initHeader() {
         this.mHeader.setVisibility(View.VISIBLE);
         this.mHeader.setText("博时轩品名");
@@ -295,6 +324,28 @@ public class HomeFragment extends BaseFragment{
                     startActivity(intent);
                     break;
             }
+        }
+    }
+
+    private class NetWorkCallBack implements RequestListener {
+
+        @Override
+        public void onBegin() {
+
+        }
+
+        @Override
+        public void onResponse(Object object) {
+            if (object != null && object instanceof AccountBalanceResponse) {
+                AccountBalanceResponse accountBalanceResponse = (AccountBalanceResponse)object;
+                HomeFragment.this.mAccountBalance.setText(accountBalanceResponse.balance);
+                HomeFragment.this.mFinancialIncome.setText(accountBalanceResponse.interest);
+            }
+        }
+
+        @Override
+        public void onFailure(Object message) {
+
         }
     }
 }

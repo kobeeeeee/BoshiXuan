@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RegisterResponse;
 import www.chendanfeng.com.network.RequestListener;
@@ -59,19 +60,6 @@ public class RegisterActivity extends BaseActivity {
         registerButton.setOnClickListener(new MyOnClickListener(TYPE_REGISTER));
     }
 
-    public static  boolean checkPhoneNumber(String phoneNumber){
-        Pattern pattern = Pattern.compile("^1[0-9]{10}$");
-        Matcher matcher = pattern.matcher(phoneNumber);
-        return matcher.matches();
-    }
-
-    public static  boolean checkPassword(String password){
-        Pattern pattern = Pattern.compile(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]");
-        //Pattern pattern = Pattern.compile("^[A-Za-z0-9]{6,20}$");
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
-
     class MyOnClickListener implements  View.OnClickListener {
         public int mType;
         public MyOnClickListener(int type) {
@@ -95,13 +83,13 @@ public class RegisterActivity extends BaseActivity {
                     LogUtil.i(this,phoneNumber+"test");
                     LogUtil.i(this,password+"test1");
                     LogUtil.i(this,confirmPassword+"test2");
-                    if(!checkPhoneNumber(phoneNumber)) {
+                    if(!CommonUtil.checkPhoneNumber(phoneNumber)) {
                         Toast toast = Toast.makeText(RegisterActivity.this,"无效的手机号码",Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
                         break;
                     }
-                    if(!checkPassword(password)){
+                    if(!CommonUtil.checkPassword(password)){
                         Toast toast = Toast.makeText(RegisterActivity.this,"密码长度为6-20位字母或有效数字组成",Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
@@ -121,6 +109,8 @@ public class RegisterActivity extends BaseActivity {
                     }
                     //TODO:获取验证码
                     //TODO:输入的验证码和获取到的验证码不一致，则报错“请输入正确的验证码”
+                    UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                    userInfoBean.setPassword(password);
                     Toast toast = Toast.makeText(RegisterActivity.this,"注册成功！",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
