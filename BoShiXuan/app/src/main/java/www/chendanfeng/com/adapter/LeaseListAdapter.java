@@ -69,7 +69,20 @@ public class LeaseListAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LeaseListAdapter.this.mContext, LeaseProductActivity.class);
-                intent.putExtra("type",index);
+                switch (index) {
+                    case 0:
+                        intent.putExtra("type",1);
+                        break;
+                    case 1:
+                        intent.putExtra("type",3);
+                        break;
+                    case 2:
+                        intent.putExtra("type",2);
+                        break;
+                    case 3:
+                        intent.putExtra("type",4);
+                        break;
+                }
                 LeaseListAdapter.this.mContext.startActivity(intent);
             }
         });

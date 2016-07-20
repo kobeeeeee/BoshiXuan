@@ -4,23 +4,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Delayed;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.LeaseProductAdapter;
-import www.chendanfeng.com.view.RefreshRecyclerView;
+import www.chendanfeng.com.bean.UserInfoBean;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.RequestListener;
+import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.ModifyPswResponse;
+import www.chendanfeng.com.network.model.ProductResponse;
+import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
 
@@ -28,10 +32,10 @@ import www.chendanfeng.com.xrecyclerview.XRecyclerView;
  * Created by Administrator on 2016/7/9 0009.
  */
 public class LeaseProductActivity extends BaseActivity{
-    public static final int TYPE_BAG = 0;
-    public static final int TYPE_JEWELLERY = 1;
+    public static final int TYPE_BAG = 1;
+    public static final int TYPE_JEWELLERY = 3;
     public static final int TYPE_WATCH = 2;
-    public static final int TYPE_OTHERS = 3;
+    public static final int TYPE_OTHERS = 4;
     @Bind(R.id.tv_head)
     TextView mHeader;
     @Bind(R.id.bar_left_btn)
@@ -40,6 +44,8 @@ public class LeaseProductActivity extends BaseActivity{
     XRecyclerView mRecyclerView;
     private List<String> mProductNameList;
     private LeaseProductAdapter mLeaseProductAdapter;
+    public NetWorkCallBack mNetWorkCallBack;
+    public int mPageNum;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +81,24 @@ public class LeaseProductActivity extends BaseActivity{
                 finish();
             }
         });
+    }
+    private void getData() {
+        this.mNetWorkCallBack = new NetWorkCallBack();
+
+        Intent intent = getIntent();
+        int type = intent.getIntExtra("type",0);
+        //传入参数
+        Map<String,Object> map = new HashMap<>();
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userId = userInfoBean.getCustId();
+        String userPhone = userInfoBean.getCustMobile();
+        map.put("goods_type",type);
+        map.put("modify_type",10);
+        map.put("page_num",mPageNum);
+        map.put("user_phone",userId);
+        map.put("user_phone",userPhone);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_RENT_GOODS,map,LeaseProductActivity.this.mNetWorkCallBack, ModifyPswResponse.class);
+
     }
     private void initRecyclerView() {
         this.mProductNameList = new ArrayList<>();
@@ -123,5 +147,29 @@ public class LeaseProductActivity extends BaseActivity{
             }
         });
         this.mRecyclerView.setAdapter(this.mLeaseProductAdapter);
+    }
+    private class NetWorkCallBack implements RequestListener {
+
+        @Override
+        public void onBegin() {
+
+        }
+
+        @Override
+        public void onResponse(Object object) {
+            if(object == null) {
+                return;
+            }
+            if(object instanceof ProductResponse) {
+                ProductResponse productResponse = (ProductResponse)object;
+                LogUtil.i(this,"productResponse = " + productResponse);
+
+            }
+        }
+
+        @Override
+        public void onFailure(Object message) {
+
+        }
     }
 }

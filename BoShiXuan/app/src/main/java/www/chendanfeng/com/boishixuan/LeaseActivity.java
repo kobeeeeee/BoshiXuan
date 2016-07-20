@@ -87,4 +87,5 @@ public class LeaseActivity extends BaseActivity{
         this.mLeaseListAdapter = new LeaseListAdapter(this,this.mLeaseTextCHList,this.mLeaseTextENList,this.mLeaseBgList);
         this.mLeaseListView.setAdapter(this.mLeaseListAdapter);
     }
+
 }
