@@ -42,9 +42,17 @@ public class Config {
     //提现
     public static String BSX_FETCH_CASH = "fetchcash";
     //订单
-    public static String BSX_QUERY_ORDER = "queryorder";
+    public static String BSX_QUERY_ORDER = "orderlist ";
     //押金宝定期
     public static String BSX_FINANCE_PRODUCT = "financeproduct";
-
-
+    //押金宝定期支付
+    public static String BSX_PURCHASE_FINANCE = "purchasefinance";
+    //订单支付
+    public static String BSX_ORDER_PAY = "orderpay";
+    //理财订单
+    public static String BSX_FINANCE_LIST = "financelist";
+    //充值记录
+    public static String BSX_PUT_IN_LIST= "putinlist";
+    //提现记录
+    public static String BSX_FETCH_CASH_LIST = "fetchcashlist";
 }
