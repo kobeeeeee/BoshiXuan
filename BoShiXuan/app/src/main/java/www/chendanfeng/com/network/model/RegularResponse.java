@@ -1,5 +1,7 @@
 package www.chendanfeng.com.network.model;
 
+import java.util.List;
+
 import www.chendanfeng.com.network.BaseResponse;
 
 /**
@@ -10,4 +12,5 @@ public class RegularResponse extends BaseResponse{
     public String regularProductIncome;
     public String regularProductDay;
     public String regularProductMin;
+    public List<RegularDetailModel> financeproduct_list;
 }

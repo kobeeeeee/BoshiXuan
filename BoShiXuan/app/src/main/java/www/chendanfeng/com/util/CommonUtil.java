@@ -126,6 +126,8 @@ public class CommonUtil {
         map.put("sysVersion",userInfoBean.getSysVersion());
         map.put("appVersion",userInfoBean.getAppVersion());
         map.put("sysTerNo",userInfoBean.getSysTerNo());
+        map.put("user_id",userInfoBean.getCustId());
+        map.put("user_phone",userInfoBean.getCustMobile());
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");

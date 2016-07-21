@@ -28,6 +28,8 @@ public class UserInfoBean {
     private static String txnTime = "";
     //密码
     private static String password = "";
+    //支付密码
+    private static String payPsw = "";
     public static UserInfoBean getUserInfoBeanInstance() {
         if(userInfoBean == null) {
             userInfoBean = new UserInfoBean();
@@ -84,6 +86,7 @@ public class UserInfoBean {
     public String getTxnTime() {
         return txnTime;
     }
+
     public void setAppVersion(String applicationVersion) {
         appVersion = applicationVersion;
     }
@@ -91,10 +94,19 @@ public class UserInfoBean {
     public String getAppVersion() {
         return appVersion;
     }
+
     public void setPassword(String psw) {
         password = psw;
     }
     public String getPassword() {
         return  password;
     }
+
+    public void setPayPsw(String psw) {
+        payPsw = psw;
+    }
+    public String getPayPsw() {
+        return payPsw;
+    }
+
 }

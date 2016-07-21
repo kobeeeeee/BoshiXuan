@@ -43,6 +43,8 @@ public class Config {
     public static String BSX_FETCH_CASH = "fetchcash";
     //订单
     public static String BSX_QUERY_ORDER = "queryorder";
+    //押金宝定期
+    public static String BSX_FINANCE_PRODUCT = "financeproduct";
 
 
 }
