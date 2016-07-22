@@ -9,22 +9,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONObject;
-import com.loopj.android.http.RequestParams;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
-import www.chendanfeng.com.network.RegisterResponse;
+import www.chendanfeng.com.network.VerifyCodeResponse;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
-import www.chendanfeng.com.network.WebServiceApi;
 import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 
@@ -72,7 +66,7 @@ public class RegisterActivity extends BaseActivity {
                 case TYPE_SEND_VERIFY_CODE:
                     Map<String,Object> map = new HashMap<>();
                     map.put("user_phone","18757118127");
-                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,RegisterActivity.this.mNetWorkCallBack, RegisterResponse.class);
+                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,RegisterActivity.this.mNetWorkCallBack, VerifyCodeResponse.class);
                     break;
                 case TYPE_REGISTER:
                     String phoneNumber = phoneEditText.getText().toString();
@@ -129,9 +123,9 @@ public class RegisterActivity extends BaseActivity {
 
         @Override
         public void onResponse(Object object) {
-            if (object != null && object instanceof RegisterResponse) {
-                RegisterResponse registerResponse = (RegisterResponse)object;
-                LogUtil.i(this,"registerResponse = " + registerResponse);
+            if (object != null && object instanceof VerifyCodeResponse) {
+                VerifyCodeResponse verifyCodeResponse = (VerifyCodeResponse)object;
+                LogUtil.i(this,"verifyCodeResponse = " + verifyCodeResponse);
             }
         }
 

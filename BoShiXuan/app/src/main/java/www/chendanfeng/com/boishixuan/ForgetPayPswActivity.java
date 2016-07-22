@@ -18,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
-import www.chendanfeng.com.network.RegisterResponse;
+import www.chendanfeng.com.network.VerifyCodeResponse;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.ModifyPswResponse;
@@ -140,7 +140,7 @@ public class ForgetPayPswActivity extends BaseActivity{
             toast.show();
             return;
         }
-        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,ForgetPayPswActivity.this.mNetWorkCallBack, RegisterResponse.class);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,ForgetPayPswActivity.this.mNetWorkCallBack, VerifyCodeResponse.class);
     }
     private class NetWorkCallBack implements RequestListener {
 
@@ -154,8 +154,8 @@ public class ForgetPayPswActivity extends BaseActivity{
             if(object == null) {
                 return;
             }
-            if (object instanceof RegisterResponse) {
-                RegisterResponse registerResponse = (RegisterResponse)object;
+            if (object instanceof VerifyCodeResponse) {
+                VerifyCodeResponse registerResponse = (VerifyCodeResponse)object;
                 LogUtil.i(this,"registerResponse = " + registerResponse);
             }
             if(object instanceof ModifyPswResponse) {

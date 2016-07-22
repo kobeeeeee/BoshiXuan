@@ -18,7 +18,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
-import www.chendanfeng.com.network.RegisterResponse;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.ModifyPswResponse;

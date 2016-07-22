@@ -2,33 +2,20 @@ package www.chendanfeng.com.boishixuan;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.MainTabFragmentAdapter;
-import www.chendanfeng.com.bean.UserInfoBean;
-import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.fragment.HomeFragment;
 import www.chendanfeng.com.fragment.NewsFragment;
 import www.chendanfeng.com.fragment.SettingFragment;
 import www.chendanfeng.com.fragment.WalletFragment;
-import www.chendanfeng.com.network.RegisterResponse;
-import www.chendanfeng.com.network.RequestListener;
-import www.chendanfeng.com.network.RequestManager;
-import www.chendanfeng.com.network.model.AccountBalanceResponse;
 import www.chendanfeng.com.util.LogUtil;
 
 public class MainActivity extends BaseActivity {
