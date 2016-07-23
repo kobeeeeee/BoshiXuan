@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.RegisterResponse;
 import www.chendanfeng.com.network.VerifyCodeResponse;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
@@ -50,8 +51,8 @@ public class RegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         codeButton.setOnClickListener(new MyOnClickListener(TYPE_SEND_VERIFY_CODE));
-        this.mNetWorkCallBack = new NetWorkCallBack();
         registerButton.setOnClickListener(new MyOnClickListener(TYPE_REGISTER));
+        this.mNetWorkCallBack = new NetWorkCallBack();
     }
 
     class MyOnClickListener implements  View.OnClickListener {
@@ -62,14 +63,15 @@ public class RegisterActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent();
+            String phoneNumber = phoneEditText.getText().toString();
             switch (this.mType) {
                 case TYPE_SEND_VERIFY_CODE:
+                    LogUtil.i(this,phoneNumber + " = test");
                     Map<String,Object> map = new HashMap<>();
-                    map.put("user_phone","18757118127");
+                    map.put("user_phone",phoneNumber);
                     RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,RegisterActivity.this.mNetWorkCallBack, VerifyCodeResponse.class);
                     break;
                 case TYPE_REGISTER:
-                    String phoneNumber = phoneEditText.getText().toString();
                     String password = passwordEditText.getText().toString();
                     String confirmPassword = confirmPasswordEditText.getText().toString();
                     String code = CodeEditText.getText().toString();
@@ -103,6 +105,10 @@ public class RegisterActivity extends BaseActivity {
                     }
                     //TODO:获取验证码
                     //TODO:输入的验证码和获取到的验证码不一致，则报错“请输入正确的验证码”
+                    Map<String,Object> mapRegister = new HashMap<>();
+                    mapRegister.put("user_phone",phoneNumber);
+                    mapRegister.put("user_passwd",password);
+                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,mapRegister,RegisterActivity.this.mNetWorkCallBack, RegisterResponse.class);
                     UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                     userInfoBean.setPassword(password);
                     Toast toast = Toast.makeText(RegisterActivity.this,"注册成功！",Toast.LENGTH_LONG);
@@ -123,9 +129,17 @@ public class RegisterActivity extends BaseActivity {
 
         @Override
         public void onResponse(Object object) {
-            if (object != null && object instanceof VerifyCodeResponse) {
+            LogUtil.i(this,"test onResponse");
+            if(object == null){
+                return;
+            }
+            if (object instanceof VerifyCodeResponse) {
                 VerifyCodeResponse verifyCodeResponse = (VerifyCodeResponse)object;
                 LogUtil.i(this,"verifyCodeResponse = " + verifyCodeResponse);
+            }
+            else if(object instanceof RegisterResponse) {
+                RegisterResponse registerResponse = (RegisterResponse)object;
+                LogUtil.i(this,"registerResponse = " + registerResponse);
             }
         }
 
