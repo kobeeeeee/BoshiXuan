@@ -108,7 +108,7 @@ public class RegisterActivity extends BaseActivity {
                     Map<String,Object> mapRegister = new HashMap<>();
                     mapRegister.put("user_phone",phoneNumber);
                     mapRegister.put("user_passwd",password);
-                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,mapRegister,RegisterActivity.this.mNetWorkCallBack, RegisterResponse.class);
+                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_REGISTER,mapRegister,RegisterActivity.this.mNetWorkCallBack, RegisterResponse.class);
                     UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                     userInfoBean.setPassword(password);
                     Toast toast = Toast.makeText(RegisterActivity.this,"注册成功！",Toast.LENGTH_LONG);

@@ -134,7 +134,7 @@ public class LoginActivity extends BaseActivity {
                     Map<String,Object> map = new HashMap<>();
                     map.put("user_phone",phoneNumber);
                     map.put("user_passwd",password);
-                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,LoginActivity.this.mNetWorkCallBack,LoginResponse.class);
+                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_USER_LOGIN,map,LoginActivity.this.mNetWorkCallBack,LoginResponse.class);
 
                     intent = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);

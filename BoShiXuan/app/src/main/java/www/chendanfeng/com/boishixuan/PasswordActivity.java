@@ -9,11 +9,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import www.chendanfeng.com.bean.UserInfoBean;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.RegisterResponse;
+import www.chendanfeng.com.network.RequestListener;
+import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.VerifyCodeResponse;
+import www.chendanfeng.com.network.model.ModifyPswResponse;
 import www.chendanfeng.com.util.LogUtil;
 
 /**
@@ -34,7 +43,7 @@ public class PasswordActivity extends BaseActivity {
     ImageView codeButton;
     @Bind(R.id.modify)
     ImageView modifyButton;
-
+    public NetWorkCallBack mNetWorkCallBack;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         LogUtil.init(this);
@@ -43,6 +52,7 @@ public class PasswordActivity extends BaseActivity {
         ButterKnife.bind(this);
         modifyButton.setOnClickListener(new MyOnClickListener(TYPE_MODIFY));
         codeButton.setOnClickListener(new MyOnClickListener(TYPE_GETCODE));
+        this.mNetWorkCallBack = new NetWorkCallBack();
     }
 
     public static  boolean checkPhoneNumber(String phoneNumber){
@@ -83,7 +93,18 @@ public class PasswordActivity extends BaseActivity {
                         toast.show();
                         break;
                     }
-                    //TODO:判断输入框的验证码是否一致
+                    UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                    String code = CodeEditText.getText().toString();
+                    Map<String,Object> mapModify = new HashMap<>();
+                    mapModify.put("passwd_type","1");
+                    mapModify.put("modify_type","2");
+                    mapModify.put("old_passwd",code);
+                    mapModify.put("new_passwd",password);
+                    mapModify.put("user_phone",userInfoBean.getCustMobile());
+                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_MODIFY_PWD,mapModify,PasswordActivity.this.mNetWorkCallBack, ModifyPswResponse.class);
+
+                    userInfoBean.setPassword(password);
+
                     toast = Toast.makeText(PasswordActivity.this,"登录密码修改成功！",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
@@ -97,9 +118,40 @@ public class PasswordActivity extends BaseActivity {
                         toast.show();
                         break;
                     }
-                    //TODO:调用接口获取验证码
-
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("user_phone",phoneNumber);
+                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,PasswordActivity.this.mNetWorkCallBack, VerifyCodeResponse.class);
+                    break;
             }
+        }
+    }
+
+    private class NetWorkCallBack implements RequestListener {
+
+        @Override
+        public void onBegin() {
+
+        }
+
+        @Override
+        public void onResponse(Object object) {
+            LogUtil.i(this,"test onResponse");
+            if(object == null){
+                return;
+            }
+            if (object instanceof VerifyCodeResponse) {
+                VerifyCodeResponse verifyCodeResponse = (VerifyCodeResponse)object;
+                LogUtil.i(this,"verifyCodeResponse = " + verifyCodeResponse);
+            }
+            else if(object instanceof ModifyPswResponse) {
+                ModifyPswResponse modifyPswResponse = (ModifyPswResponse)object;
+                LogUtil.i(this,"modifyPswResponse = " + modifyPswResponse);
+            }
+        }
+
+        @Override
+        public void onFailure(Object message) {
+
         }
     }
 }
