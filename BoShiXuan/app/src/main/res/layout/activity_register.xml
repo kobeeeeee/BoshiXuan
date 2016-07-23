@@ -114,11 +114,11 @@
         android:layout_alignLeft="@+id/confirmPassword"
         android:layout_marginTop="45dp"
         android:textColor="@color/white"/>
-    <ImageView
+    <Button
         android:id="@+id/buttonCode"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/registercode_selector"
+        android:layout_height="40dp"
+        android:background="@drawable/registercode_selector"
         android:layout_below="@+id/confirmPassword"
         android:layout_alignRight="@+id/confirmPassword"
         android:clickable="true"

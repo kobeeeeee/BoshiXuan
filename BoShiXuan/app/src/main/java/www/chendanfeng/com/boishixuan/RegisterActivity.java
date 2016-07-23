@@ -1,9 +1,12 @@
 package www.chendanfeng.com.boishixuan;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,18 +41,24 @@ public class RegisterActivity extends BaseActivity {
     @Bind(R.id.inputCode)
     EditText CodeEditText;
     @Bind(R.id.buttonCode)
-    ImageView codeButton;
+    Button codeButton;
     @Bind(R.id.checkAgree)
     CheckBox checkAgreeBox;
     @Bind(R.id.register)
     ImageView registerButton;
     public NetWorkCallBack mNetWorkCallBack;
+    private TimeCount time;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LogUtil.init(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        codeButton.setText("获取验证码");
+        codeButton.setTextColor(Color.WHITE);
+        codeButton.setTextSize(15);
+        time = new TimeCount(60000, 1000);
         codeButton.setOnClickListener(new MyOnClickListener(TYPE_SEND_VERIFY_CODE));
         registerButton.setOnClickListener(new MyOnClickListener(TYPE_REGISTER));
         this.mNetWorkCallBack = new NetWorkCallBack();
@@ -74,6 +83,8 @@ public class RegisterActivity extends BaseActivity {
                     Toast toastt = Toast.makeText(RegisterActivity.this,"获取验证码成功！",Toast.LENGTH_SHORT);
                     toastt.setGravity(Gravity.CENTER, 0, 0);
                     toastt.show();
+
+                    time.start();
                     break;
                 case TYPE_REGISTER:
                     String password = passwordEditText.getText().toString();
@@ -150,6 +161,24 @@ public class RegisterActivity extends BaseActivity {
         @Override
         public void onFailure(Object message) {
 
+        }
+    }
+
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onFinish() {// 计时完毕
+            codeButton.setText("获取验证码");
+            codeButton.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {// 计时过程
+            codeButton.setClickable(false);//防止重复点击
+            codeButton.setText(millisUntilFinished / 1000 + "秒");
         }
     }
 }
