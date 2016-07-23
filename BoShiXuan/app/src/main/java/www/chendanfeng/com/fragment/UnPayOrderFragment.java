@@ -9,14 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.MatterRecordAdapter;
 import www.chendanfeng.com.adapter.OrderListAdapter;
+import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.boishixuan.R;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.RequestListener;
+import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.MessageListResponse;
 import www.chendanfeng.com.network.model.OrderResponse;
+import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
 
@@ -29,6 +37,9 @@ public class UnPayOrderFragment extends BaseFragment{
     private OrderListAdapter mOrderListAdapter;
     @Bind(R.id.dispayOrderRecyclerView)
     XRecyclerView mDisPayOrderRecyclerView;
+    private OrderResponse mOrderResponse;
+    private NetWorkCallBack mNetWorkCallBack;
+    private int mPageNum;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,5 +118,43 @@ public class UnPayOrderFragment extends BaseFragment{
             }
         });
         this.mDisPayOrderRecyclerView.setAdapter(this.mOrderListAdapter);
+    }
+    private void getData() {
+        this.mNetWorkCallBack = new NetWorkCallBack();
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userId = userInfoBean.getCustId();
+        String userPhone = userInfoBean.getCustMobile();
+        //传入参数
+        Map<String,Object> map = new HashMap<>();
+        map.put("is_Payment",1);
+        map.put("page_size",10);
+        map.put("page_num",this.mPageNum);
+        map.put("user_id",userId);
+        map.put("user_phone",userPhone);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_QUERY_ORDER,map,UnPayOrderFragment.this.mNetWorkCallBack, OrderResponse.class);
+
+    }
+    private class NetWorkCallBack implements RequestListener {
+
+        @Override
+        public void onBegin() {
+
+        }
+
+        @Override
+        public void onResponse(Object object) {
+            if(object == null) {
+                return;
+            }
+            if(object instanceof OrderResponse) {
+                OrderResponse orderResponse = (OrderResponse)object;
+                LogUtil.i(this,"orderResponse = " + orderResponse);
+            }
+        }
+
+        @Override
+        public void onFailure(Object message) {
+
+        }
     }
 }

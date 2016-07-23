@@ -1,5 +1,7 @@
 package www.chendanfeng.com.network.model;
 
+import java.util.List;
+
 import www.chendanfeng.com.network.BaseResponse;
 
 /**
@@ -12,4 +14,5 @@ public class OrderResponse extends BaseResponse{
     public String orderNo;
     public String orderCreateTime;
     public String orderPayTime;
+    public List<OrderDetailModel> orderlist;
 }

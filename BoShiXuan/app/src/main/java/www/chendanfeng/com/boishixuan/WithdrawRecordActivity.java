@@ -10,12 +10,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.WithdrawRecordAdapter;
+import www.chendanfeng.com.bean.UserInfoBean;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.RequestListener;
+import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.RegularBuyResponse;
+import www.chendanfeng.com.network.model.WithDrawResponse;
 import www.chendanfeng.com.network.model.WithdrawRecordResponse;
+import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
 
@@ -31,6 +40,9 @@ public class WithdrawRecordActivity extends BaseActivity{
     XRecyclerView mWithdrawRecyclerView;
     private WithdrawRecordAdapter mWithdrawRecordAdapter;
     private List<WithdrawRecordResponse> mWithdrawRecordResponseList;
+    private NetWorkCallBack mNetWorkCallBack;
+    private int mPageSize = 10;
+    private int mPageNum = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,5 +126,42 @@ public class WithdrawRecordActivity extends BaseActivity{
             }
         });
         this.mWithdrawRecyclerView.setAdapter(this.mWithdrawRecordAdapter);
+    }
+    private void getData() {
+        this.mNetWorkCallBack = new NetWorkCallBack();
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userId = userInfoBean.getCustId();
+        String userPhone = userInfoBean.getCustMobile();
+        //传入参数
+        Map<String,Object> map = new HashMap<>();
+        map.put("page_size",this.mPageSize);
+        map.put("page_num",this.mPageNum);
+        map.put("user_id",userId);
+        map.put("user_phone",userPhone);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_FETCH_CASH_LIST,map,WithdrawRecordActivity.this.mNetWorkCallBack, WithdrawRecordResponse.class);
+
+    }
+    private class NetWorkCallBack implements RequestListener {
+
+        @Override
+        public void onBegin() {
+
+        }
+
+        @Override
+        public void onResponse(Object object) {
+            if(object == null) {
+                return;
+            }
+            if(object instanceof WithdrawRecordResponse) {
+                WithdrawRecordResponse withdrawRecordResponse = (WithdrawRecordResponse)object;
+                LogUtil.i(this,"withdrawRecordResponse = " + withdrawRecordResponse);
+            }
+        }
+
+        @Override
+        public void onFailure(Object message) {
+
+        }
     }
 }

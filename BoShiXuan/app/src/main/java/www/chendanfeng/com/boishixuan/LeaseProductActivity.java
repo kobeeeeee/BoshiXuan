@@ -45,7 +45,7 @@ public class LeaseProductActivity extends BaseActivity{
     private List<String> mProductNameList;
     private LeaseProductAdapter mLeaseProductAdapter;
     public NetWorkCallBack mNetWorkCallBack;
-    public int mPageNum;
+    public int mPageNum = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +53,7 @@ public class LeaseProductActivity extends BaseActivity{
         ButterKnife.bind(this);
         initHeader();
         initRecyclerView();
+        getData();
     }
     private void initHeader() {
         Intent intent = getIntent();
@@ -92,12 +93,12 @@ public class LeaseProductActivity extends BaseActivity{
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String userId = userInfoBean.getCustId();
         String userPhone = userInfoBean.getCustMobile();
-        map.put("goods_type",type);
-        map.put("modify_type",10);
-        map.put("page_num",mPageNum);
-        map.put("user_phone",userId);
+        map.put("goods_type",String.valueOf(type));
+        map.put("page_size",String.valueOf(10));
+        map.put("page_num",String.valueOf(mPageNum));
+        map.put("user_id",userId);
         map.put("user_phone",userPhone);
-        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_RENT_GOODS,map,LeaseProductActivity.this.mNetWorkCallBack, ModifyPswResponse.class);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_RENT_GOODS,map,LeaseProductActivity.this.mNetWorkCallBack, ProductResponse.class);
 
     }
     private void initRecyclerView() {

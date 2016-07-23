@@ -9,14 +9,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.RechargeRecordAdapter;
 import www.chendanfeng.com.adapter.WithdrawRecordAdapter;
+import www.chendanfeng.com.bean.UserInfoBean;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.RequestListener;
+import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.RechargeRecordResponse;
 import www.chendanfeng.com.network.model.WithdrawRecordResponse;
+import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
 
@@ -32,6 +39,9 @@ public class RechargeRecordActivity extends BaseActivity{
     XRecyclerView mRechargeRecyclerView;
     private RechargeRecordAdapter mRechargeRecordAdapter;
     private List<RechargeRecordResponse> mRechargeRecordResponseList;
+    private NetWorkCallBack mNetWorkCallBack;
+    private int mPageSize = 10;
+    private int mPageNum = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,5 +125,42 @@ public class RechargeRecordActivity extends BaseActivity{
             }
         });
         this.mRechargeRecyclerView.setAdapter(this.mRechargeRecordAdapter);
+    }
+    private void getData() {
+        this.mNetWorkCallBack = new NetWorkCallBack();
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userId = userInfoBean.getCustId();
+        String userPhone = userInfoBean.getCustMobile();
+        //传入参数
+        Map<String,Object> map = new HashMap<>();
+        map.put("page_size",this.mPageSize);
+        map.put("page_num",this.mPageNum);
+        map.put("user_id",userId);
+        map.put("user_phone",userPhone);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_PUT_IN_LIST,map,RechargeRecordActivity.this.mNetWorkCallBack, RechargeRecordResponse.class);
+
+    }
+    private class NetWorkCallBack implements RequestListener {
+
+        @Override
+        public void onBegin() {
+
+        }
+
+        @Override
+        public void onResponse(Object object) {
+            if(object == null) {
+                return;
+            }
+            if(object instanceof RechargeRecordResponse) {
+                RechargeRecordResponse rechargeRecordResponse = (RechargeRecordResponse)object;
+                LogUtil.i(this,"rechargeRecordResponse = " + rechargeRecordResponse);
+            }
+        }
+
+        @Override
+        public void onFailure(Object message) {
+
+        }
     }
 }
