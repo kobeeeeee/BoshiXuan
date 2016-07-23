@@ -70,6 +70,10 @@ public class RegisterActivity extends BaseActivity {
                     Map<String,Object> map = new HashMap<>();
                     map.put("user_phone",phoneNumber);
                     RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,RegisterActivity.this.mNetWorkCallBack, VerifyCodeResponse.class);
+
+                    Toast toastt = Toast.makeText(RegisterActivity.this,"获取验证码成功！",Toast.LENGTH_SHORT);
+                    toastt.setGravity(Gravity.CENTER, 0, 0);
+                    toastt.show();
                     break;
                 case TYPE_REGISTER:
                     String password = passwordEditText.getText().toString();

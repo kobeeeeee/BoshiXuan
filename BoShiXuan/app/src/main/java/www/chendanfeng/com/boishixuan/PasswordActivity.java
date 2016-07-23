@@ -121,6 +121,11 @@ public class PasswordActivity extends BaseActivity {
                     Map<String,Object> map = new HashMap<>();
                     map.put("user_phone",phoneNumber);
                     RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,PasswordActivity.this.mNetWorkCallBack, VerifyCodeResponse.class);
+
+                    Toast toastt = Toast.makeText(PasswordActivity.this,"获取验证码成功！",Toast.LENGTH_SHORT);
+                    toastt.setGravity(Gravity.CENTER, 0, 0);
+                    toastt.show();
+
                     break;
             }
         }
