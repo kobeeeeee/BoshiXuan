@@ -2,6 +2,7 @@ package www.chendanfeng.com.util;
 
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Xml;
 
 import java.io.ByteArrayInputStream;
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
 import com.alibaba.fastjson.JSONObject;
 import com.loopj.android.http.RequestParams;
 
+import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -126,8 +128,12 @@ public class CommonUtil {
         map.put("sysVersion",userInfoBean.getSysVersion());
         map.put("appVersion",userInfoBean.getAppVersion());
         map.put("sysTerNo",userInfoBean.getSysTerNo());
-        map.put("user_id",userInfoBean.getCustId());
-        map.put("user_phone",userInfoBean.getCustMobile());
+        if(!TextUtils.isEmpty(userInfoBean.getCustId())) {
+            map.put("user_id",userInfoBean.getCustId());
+        }
+        if(!TextUtils.isEmpty(userInfoBean.getCustMobile())) {
+            map.put("user_phone",userInfoBean.getCustMobile());
+        }
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
