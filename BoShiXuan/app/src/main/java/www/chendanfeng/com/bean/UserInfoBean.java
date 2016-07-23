@@ -11,9 +11,9 @@ import android.os.Build;
 public class UserInfoBean {
     private static UserInfoBean userInfoBean = null;
     //商户ID
-    private static String custId = "";
+    private static String custId = "1";
     //用户手机号
-    private static String custMobile = "";
+    private static String custMobile = "13127629850";
     //客户端类型
     private static String sysType = "";
     //操作系统版本号
@@ -27,9 +27,11 @@ public class UserInfoBean {
     //交易时间
     private static String txnTime = "";
     //密码
-    private static String password = "";
+    private static String password = "111111";
     //支付密码
     private static String payPsw = "";
+    //用户名称
+    private static String userName = "于景鹏";
     public static UserInfoBean getUserInfoBeanInstance() {
         if(userInfoBean == null) {
             userInfoBean = new UserInfoBean();
@@ -109,4 +111,11 @@ public class UserInfoBean {
         return payPsw;
     }
 
+
+    public void setUserName(String name) {
+        userName = name;
+    }
+    public String getUserName() {
+        return userName;
+    }
 }

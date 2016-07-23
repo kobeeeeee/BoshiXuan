@@ -9,14 +9,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.MatterRecordAdapter;
 import www.chendanfeng.com.adapter.WithdrawRecordAdapter;
+import www.chendanfeng.com.bean.UserInfoBean;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.RequestListener;
+import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.MatterRecordResponse;
+import www.chendanfeng.com.network.model.RechargeRecordResponse;
 import www.chendanfeng.com.network.model.WithdrawRecordResponse;
+import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
 
@@ -32,6 +40,9 @@ public class MatterRecordActivity extends BaseActivity{
     XRecyclerView mMatterRecyclerView;
     private MatterRecordAdapter mMatterRecordAdapter;
     private List<MatterRecordResponse> mMatterRecordResponseList;
+    private NetWorkCallBack mNetWorkCallBack;
+    private int mPageSize = 10;
+    private int mPageNum = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +51,7 @@ public class MatterRecordActivity extends BaseActivity{
         ButterKnife.bind(this);
         initHeader();
         initRecyclerView();
+        getData();
     }
     private void initHeader(){
         this.mHeader.setVisibility(View.VISIBLE);
@@ -112,5 +124,42 @@ public class MatterRecordActivity extends BaseActivity{
             }
         });
         this.mMatterRecyclerView.setAdapter(this.mMatterRecordAdapter);
+    }
+    private void getData() {
+        this.mNetWorkCallBack = new NetWorkCallBack();
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userId = userInfoBean.getCustId();
+        String userPhone = userInfoBean.getCustMobile();
+        //传入参数
+        Map<String,Object> map = new HashMap<>();
+        map.put("page_size",this.mPageSize);
+        map.put("page_num",this.mPageNum);
+        map.put("user_id",userId);
+        map.put("user_phone",userPhone);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_FINANCE_LIST,map,MatterRecordActivity.this.mNetWorkCallBack, MatterRecordResponse.class);
+
+    }
+    private class NetWorkCallBack implements RequestListener {
+
+        @Override
+        public void onBegin() {
+
+        }
+
+        @Override
+        public void onResponse(Object object) {
+            if(object == null) {
+                return;
+            }
+            if(object instanceof MatterRecordResponse) {
+                MatterRecordResponse matterRecordResponse = (MatterRecordResponse)object;
+                LogUtil.i(this,"matterRecordResponse = " + matterRecordResponse);
+            }
+        }
+
+        @Override
+        public void onFailure(Object message) {
+
+        }
     }
 }
