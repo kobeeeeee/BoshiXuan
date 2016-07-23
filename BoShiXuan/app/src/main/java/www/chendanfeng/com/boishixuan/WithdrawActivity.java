@@ -20,6 +20,7 @@ import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.AccountBalanceResponse;
 import www.chendanfeng.com.network.model.ModifyPswResponse;
 import www.chendanfeng.com.network.model.RegularResponse;
 import www.chendanfeng.com.network.model.WithDrawResponse;
@@ -29,6 +30,7 @@ import www.chendanfeng.com.util.LogUtil;
  * Created by Administrator on 2016/7/6 0006.
  */
 public class WithdrawActivity extends BaseActivity {
+    public static final int SELECT_CARD = 100;
     public static final int TYPE_SELECT = 1;
     public static final int TYPE_WITHDRAW = 2;
     @Bind(R.id.tv_head)
@@ -45,7 +47,10 @@ public class WithdrawActivity extends BaseActivity {
     TextView mBankName;
     @Bind(R.id.balanceInput)
     EditText mBalanceInput;
+    @Bind(R.id.accountBalanceText)
+    TextView mAccountBalanceText;
     private NetWorkCallBack mNetWorkCallBack;
+    private String mBankId = "";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,7 @@ public class WithdrawActivity extends BaseActivity {
         ButterKnife.bind(this);
         initHeader();
         initOnClick();
+        getData();
     }
     private void initHeader() {
         this.mHeader.setVisibility(View.VISIBLE);
@@ -69,6 +75,7 @@ public class WithdrawActivity extends BaseActivity {
     private void initOnClick() {
         this.mArrowLayout.setOnClickListener(new MyOnClickListener(TYPE_SELECT));
         this.mWithdrawBtn.setOnClickListener(new MyOnClickListener(TYPE_WITHDRAW));
+        this.mNetWorkCallBack = new NetWorkCallBack();
     }
     class MyOnClickListener implements  View.OnClickListener{
         private int mType;
@@ -81,7 +88,7 @@ public class WithdrawActivity extends BaseActivity {
             switch (this.mType) {
                 case TYPE_SELECT:
                     intent = new Intent(WithdrawActivity.this,BankCardSelectActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent,SELECT_CARD);
                     break;
                 case TYPE_WITHDRAW:
                     confirmWithDraw();
@@ -90,7 +97,6 @@ public class WithdrawActivity extends BaseActivity {
         }
     }
     private void confirmWithDraw() {
-        this.mNetWorkCallBack = new NetWorkCallBack();
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String userId = userInfoBean.getCustId();
         String userPhone = userInfoBean.getCustMobile();
@@ -98,7 +104,6 @@ public class WithdrawActivity extends BaseActivity {
         String fetchMoney = this.mBalanceInput.getText().toString();
         String cardNumber = this.mBankNo.getText().toString();
         String bankNumber = this.mBankName.getText().toString();
-        String bankId = "";//TODO 银行卡ID
 
         //传入参数
         Map<String,Object> map = new HashMap<>();
@@ -109,9 +114,18 @@ public class WithdrawActivity extends BaseActivity {
         map.put("pay_passwd",payPsw);
         map.put("bank_name",cardNumber);
         map.put("bank_name",bankNumber);
-        map.put("bank_id",bankId);
+        map.put("bank_id",this.mBankId);
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_FETCH_CASH,map,WithdrawActivity.this.mNetWorkCallBack, WithDrawResponse.class);
 
+    }
+    private void getData() {
+        Map<String,Object> map = new HashMap<>();
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userId = userInfoBean.getCustId();
+        String userPhone = userInfoBean.getCustMobile();
+        map.put("user_id",userId);
+        map.put("user_phone",userPhone);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_BALANCE_STATISTIC,map,WithdrawActivity.this.mNetWorkCallBack, AccountBalanceResponse.class);
     }
     private class NetWorkCallBack implements RequestListener {
 
@@ -133,6 +147,11 @@ public class WithdrawActivity extends BaseActivity {
                 toast.show();
                 finish();
             }
+
+            if (object instanceof AccountBalanceResponse) {
+                AccountBalanceResponse accountBalanceResponse = (AccountBalanceResponse)object;
+                WithdrawActivity.this.mAccountBalanceText.setText(accountBalanceResponse.balance);
+            }
         }
 
         @Override
@@ -141,4 +160,17 @@ public class WithdrawActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            if(requestCode == SELECT_CARD) {
+                String bankName = data.getStringExtra("bankName");
+                String bankNo = data.getStringExtra("bankNo");
+                WithdrawActivity.this.mBankId = data.getStringExtra("bankId");
+                WithdrawActivity.this.mBankName.setText(bankName);
+                WithdrawActivity.this.mBankNo.setText(bankNo);
+            }
+        }
+    }
 }

@@ -12,5 +12,5 @@ public class RegularResponse extends BaseResponse{
     public String regularProductIncome;
     public String regularProductDay;
     public String regularProductMin;
-    public List<RegularDetailModel> financeproduct_list;
+    public RegularModel financeproduct_list;
 }

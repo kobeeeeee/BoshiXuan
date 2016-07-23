@@ -6,28 +6,34 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import www.chendanfeng.com.boishixuan.NewsDetailActivity;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.RegularBuyActivity;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.model.RegularDetailModel;
 import www.chendanfeng.com.network.model.RegularResponse;
-import www.chendanfeng.com.network.model.WithdrawRecordResponse;
 
 /**
  * Created by Administrator on 2016/7/17 0017.
  */
 public class RegularListAdapter extends RecyclerView.Adapter<RegularListAdapter.RegularView>{
-    private List<RegularResponse> mRegularResponseList;
+    private List<RegularDetailModel> mRegularDetailModelList;
     private Context mContext;
-    public RegularListAdapter(Context context, List<RegularResponse> responseList) {
-        this.mRegularResponseList = responseList;
+    public RegularListAdapter(Context context, List<RegularDetailModel> modelList) {
+        this.mRegularDetailModelList = modelList;
         this.mContext = context;
+    }
+    public void setList(List<RegularDetailModel> modelList) {
+        this.mRegularDetailModelList = modelList;
     }
     @Override
     public RegularView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,10 +42,12 @@ public class RegularListAdapter extends RecyclerView.Adapter<RegularListAdapter.
     }
     @Override
     public void onBindViewHolder(RegularView holder, int position) {
-        holder.mRegularProductName.setText(this.mRegularResponseList.get(position).regularProductName);
-        holder.mRegularProductIncome.setText(this.mRegularResponseList.get(position).regularProductIncome);
-        holder.mRegularProductDay.setText(this.mRegularResponseList.get(position).regularProductDay);
-        holder.mRegularProductMin.setText(this.mRegularResponseList.get(position).regularProductMin);
+        holder.mRegularProductName.setText(this.mRegularDetailModelList.get(position).finance_name);
+        holder.mRegularProductIncome.setText(this.mRegularDetailModelList.get(position).interest_rate + "%");
+        holder.mRegularProductDay.setText(this.mRegularDetailModelList.get(position).invest_days + "天");
+        holder.mRegularProductMin.setText(this.mRegularDetailModelList.get(position).invest_months + "元起投");
+        holder.mRegularDesc.setText(this.mRegularDetailModelList.get(position).product_desc);
+        Picasso.with(this.mContext).load(Config.ROOT_URL + this.mRegularDetailModelList.get(position).finance_img).error(this.mContext.getResources().getDrawable(R.drawable.regular_default_image)).into(holder.mRegularImage);
     }
     @Override
     public long getItemId(int position) {
@@ -48,7 +56,7 @@ public class RegularListAdapter extends RecyclerView.Adapter<RegularListAdapter.
 
     @Override
     public int getItemCount() {
-        return this.mRegularResponseList.size();
+        return this.mRegularDetailModelList.size();
     }
 
     public class RegularView extends RecyclerView.ViewHolder {
@@ -60,6 +68,10 @@ public class RegularListAdapter extends RecyclerView.Adapter<RegularListAdapter.
         TextView mRegularProductDay;
         @Bind(R.id.regularProductMin)
         TextView mRegularProductMin;
+        @Bind(R.id.regularDesc)
+        TextView mRegularDesc;
+        @Bind(R.id.regularImage)
+        ImageView mRegularImage;
         @OnClick(R.id.regularLayout)
         public void OnClick(View view) {
             Intent intent = new Intent(RegularListAdapter.this.mContext, RegularBuyActivity.class);

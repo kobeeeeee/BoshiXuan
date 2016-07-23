@@ -11,8 +11,8 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:id="@+id/regularImage"
             android:src="@drawable/regular_default_image"
             android:layout_marginLeft="19.5dp"
@@ -52,7 +52,7 @@
             android:textColor="@color/bank_add_gray"
             android:textSize="12sp"
             android:layout_marginTop="10dp"
-            android:id="@+id/textView69"
+            android:id="@+id/regularDesc"
             android:layout_below="@+id/regularProductIncome"
             android:layout_alignLeft="@+id/regularProductIncome"
             android:layout_alignStart="@+id/regularProductIncome" />

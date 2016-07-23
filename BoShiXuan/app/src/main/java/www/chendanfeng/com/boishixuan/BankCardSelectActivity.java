@@ -22,6 +22,7 @@ import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.BankDetailModel;
 import www.chendanfeng.com.network.model.BankListResponse;
 import www.chendanfeng.com.network.model.WithDrawResponse;
 import www.chendanfeng.com.util.LogUtil;
@@ -38,10 +39,9 @@ public class BankCardSelectActivity extends BaseActivity{
     RelativeLayout mAddBtn;
     @Bind(R.id.selectBankCardListView)
     ListView mSelectBankListView;
-    private List<String> mBankNameList;
-    private List<String> mBankNoList;
     private SelectBankAdapter mAdapter;
     private NetWorkCallBack mNetWorkCallBack;
+    private List<BankDetailModel> mBankDetailModelList = new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,25 +71,12 @@ public class BankCardSelectActivity extends BaseActivity{
         });
     }
     public void initListView() {
-        this.mBankNameList = new ArrayList<>();
-        this.mBankNameList.add("中国银行");
-        this.mBankNameList.add("建设银行");
-        this.mBankNameList.add("交通银行");
-        this.mBankNameList.add("工商银行");
-        this.mBankNameList.add("农业银行");
 
-        this.mBankNoList = new ArrayList<>();
-        this.mBankNoList.add("6217***********9442");
-        this.mBankNoList.add("4581***********4900");
-        this.mBankNoList.add("6123***********4567");
-        this.mBankNoList.add("6890***********1234");
-        this.mBankNoList.add("6456***********7890");
-        this.mBankNoList.add("6123***********2345");
-
-        this.mAdapter = new SelectBankAdapter(this,this.mBankNameList,this.mBankNoList);
+        this.mAdapter = new SelectBankAdapter(this,this.mBankDetailModelList);
         this.mSelectBankListView.setAdapter(this.mAdapter);
     }
     private void getData() {
+        this.mNetWorkCallBack = new NetWorkCallBack();
         //传入参数
         Map<String,Object> map = new HashMap<>();
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_BANK_LIST,map,BankCardSelectActivity.this.mNetWorkCallBack, BankListResponse.class);
@@ -110,6 +97,9 @@ public class BankCardSelectActivity extends BaseActivity{
             if(object instanceof BankListResponse) {
                 BankListResponse bankListResponse = (BankListResponse)object;
                 LogUtil.i(this,"bankListResponse = " + bankListResponse);
+                BankCardSelectActivity.this.mBankDetailModelList = bankListResponse.bank_list;
+                BankCardSelectActivity.this.mAdapter.setList(BankCardSelectActivity.this.mBankDetailModelList);
+                BankCardSelectActivity.this.mAdapter.notifyDataSetChanged();
             }
         }
 

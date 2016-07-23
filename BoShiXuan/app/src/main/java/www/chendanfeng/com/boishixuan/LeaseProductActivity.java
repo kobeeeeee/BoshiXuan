@@ -23,6 +23,8 @@ import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.ModifyPswResponse;
+import www.chendanfeng.com.network.model.ProductDetailModel;
+import www.chendanfeng.com.network.model.ProductGoodsModel;
 import www.chendanfeng.com.network.model.ProductResponse;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
@@ -42,10 +44,13 @@ public class LeaseProductActivity extends BaseActivity{
     RelativeLayout mBackBtn;
     @Bind(R.id.leaseProductRecyclerView)
     XRecyclerView mRecyclerView;
-    private List<String> mProductNameList;
     private LeaseProductAdapter mLeaseProductAdapter;
     public NetWorkCallBack mNetWorkCallBack;
     public int mPageNum = 1;
+    public int mPageSize = 10;
+    private List<ProductDetailModel> mProductDetailModelList;
+    private boolean isRefresh = false;
+    private boolean isLoadMore = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,19 +107,19 @@ public class LeaseProductActivity extends BaseActivity{
 
     }
     private void initRecyclerView() {
-        this.mProductNameList = new ArrayList<>();
-        this.mProductNameList.add("甲");
-        this.mProductNameList.add("乙");
-        this.mProductNameList.add("丙");
-        this.mProductNameList.add("丁");
-        this.mProductNameList.add("戊");
-        this.mProductNameList.add("己");
-        this.mProductNameList.add("庚");
-        this.mProductNameList.add("辛");
-        this.mProductNameList.add("壬");
-        this.mProductNameList.add("葵");
-
-        this.mLeaseProductAdapter = new LeaseProductAdapter(this,this.mProductNameList);
+//        this.mProductNameList = new ArrayList<>();
+//        this.mProductNameList.add("甲");
+//        this.mProductNameList.add("乙");
+//        this.mProductNameList.add("丙");
+//        this.mProductNameList.add("丁");
+//        this.mProductNameList.add("戊");
+//        this.mProductNameList.add("己");
+//        this.mProductNameList.add("庚");
+//        this.mProductNameList.add("辛");
+//        this.mProductNameList.add("壬");
+//        this.mProductNameList.add("葵");
+        this.mProductDetailModelList = new ArrayList<>();
+        this.mLeaseProductAdapter = new LeaseProductAdapter(this,this.mProductDetailModelList);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         this.mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
@@ -126,24 +131,39 @@ public class LeaseProductActivity extends BaseActivity{
         this.mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        LeaseProductActivity.this.mRecyclerView.refreshComplete();
-                    }
-                },3000);
+                isRefresh = true;
+                Intent intent = getIntent();
+                int type = intent.getIntExtra("type",0);
+                //传入参数
+                Map<String,Object> map = new HashMap<>();
+                UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                String userId = userInfoBean.getCustId();
+                String userPhone = userInfoBean.getCustMobile();
+                map.put("goods_type",String.valueOf(type));
+                map.put("page_size",String.valueOf(mPageSize));
+                map.put("page_num",String.valueOf(mPageNum));
+                map.put("user_id",userId);
+                map.put("user_phone",userPhone);
+                RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_RENT_GOODS,map,LeaseProductActivity.this.mNetWorkCallBack, ProductResponse.class);
             }
 
             @Override
             public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        LeaseProductActivity.this.mRecyclerView.loadMoreComplete();
-                    }
-                },3000);
+                isLoadMore = true;
+                Intent intent = getIntent();
+                int type = intent.getIntExtra("type",0);
+                mPageSize = mPageSize + 10;
+                //传入参数
+                Map<String,Object> map = new HashMap<>();
+                UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                String userId = userInfoBean.getCustId();
+                String userPhone = userInfoBean.getCustMobile();
+                map.put("goods_type",String.valueOf(type));
+                map.put("page_size",String.valueOf(mPageSize));
+                map.put("page_num",String.valueOf(mPageNum));
+                map.put("user_id",userId);
+                map.put("user_phone",userPhone);
+                RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_RENT_GOODS,map,LeaseProductActivity.this.mNetWorkCallBack, ProductResponse.class);
 
             }
         });
@@ -164,13 +184,31 @@ public class LeaseProductActivity extends BaseActivity{
             if(object instanceof ProductResponse) {
                 ProductResponse productResponse = (ProductResponse)object;
                 LogUtil.i(this,"productResponse = " + productResponse);
-
+                ProductGoodsModel productGoodsModel = productResponse.goods_list;
+                LeaseProductActivity.this.mProductDetailModelList = productGoodsModel.data_list;
+                LeaseProductActivity.this.mLeaseProductAdapter.setList(LeaseProductActivity.this.mProductDetailModelList);
+                LeaseProductActivity.this.mLeaseProductAdapter.notifyDataSetChanged();
+            }
+            if(isLoadMore) {
+                LeaseProductActivity.this.mRecyclerView.loadMoreComplete();
+                isLoadMore = false;
+            }
+            if(isRefresh) {
+                LeaseProductActivity.this.mRecyclerView.refreshComplete();
+                isRefresh = false;
             }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            if(isLoadMore) {
+                LeaseProductActivity.this.mRecyclerView.loadMoreComplete();
+                isLoadMore = false;
+            }
+            if(isRefresh) {
+                LeaseProductActivity.this.mRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
         }
     }
 }

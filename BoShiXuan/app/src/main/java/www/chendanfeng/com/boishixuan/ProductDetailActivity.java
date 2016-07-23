@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,36 +67,35 @@ public class ProductDetailActivity extends BaseActivity{
     }
     private void initClick() {
         this.mNetWorkCallBack = new NetWorkCallBack();
+
+        Intent intent = getIntent();
+        final String productId = intent.getStringExtra("productId");
+        final String productNo = intent.getStringExtra("productNo");
+        String productName = intent.getStringExtra("productName");
+        String productImage = intent.getStringExtra("productImage");
+        this.mProductName.setText(productName);
+        this.mProductNo.setText(productNo);
+        Picasso.with(this).load(Config.ROOT_URL + productImage).error(getResources().getDrawable(R.drawable.product_detail_default_image)).into(this.mProductImage);
+        final String depositPrice = this.mDepositText.getText().toString();
+        final String rentPrice = this.mDayRentText.getText().toString();
+
         this.mCommitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                commitClick();
+                UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                String userId = userInfoBean.getCustId();
+                String userPhone = userInfoBean.getCustMobile();
+                //传入参数
+                Map<String,Object> map = new HashMap<>();
+                map.put("user_id",userId);
+                map.put("user_phone",userPhone);
+                map.put("goods_number",productNo);
+                map.put("deposit_price",depositPrice);
+                map.put("rent_price",rentPrice);
+                map.put("goods_Id",productId);
+                RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_PUTIN_ORDER,map,ProductDetailActivity.this.mNetWorkCallBack, MessageListResponse.class);
             }
         });
-    }
-    private void commitClick() {
-        Intent intent = getIntent();
-        String productId = intent.getStringExtra("productId");
-        String productNo = intent.getStringExtra("productNo");
-        String productName = intent.getStringExtra("productName");
-        this.mProductName.setText(productName);
-        this.mProductNo.setText(productNo);
-        String depositPrice = this.mDepositText.getText().toString();
-        String rentPrice = this.mDayRentText.getText().toString();
-
-        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
-        String userId = userInfoBean.getCustId();
-        String userPhone = userInfoBean.getCustMobile();
-        //传入参数
-        Map<String,Object> map = new HashMap<>();
-        map.put("user_id",userId);
-        map.put("user_phone",userPhone);
-        map.put("goods_number",productNo);
-        map.put("deposit_price",depositPrice);
-        map.put("rent_price",rentPrice);
-        map.put("goods_Id",productId);
-        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_PUTIN_ORDER,map,ProductDetailActivity.this.mNetWorkCallBack, MessageListResponse.class);
-
     }
     private class NetWorkCallBack implements RequestListener {
 

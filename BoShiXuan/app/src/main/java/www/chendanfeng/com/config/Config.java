@@ -4,9 +4,11 @@ package www.chendanfeng.com.config;
  * Created by Administrator on 2016/7/4 0004.
  */
 public class Config {
-    //路径
-    public static String URL = "http://218.5.74.172:7890/bosx/app";
+    //根路径
+    public static String ROOT_URL = "http://218.5.74.172:7890/bosx";
     public static String SLASH = "/";
+    //路径
+    public static String URL = ROOT_URL + SLASH + "app";
     /**
      * 连接字符串
      */

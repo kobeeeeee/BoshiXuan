@@ -23,6 +23,8 @@ import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.ModifyPswResponse;
 import www.chendanfeng.com.network.model.ProductResponse;
+import www.chendanfeng.com.network.model.RegularDetailModel;
+import www.chendanfeng.com.network.model.RegularModel;
 import www.chendanfeng.com.network.model.RegularResponse;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
@@ -36,10 +38,10 @@ public class RegularFragment extends BaseFragment{
     XRecyclerView mRegularRecyclerView;
     private RegularListAdapter mRegularListAdapter;
     private View mView;
-    private List<RegularResponse> mRegularResponseList;
-    private RegularResponse mRegularResponse;
+    private List<RegularDetailModel> mRegularDetailModelList = new ArrayList<>();
     private NetWorkCallBack mNetWorkCallBack;
-    public int mPageNum = 0;
+    public int mPageNum = 1;
+    public int mPageSize = 10;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,37 +56,9 @@ public class RegularFragment extends BaseFragment{
         getData();
     }
     private void initRecyclerView() {
-        this.mRegularResponseList = new ArrayList<>();
-        RegularResponse regularResponse = new RegularResponse();
-        regularResponse.regularProductDay= "360天";
-        regularResponse.regularProductIncome = "18.00%";
-        regularResponse.regularProductMin = "1000元起投";
-        regularResponse.regularProductName = "360天长期理财";
-        this.mRegularResponseList.add(regularResponse);
-
-        regularResponse = new RegularResponse();
-        regularResponse.regularProductDay= "180天";
-        regularResponse.regularProductIncome = "15.00%";
-        regularResponse.regularProductMin = "1000元起投";
-        regularResponse.regularProductName = "180天中期理财";
-        this.mRegularResponseList.add(regularResponse);
-
-        regularResponse = new RegularResponse();
-        regularResponse.regularProductDay= "90天";
-        regularResponse.regularProductIncome = "12.00%";
-        regularResponse.regularProductMin = "100元起投";
-        regularResponse.regularProductName = "90天长期理财";
-        this.mRegularResponseList.add(regularResponse);
-
-        regularResponse = new RegularResponse();
-        regularResponse.regularProductDay= "30天";
-        regularResponse.regularProductIncome = "10.00%";
-        regularResponse.regularProductMin = "100元起投";
-        regularResponse.regularProductName = "30天长期理财";
-        this.mRegularResponseList.add(regularResponse);
 
 
-        this.mRegularListAdapter = new RegularListAdapter(getActivity(),this.mRegularResponseList);
+        this.mRegularListAdapter = new RegularListAdapter(getActivity(),this.mRegularDetailModelList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         this.mRegularRecyclerView.setLayoutManager(linearLayoutManager);
         this.mRegularRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
@@ -125,8 +99,8 @@ public class RegularFragment extends BaseFragment{
         String userPhone = userInfoBean.getCustMobile();
         //传入参数
         Map<String,Object> map = new HashMap<>();
-        map.put("page_size",10);
-        map.put("page_num",this.mPageNum);
+        map.put("page_size",String.valueOf(this.mPageSize));
+        map.put("page_num",String.valueOf(this.mPageNum));
         map.put("user_id",userId);
         map.put("user_phone",userPhone);
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_FINANCE_PRODUCT,map,RegularFragment.this.mNetWorkCallBack, RegularResponse.class);
@@ -147,6 +121,10 @@ public class RegularFragment extends BaseFragment{
             if(object instanceof RegularResponse) {
                 RegularResponse regularResponse = (RegularResponse)object;
                 LogUtil.i(this,"regularResponse = " + regularResponse);
+                RegularModel regularModel = regularResponse.financeproduct_list;
+                List<RegularDetailModel> regularDetailModelList = regularModel.data_list;
+                RegularFragment.this.mRegularListAdapter.setList(regularDetailModelList);
+                RegularFragment.this.mRegularListAdapter.notifyDataSetChanged();
 
             }
         }

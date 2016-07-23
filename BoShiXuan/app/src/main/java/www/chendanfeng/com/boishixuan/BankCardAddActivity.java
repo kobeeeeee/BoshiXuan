@@ -40,6 +40,7 @@ public class BankCardAddActivity extends BaseActivity{
         setContentView(R.layout.activity_bank_add);
         ButterKnife.bind(this);
         initHeader();
+        initLayout();
         getData();
     }
     private void initHeader() {
@@ -52,6 +53,11 @@ public class BankCardAddActivity extends BaseActivity{
                 finish();
             }
         });
+    }
+    private void initLayout() {
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userName = userInfoBean.getUserName();
+        this.mUserName.setText(userName);
     }
     private void getData() {
         this.mNetWorkCallBack = new NetWorkCallBack();
