@@ -47,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/link_text_auto"
+            android:textColor="@color/burlywood"
             android:layout_below="@+id/logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="380dp" />
