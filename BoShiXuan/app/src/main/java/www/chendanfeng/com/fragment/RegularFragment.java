@@ -42,6 +42,8 @@ public class RegularFragment extends BaseFragment{
     private NetWorkCallBack mNetWorkCallBack;
     public int mPageNum = 1;
     public int mPageSize = 10;
+    private boolean isRefresh = false;
+    private boolean isLoadMore = false;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class RegularFragment extends BaseFragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
+        this.mNetWorkCallBack = new NetWorkCallBack();
         getData();
     }
     private void initRecyclerView() {
@@ -69,31 +72,21 @@ public class RegularFragment extends BaseFragment{
         this.mRegularRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        RegularFragment.this.mRegularRecyclerView.refreshComplete();
-                    }
-                },3000);
+                isRefresh = true;
+                getData();
             }
 
             @Override
             public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        RegularFragment.this.mRegularRecyclerView.loadMoreComplete();
-                    }
-                },3000);
+                isLoadMore = true;
+                RegularFragment.this.mPageSize = RegularFragment.this.mPageSize + 10;
+                getData();
 
             }
         });
         this.mRegularRecyclerView.setAdapter(this.mRegularListAdapter);
     }
     private void getData() {
-        this.mNetWorkCallBack = new NetWorkCallBack();
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String userId = userInfoBean.getCustId();
         String userPhone = userInfoBean.getCustMobile();
@@ -127,11 +120,26 @@ public class RegularFragment extends BaseFragment{
                 RegularFragment.this.mRegularListAdapter.notifyDataSetChanged();
 
             }
+            if(isRefresh) {
+                RegularFragment.this.mRegularRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                RegularFragment.this.mRegularRecyclerView.loadMoreComplete();
+               isLoadMore = false;
+            }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            if(isRefresh) {
+                RegularFragment.this.mRegularRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                RegularFragment.this.mRegularRecyclerView.loadMoreComplete();
+                isLoadMore = false;
+            }
         }
     }
 

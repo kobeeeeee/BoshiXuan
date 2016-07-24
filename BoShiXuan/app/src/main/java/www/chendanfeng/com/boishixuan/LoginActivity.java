@@ -122,19 +122,19 @@ public class LoginActivity extends BaseActivity {
             Intent intent;
             switch (this.mType) {
                 case TYPE_LOGIN:
-                    String phoneNumber = userEditText.getText().toString();
-                    String password = passwordEditText.getText().toString();
-                    if(!checkPhoneNumber(phoneNumber)) {
-                        Toast toast = Toast.makeText(LoginActivity.this,"无效的手机号码",Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
-                        break;
-                    }
-                    //根据输入的用户名、密码调用接口校验用户名密码是否正确
-                    Map<String,Object> map = new HashMap<>();
-                    map.put("user_phone",phoneNumber);
-                    map.put("user_passwd",password);
-                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_USER_LOGIN,map,LoginActivity.this.mNetWorkCallBack,LoginResponse.class);
+//                    String phoneNumber = userEditText.getText().toString();
+//                    String password = passwordEditText.getText().toString();
+//                    if(!checkPhoneNumber(phoneNumber)) {
+//                        Toast toast = Toast.makeText(LoginActivity.this,"无效的手机号码",Toast.LENGTH_SHORT);
+//                        toast.setGravity(Gravity.CENTER, 0, 0);
+//                        toast.show();
+//                        break;
+//                    }
+//                    //根据输入的用户名、密码调用接口校验用户名密码是否正确
+//                    Map<String,Object> map = new HashMap<>();
+//                    map.put("user_phone",phoneNumber);
+//                    map.put("user_passwd",password);
+//                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_USER_LOGIN,map,LoginActivity.this.mNetWorkCallBack,LoginResponse.class);
 
                     intent = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
@@ -169,6 +169,8 @@ public class LoginActivity extends BaseActivity {
                 LogUtil.i(this,"loginResponse = " + loginResponse);
                 UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                 userInfoBean.setCustId(loginResponse.custId);
+                userInfoBean.setCustMobile(loginResponse.user_phone);
+                userInfoBean.setUserName(loginResponse.user_name);
             }
         }
 

@@ -5,25 +5,32 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.boishixuan.R;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.model.OrderDetailModel;
 import www.chendanfeng.com.network.model.OrderResponse;
 
 /**
  * Created by Administrator on 2016/7/15 0015.
  */
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrderView>{
-    private List<OrderResponse> mOrderResponseList;
+    private List<OrderDetailModel> mOrderDetailModelList;
     private Context mContext;
-    public OrderListAdapter(Context context, List<OrderResponse> responseList) {
-        this.mOrderResponseList = responseList;
+    public OrderListAdapter(Context context, List<OrderDetailModel> modelList) {
+        this.mOrderDetailModelList = modelList;
         this.mContext = context;
+    }
+    public void setList(List<OrderDetailModel> modelList) {
+        this.mOrderDetailModelList = modelList;
     }
     @Override
     public OrderView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,12 +40,15 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
     @Override
     public void onBindViewHolder(OrderView holder, int position) {
-        holder.mProductBrand.setText(this.mOrderResponseList.get(position).productBrand);
-        holder.mProductDayRent.setText(this.mOrderResponseList.get(position).productDayRent);
-        holder.mProductDeposit.setText(this.mOrderResponseList.get(position).productDeposit);
-        holder.mOrderNo.setText(this.mOrderResponseList.get(position).orderNo);
-        holder.mOrderPayTime.setText(this.mOrderResponseList.get(position).orderPayTime);
-        holder.morderCreateTime.setText(this.mOrderResponseList.get(position).orderCreateTime);
+        holder.mProductBrand.setText(this.mOrderDetailModelList.get(position).brand_name);
+        holder.mProductDayRent.setText(this.mOrderDetailModelList.get(position).rent_price);
+        holder.mProductDeposit.setText(this.mOrderDetailModelList.get(position).deposit_price);
+        holder.mOrderNo.setText(this.mOrderDetailModelList.get(position).order_number);
+        if(this.mOrderDetailModelList.get(position).state.equals("B")) {
+            holder.mOrderPayTime.setText("未付款");
+        }
+        holder.morderCreateTime.setText(this.mOrderDetailModelList.get(position).stamp_created);
+        Picasso.with(this.mContext).load(Config.ROOT_URL + this.mOrderDetailModelList.get(position).small_img).error(this.mContext.getResources().getDrawable(R.drawable.order_default_image)).into(holder.mProductImage);
     }
 
     @Override
@@ -48,7 +58,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
     @Override
     public int getItemCount() {
-        return this.mOrderResponseList.size();
+        return this.mOrderDetailModelList.size();
     }
 
 
@@ -65,6 +75,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         TextView morderCreateTime;
         @Bind(R.id.orderPayTime)
         TextView mOrderPayTime;
+        @Bind(R.id.productImage)
+        ImageView mProductImage;
         public OrderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

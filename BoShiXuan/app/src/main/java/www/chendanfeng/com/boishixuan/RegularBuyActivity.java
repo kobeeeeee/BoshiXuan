@@ -56,6 +56,7 @@ public class RegularBuyActivity extends BaseActivity{
         ButterKnife.bind(this);
         initHeader();
         initClick();
+        initData();
     }
     private void initHeader() {
         this.mHeader.setVisibility(View.VISIBLE);
@@ -67,6 +68,15 @@ public class RegularBuyActivity extends BaseActivity{
                 finish();
             }
         });
+    }
+    private void initData() {
+        Intent intent = getIntent();
+        String interestRate = intent.getStringExtra("interestRate");
+        String investDay = intent.getStringExtra("investDay");
+        String investMoney = intent.getStringExtra("investMoney");
+        this.mRegularBuyDay.setText(investDay);
+        this.mRegularBuyMin.setText(investMoney);
+        this.mRegularYearIncome.setText(interestRate);
     }
     private void initClick() {
         this.mNetWorkCallBack = new NetWorkCallBack();
@@ -98,21 +108,18 @@ public class RegularBuyActivity extends BaseActivity{
     }
     private void confirmBuy() {
         Intent intent = getIntent();
-        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String productId = intent.getStringExtra("productId");
         String productName = intent.getStringExtra("productName");
-        String interestRate = intent.getStringExtra("interestRate");
-        String investDay = intent.getStringExtra("investDay");
-        String investMoney = intent.getStringExtra("investMoney");
 
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String userId = userInfoBean.getCustId();
         String userPhone = userInfoBean.getCustMobile();
         String userName = userInfoBean.getUserName();
         String payPsw = userInfoBean.getPayPsw();
-        this.mRegularBuyDay.setText(investDay);
-        this.mRegularBuyMin.setText(investMoney);
-        this.mRegularYearIncome.setText(interestRate);
         String financeMoney = this.mInputBuyMoney.getText().toString();
+        String investDay = this.mRegularBuyDay.getText().toString();
+        String investMoney = this.mRegularBuyMin.getText().toString();
+        String interestRate = this.mRegularYearIncome.getText().toString();
 
         //传入参数
         Map<String,Object> map = new HashMap<>();

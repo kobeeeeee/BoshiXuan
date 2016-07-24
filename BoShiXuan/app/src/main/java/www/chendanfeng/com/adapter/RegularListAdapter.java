@@ -74,7 +74,14 @@ public class RegularListAdapter extends RecyclerView.Adapter<RegularListAdapter.
         ImageView mRegularImage;
         @OnClick(R.id.regularLayout)
         public void OnClick(View view) {
+            int position = getLayoutPosition() - 1;
+            RegularDetailModel regularDetailModel = RegularListAdapter.this.mRegularDetailModelList.get(position);
             Intent intent = new Intent(RegularListAdapter.this.mContext, RegularBuyActivity.class);
+            intent.putExtra("productId",regularDetailModel.product_id);
+            intent.putExtra("productName",regularDetailModel.finance_name);
+            intent.putExtra("interestRate",regularDetailModel.interest_rate + "%");
+            intent.putExtra("investDay",regularDetailModel.invest_days + "天");
+            intent.putExtra("investMoney",regularDetailModel.invest_money);
             RegularListAdapter.this.mContext.startActivity(intent);
         }
         public RegularView(View itemView) {

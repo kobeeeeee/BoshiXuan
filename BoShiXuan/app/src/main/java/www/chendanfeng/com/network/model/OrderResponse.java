@@ -14,5 +14,5 @@ public class OrderResponse extends BaseResponse{
     public String orderNo;
     public String orderCreateTime;
     public String orderPayTime;
-    public List<OrderDetailModel> orderlist;
+    public OrderModel order_list;
 }
