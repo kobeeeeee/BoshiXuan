@@ -2,6 +2,7 @@ package www.chendanfeng.com.boishixuan;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,6 +78,37 @@ public class CertificationActivity extends BaseActivity{
         String identity = this.mIdentityText.getText().toString();
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String password = userInfoBean.getPayPsw();
+        String name = userInfoBean.getUserName();
+        if(TextUtils.isEmpty(realName)) {
+            Toast toast = Toast.makeText(CertificationActivity.this,"请输入真实姓名",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return;
+        }
+        if(!name.equals(realName)) {
+            Toast toast = Toast.makeText(CertificationActivity.this,"真实姓名输入有误",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return;
+        }
+        if(TextUtils.isEmpty(identity)) {
+            Toast toast = Toast.makeText(CertificationActivity.this,"请输入身份证号码",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return;
+        }
+        if(identity.length() != 18) {
+            Toast toast = Toast.makeText(CertificationActivity.this,"身份证号码输入不正确",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return;
+        }
+        if(TextUtils.isEmpty(payPsw)) {
+            Toast toast = Toast.makeText(CertificationActivity.this,"请输入支付密码",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return;
+        }
         if(!password.equals(payPsw)) {
             Toast toast = Toast.makeText(CertificationActivity.this,"支付密码不正确",Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);

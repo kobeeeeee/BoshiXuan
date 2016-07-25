@@ -22,8 +22,9 @@ import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.MessageListResponse;
+import www.chendanfeng.com.network.model.NewsDetailModel;
+import www.chendanfeng.com.network.model.NewsModel;
 import www.chendanfeng.com.network.model.NewsResponse;
-import www.chendanfeng.com.util.ItemDivider;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
@@ -36,9 +37,12 @@ public class PersonNewsFragment extends BaseFragment{
     XRecyclerView mPersonNewsRecyclerView;
     private NewsListAdapter mNewsListAdapter;
     private View mView;
-    private List<NewsResponse> mNewsResponseList;
-    private NetWorkCallBack mNetWorkCallBack;
-    private int mPageNum=0;
+    private List<NewsDetailModel> mNewsDetailModelList;
+    private NetWorkCallBack mNetWorkCallBack = new NetWorkCallBack();
+    private int mPageNum=1;
+    private int mPageSize = 10;
+    private boolean isRefresh = false;
+    private boolean isLoadMore = false;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,29 +55,11 @@ public class PersonNewsFragment extends BaseFragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
+        getData();
     }
     private void initRecyclerView() {
-        this.mNewsResponseList = new ArrayList<>();
-        NewsResponse newsResponse = new NewsResponse();
-        newsResponse.newsContent= "尊敬的张小三用户，您在2016-07-12  17:19:00的时候萨达的防晒霜的撒旦王琪琪";
-        newsResponse.newsTitle = "购买理财消息";
-        newsResponse.newsTime = "2016-07-12 17:30:00";
-        this.mNewsResponseList.add(newsResponse);
-
-        newsResponse = new NewsResponse();
-        newsResponse.newsContent= "尊敬的张小三用户，您在2016-07-12  17:19:00的时候萨达的防晒霜的撒旦王琪琪";
-        newsResponse.newsTitle = "购买理财消息";
-        newsResponse.newsTime = "2016-07-12 17:30:00";
-        this.mNewsResponseList.add(newsResponse);
-
-        newsResponse = new NewsResponse();
-        newsResponse.newsContent= "尊敬的张小三用户，您在2016-07-12  17:19:00的时候萨达的防晒霜的撒旦王琪琪";
-        newsResponse.newsTitle = "购买理财消息";
-        newsResponse.newsTime = "2016-07-12 17:30:00";
-        this.mNewsResponseList.add(newsResponse);
-
-
-        this.mNewsListAdapter = new NewsListAdapter(getActivity(),this.mNewsResponseList,2);
+        this.mNewsDetailModelList = new ArrayList<>();
+        this.mNewsListAdapter = new NewsListAdapter(getActivity(),this.mNewsDetailModelList,2);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         this.mPersonNewsRecyclerView.setLayoutManager(linearLayoutManager);
         this.mPersonNewsRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
@@ -84,25 +70,15 @@ public class PersonNewsFragment extends BaseFragment{
         this.mPersonNewsRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        PersonNewsFragment.this.mPersonNewsRecyclerView.refreshComplete();
-                    }
-                },3000);
+                isRefresh = true;
+                getData();
             }
 
             @Override
             public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        PersonNewsFragment.this.mPersonNewsRecyclerView.loadMoreComplete();
-                    }
-                },3000);
-
+                isLoadMore = true;
+                PersonNewsFragment.this.mPageSize = PersonNewsFragment.this.mPageSize + 10;
+                getData();
             }
         });
         this.mPersonNewsRecyclerView.setAdapter(this.mNewsListAdapter);
@@ -115,12 +91,12 @@ public class PersonNewsFragment extends BaseFragment{
         String userPhone = userInfoBean.getCustMobile();
         //传入参数
         Map<String,Object> map = new HashMap<>();
-        map.put("page_num",mPageNum);
-        map.put("page_size",10);
-        map.put("msg_type","0");
+        map.put("page_num",String.valueOf(mPageNum));
+        map.put("page_size",String.valueOf(mPageSize));
+        map.put("msg_type","1");
         map.put("user_id",userId);
         map.put("user_phone",userPhone);
-        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_MESSAGE,map,PersonNewsFragment.this.mNetWorkCallBack, MessageListResponse.class);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_MESSAGE,map,PersonNewsFragment.this.mNetWorkCallBack, NewsResponse.class);
 
     }
     private class NetWorkCallBack implements RequestListener {
@@ -135,15 +111,35 @@ public class PersonNewsFragment extends BaseFragment{
             if(object == null) {
                 return;
             }
-            if(object instanceof MessageListResponse) {
-                MessageListResponse messageListResponse = (MessageListResponse)object;
-                LogUtil.i(this,"messageListResponse = " + messageListResponse);
+            if(object instanceof NewsResponse) {
+                NewsResponse newsResponse = (NewsResponse)object;
+                LogUtil.i(this,"newsResponse = " + newsResponse);
+                NewsModel newsModel = newsResponse.msg_list;
+                List<NewsDetailModel> newsDetailModelList = newsModel.data_list;
+                PersonNewsFragment.this.mNewsListAdapter.setList(newsDetailModelList);
+                PersonNewsFragment.this.mNewsListAdapter.notifyDataSetChanged();
+            }
+
+            if(isRefresh) {
+                PersonNewsFragment.this.mPersonNewsRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                PersonNewsFragment.this.mPersonNewsRecyclerView.loadMoreComplete();
+                isLoadMore = false;
             }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            if(isRefresh) {
+                PersonNewsFragment.this.mPersonNewsRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                PersonNewsFragment.this.mPersonNewsRecyclerView.loadMoreComplete();
+                isLoadMore = false;
+            }
         }
     }
 }

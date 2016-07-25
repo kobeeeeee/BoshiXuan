@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,8 @@ public class BankCardAddActivity extends BaseActivity{
     EditText mBankNo;
     @Bind(R.id.bankName)
     EditText mBankName;
+    @Bind(R.id.BankAddBtn)
+    ImageView mBankAddBtn;
     private NetWorkCallBack mNetWorkCallBack;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +44,6 @@ public class BankCardAddActivity extends BaseActivity{
         ButterKnife.bind(this);
         initHeader();
         initLayout();
-        getData();
     }
     private void initHeader() {
         this.mHeader.setVisibility(View.VISIBLE);
@@ -58,6 +60,13 @@ public class BankCardAddActivity extends BaseActivity{
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String userName = userInfoBean.getUserName();
         this.mUserName.setText(userName);
+
+        this.mBankAddBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getData();
+            }
+        });
     }
     private void getData() {
         this.mNetWorkCallBack = new NetWorkCallBack();

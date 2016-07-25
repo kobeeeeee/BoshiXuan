@@ -156,7 +156,10 @@ public class WithdrawActivity extends BaseActivity {
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            Toast toast = Toast.makeText(WithdrawActivity.this,msg,Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
     }
 

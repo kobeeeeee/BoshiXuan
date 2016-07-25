@@ -156,4 +156,10 @@ public class CommonUtil {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
+    public static String formatTime(String time) {
+        long longTime = Long.valueOf(time);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(longTime);
+        return formatter.format(date);
+    }
 }

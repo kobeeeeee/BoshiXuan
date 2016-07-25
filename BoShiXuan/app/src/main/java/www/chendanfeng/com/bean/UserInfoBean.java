@@ -1,10 +1,5 @@
 package www.chendanfeng.com.bean;
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.Build;
-
 /**
  * Created by Administrator on 2016/7/3 0003.
  */
@@ -32,6 +27,8 @@ public class UserInfoBean {
     private static String payPsw = "";
     //用户名称
     private static String userName = "于景鹏";
+
+    private static String isVerity ="";
     public static UserInfoBean getUserInfoBeanInstance() {
         if(userInfoBean == null) {
             userInfoBean = new UserInfoBean();
@@ -117,5 +114,12 @@ public class UserInfoBean {
     }
     public String getUserName() {
         return userName;
+    }
+
+    public void setIsVerrity(String is_verify) {
+        isVerity = is_verify;
+    }
+    public String getIsVerity() {
+        return isVerity;
     }
 }

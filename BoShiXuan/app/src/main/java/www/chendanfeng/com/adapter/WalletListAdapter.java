@@ -2,15 +2,18 @@ package www.chendanfeng.com.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
+import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.boishixuan.BankCardSelectActivity;
 import www.chendanfeng.com.boishixuan.CertificationActivity;
 import www.chendanfeng.com.boishixuan.MatterRecordActivity;
@@ -38,6 +41,9 @@ public class WalletListAdapter extends BaseAdapter{
         this.mContext = context;
         this.mWalletTextList = walletTextList;
         this.mWalletImageList = walletImageList;
+    }
+    public void setList(List<String> walletTextList) {
+        this.mWalletTextList = walletTextList;
     }
     @Override
     public int getCount() {
@@ -71,9 +77,15 @@ public class WalletListAdapter extends BaseAdapter{
 
         holder.walletTextView.setText(this.mWalletTextList.get(position));
         holder.walletImageView.setImageResource(this.mWalletImageList.get(position));
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String isVerify = userInfoBean.getIsVerity();
         if(position == 2) {
             holder.walletTextView2.setVisibility(View.VISIBLE);
-            holder.walletTextView2.setText("未认证");
+            if(isVerify.equals("1")) {
+                holder.walletTextView2.setText("未认证");
+            } else {
+                holder.walletTextView2.setText("审核通过");
+            }
         } else {
             holder.walletTextView2.setVisibility(View.GONE);
         }
@@ -101,6 +113,14 @@ public class WalletListAdapter extends BaseAdapter{
                     intent = new Intent(WalletListAdapter.this.mContext, PasswordManageActivity.class);
                     break;
                 case TYPE_CERTIFICATION:
+                    UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                    String isVerify = userInfoBean.getIsVerity();
+                    if(isVerify.equals("2")) {
+                        Toast toast = Toast.makeText(WalletListAdapter.this.mContext,"已实名认证",Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        return;
+                    }
                     intent = new Intent(WalletListAdapter.this.mContext, CertificationActivity.class);
                     break;
                 case TYPE_BANK_LIST:

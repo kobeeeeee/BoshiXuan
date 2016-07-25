@@ -20,12 +20,19 @@ public class NewsDetailActivity extends BaseActivity{
     TextView mHeader;
     @Bind(R.id.bar_left_btn)
     RelativeLayout mBackBtn;
+    @Bind(R.id.newsTitle)
+    TextView mNewsTitle;
+    @Bind(R.id.newsContent)
+    TextView mNewsContent;
+    @Bind(R.id.newsTime)
+    TextView mNewsTime;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
         ButterKnife.bind(this);
         initHeader();
+        initData();
     }
     private void initHeader() {
         Intent intent = getIntent();
@@ -45,5 +52,14 @@ public class NewsDetailActivity extends BaseActivity{
                 finish();
             }
         });
+    }
+    private void initData() {
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("title");
+        String content = intent.getStringExtra("content");
+        String time = intent.getStringExtra("time");
+        this.mNewsContent.setText(content);
+        this.mNewsTime.setText(time);
+        this.mNewsTitle.setText(title);
     }
 }

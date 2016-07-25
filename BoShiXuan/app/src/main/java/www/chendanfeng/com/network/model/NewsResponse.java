@@ -9,4 +9,5 @@ public class NewsResponse extends BaseResponse{
     public String newsContent;
     public String newsTitle;
     public String newsTime;
+    public NewsModel msg_list;
 }

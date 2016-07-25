@@ -8,17 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.chendanfeng.com.boishixuan.NewsDetailActivity;
-import www.chendanfeng.com.boishixuan.ProductDetailActivity;
 import www.chendanfeng.com.boishixuan.R;
-import www.chendanfeng.com.network.BaseResponse;
+import www.chendanfeng.com.network.model.NewsDetailModel;
 import www.chendanfeng.com.network.model.NewsResponse;
-import www.chendanfeng.com.network.model.WithdrawRecordResponse;
+import www.chendanfeng.com.util.CommonUtil;
 
 /**
  * Created by Administrator on 2016/7/16 0016.
@@ -27,12 +28,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
     public static final int TYPE_SYSTEM = 1;
     public static final int TYPE_PERSON = 2;
     private int mType;
-    private List<NewsResponse> mResponseList;
+    private List<NewsDetailModel> mNewsDetailModelList;
     private Context mContext;
-    public NewsListAdapter(Context context, List<NewsResponse> responseList,int type) {
-        this.mResponseList = responseList;
+    public NewsListAdapter(Context context, List<NewsDetailModel> modelList,int type) {
+        this.mNewsDetailModelList = modelList;
         this.mContext = context;
         this.mType = type;
+    }
+    public void setList(List<NewsDetailModel> modelList) {
+        if(modelList != null) {
+            this.mNewsDetailModelList = modelList;
+        }
     }
     @Override
     public NewsView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,14 +48,15 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
 
     @Override
     public void onBindViewHolder(NewsView holder, int position) {
-        holder.mNewsContent.setText(this.mResponseList.get(position).newsContent);
-        holder.mNewsTitle.setText(this.mResponseList.get(position).newsTitle);
-        holder.mNewsTime.setText(this.mResponseList.get(position).newsTime);
+        holder.mNewsContent.setText(this.mNewsDetailModelList.get(position).msg_content);
+        holder.mNewsTitle.setText(this.mNewsDetailModelList.get(position).msg_title);
+        String time = this.mNewsDetailModelList.get(position).stamp_created;
+        holder.mNewsTime.setText(CommonUtil.formatTime(time));
     }
 
     @Override
     public int getItemCount() {
-        return this.mResponseList.size();
+        return this.mNewsDetailModelList.size();
     }
 
     public class NewsView extends RecyclerView.ViewHolder {
@@ -61,7 +68,12 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         TextView mNewsTime;
         @OnClick(R.id.newsLayout)
         public void OnClick(View view) {
+            int position = getLayoutPosition() - 1;
+            NewsDetailModel newsDetailModel = NewsListAdapter.this.mNewsDetailModelList.get(position);
             Intent intent = new Intent(NewsListAdapter.this.mContext, NewsDetailActivity.class);
+            intent.putExtra("title",newsDetailModel.msg_title);
+            intent.putExtra("content",newsDetailModel.msg_content);
+            intent.putExtra("time",CommonUtil.formatTime(newsDetailModel.stamp_created));
             intent.putExtra("type",NewsListAdapter.this.mType);
             NewsListAdapter.this.mContext.startActivity(intent);
         }

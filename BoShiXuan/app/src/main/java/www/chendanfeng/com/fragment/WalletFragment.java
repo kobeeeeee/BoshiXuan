@@ -11,12 +11,21 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.WalletListAdapter;
+import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.boishixuan.R;
+import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.network.RequestListener;
+import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.BankAddResponse;
+import www.chendanfeng.com.network.model.UserInfoResponse;
+import www.chendanfeng.com.util.LogUtil;
 
 /**
  * Created by Administrator on 2016/7/2 0002.
@@ -26,10 +35,13 @@ public class WalletFragment extends BaseFragment {
     TextView mHeader;
     @Bind(R.id.walletListView)
     ListView mWalletListView;
+    @Bind(R.id.userName)
+    TextView mUserName;
     private View mView;
     private List<String> mWalletTextList;
     private List<Integer> mWalletImageList;
     private WalletListAdapter mWalletListAdapter;
+    private NetWorkCallBack mNetWorkCallBack;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,7 +60,18 @@ public class WalletFragment extends BaseFragment {
         this.mHeader.setVisibility(View.VISIBLE);
         this.mHeader.setText("钱包");
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+    }
+
     public void initData() {
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String phone = userInfoBean.getCustMobile();
+        String userName = phone.substring(0,3) + "****" + phone.substring(7,11);
+        this.mUserName.setText(userName);
         this.mWalletTextList = new ArrayList<>();
         this.mWalletTextList.add("提款到银行账户");
         this.mWalletTextList.add("修改密码");
@@ -71,5 +94,39 @@ public class WalletFragment extends BaseFragment {
     public void initListView() {
         this.mWalletListAdapter = new WalletListAdapter(getActivity(),this.mWalletTextList,this.mWalletImageList);
         mWalletListView.setAdapter(this.mWalletListAdapter);
+    }
+    public void getData() {
+
+        this.mNetWorkCallBack = new NetWorkCallBack();
+        Map<String,Object> map = new HashMap<>();
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_USER_INFO_QUERY,map,WalletFragment.this.mNetWorkCallBack, UserInfoResponse.class);
+    }
+    private class NetWorkCallBack implements RequestListener {
+
+        @Override
+        public void onBegin() {
+
+        }
+
+        @Override
+        public void onResponse(Object object) {
+            if(object == null) {
+                return;
+            }
+            if(object instanceof UserInfoResponse) {
+                UserInfoResponse userInfoResponse = (UserInfoResponse)object;
+                LogUtil.i(this,"userInfoResponse = " + userInfoResponse);
+                String is_verify = userInfoResponse.is_verify;
+                UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                userInfoBean.setIsVerrity(is_verify);
+                WalletFragment.this.mWalletListAdapter.setList(WalletFragment.this.mWalletTextList);
+                WalletFragment.this.mWalletListAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onFailure(Object message) {
+
+        }
     }
 }
