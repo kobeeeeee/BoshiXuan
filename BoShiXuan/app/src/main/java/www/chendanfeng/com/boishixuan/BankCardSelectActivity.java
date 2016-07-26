@@ -10,6 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +23,15 @@ import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.SelectBankAdapter;
 import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.event.BankSelectEvent;
+import www.chendanfeng.com.event.BaseEvent;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.BankDetailModel;
 import www.chendanfeng.com.network.model.BankListResponse;
+import www.chendanfeng.com.network.model.UnBindBankResponse;
 import www.chendanfeng.com.network.model.WithDrawResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 
 /**
@@ -48,9 +55,15 @@ public class BankCardSelectActivity extends BaseActivity{
         setContentView(R.layout.activity_select);
         ButterKnife.bind(this);
         initHeader();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         initListView();
         getData();
     }
+
     public void initHeader() {
         this.mHeader.setText("选择银行卡");
         this.mHeader.setVisibility(View.VISIBLE);
@@ -71,8 +84,14 @@ public class BankCardSelectActivity extends BaseActivity{
         });
     }
     public void initListView() {
-
-        this.mAdapter = new SelectBankAdapter(this,this.mBankDetailModelList);
+        Intent intent = getIntent();
+        int type = intent.getIntExtra("type",0);
+        if(type == 1) {
+            if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+        }
+        this.mAdapter = new SelectBankAdapter(this,this.mBankDetailModelList,type);
         this.mSelectBankListView.setAdapter(this.mAdapter);
     }
     private void getData() {
@@ -100,12 +119,50 @@ public class BankCardSelectActivity extends BaseActivity{
                 BankCardSelectActivity.this.mBankDetailModelList = bankListResponse.bank_list;
                 BankCardSelectActivity.this.mAdapter.setList(BankCardSelectActivity.this.mBankDetailModelList);
                 BankCardSelectActivity.this.mAdapter.notifyDataSetChanged();
+                CommonUtil.showToast("刷新成功",BankCardSelectActivity.this);
+            }
+
+            if(object instanceof UnBindBankResponse) {
+                UnBindBankResponse unBindBankResponse = (UnBindBankResponse)object;
+                LogUtil.i(this,"unBindBankResponse = " + unBindBankResponse);
+                CommonUtil.showToast("解绑成功",BankCardSelectActivity.this);
+                getData();
             }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,BankCardSelectActivity.this);
+        }
+    }
+    @Subscribe
+    public void onEvent(BaseEvent event) {
+        if(event instanceof BankSelectEvent) {
+            BankDetailModel model = ((BankSelectEvent) event).mBankDetailModel;
+            unBindBankCard(model);
+        }
+    }
+    /**
+     * 解绑银行卡
+     * @param model
+     */
+    public void unBindBankCard(BankDetailModel model) {
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userId = userInfoBean.getCustId();
+        String userPhone = userInfoBean.getCustMobile();
+        //传入参数
+        Map<String,Object> map = new HashMap<>();
+        map.put("bank_id",model.bank_id);
+        map.put("user_id",userId);
+        map.put("user_phone",userPhone);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_UNBANDING_BANK,map,this.mNetWorkCallBack, UnBindBankResponse.class);
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 }

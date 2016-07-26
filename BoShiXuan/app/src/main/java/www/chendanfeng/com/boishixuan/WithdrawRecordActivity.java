@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,9 +20,10 @@ import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
-import www.chendanfeng.com.network.model.RegularBuyResponse;
-import www.chendanfeng.com.network.model.WithDrawResponse;
+import www.chendanfeng.com.network.model.WithdrawRecordDetailModel;
+import www.chendanfeng.com.network.model.WithdrawRecordModel;
 import www.chendanfeng.com.network.model.WithdrawRecordResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
@@ -39,10 +39,12 @@ public class WithdrawRecordActivity extends BaseActivity{
     @Bind(R.id.withdrawRecyclerView)
     XRecyclerView mWithdrawRecyclerView;
     private WithdrawRecordAdapter mWithdrawRecordAdapter;
-    private List<WithdrawRecordResponse> mWithdrawRecordResponseList;
-    private NetWorkCallBack mNetWorkCallBack;
+    private List<WithdrawRecordDetailModel> mWithdrawRecordDetailModelList = new ArrayList<>();
+    private NetWorkCallBack mNetWorkCallBack = new NetWorkCallBack();
     private int mPageSize = 10;
     private int mPageNum = 1;
+    private boolean isRefresh = false;
+    private boolean isLoadMore = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,7 @@ public class WithdrawRecordActivity extends BaseActivity{
         ButterKnife.bind(this);
         initHeader();
         initRecyclerView();
+        getData();
     }
     private void initHeader(){
         this.mHeader.setVisibility(View.VISIBLE);
@@ -63,37 +66,7 @@ public class WithdrawRecordActivity extends BaseActivity{
         });
     }
     private void initRecyclerView() {
-        this.mWithdrawRecordResponseList = new ArrayList<>();
-        WithdrawRecordResponse withdrawRecordResponse = new WithdrawRecordResponse();
-        withdrawRecordResponse.withdrawBankCard = "622************2115";
-        withdrawRecordResponse.withdrawBankName = "工商银行";
-        withdrawRecordResponse.withdrawMoney = "￥800.00元";
-        withdrawRecordResponse.withdrawTime = "2016.06.07     11:55:09";
-        this.mWithdrawRecordResponseList.add(withdrawRecordResponse);
-
-        withdrawRecordResponse = new WithdrawRecordResponse();
-        withdrawRecordResponse.withdrawBankCard = "622************2225";
-        withdrawRecordResponse.withdrawBankName = "建设银行";
-        withdrawRecordResponse.withdrawMoney = "￥8000.00元";
-        withdrawRecordResponse.withdrawTime = "2016.06.08     16:51:13";
-        this.mWithdrawRecordResponseList.add(withdrawRecordResponse);
-
-
-        withdrawRecordResponse = new WithdrawRecordResponse();
-        withdrawRecordResponse.withdrawBankCard = "622************2335";
-        withdrawRecordResponse.withdrawBankName = "农业银行";
-        withdrawRecordResponse.withdrawMoney = "￥1200.00元";
-        withdrawRecordResponse.withdrawTime = "2016.06.09     22:25:11";
-        this.mWithdrawRecordResponseList.add(withdrawRecordResponse);
-
-
-        withdrawRecordResponse = new WithdrawRecordResponse();
-        withdrawRecordResponse.withdrawBankCard = "622************2445";
-        withdrawRecordResponse.withdrawBankName = "中国银行";
-        withdrawRecordResponse.withdrawMoney = "￥3200.00元";
-        withdrawRecordResponse.withdrawTime = "2016.06.12     14:55:32";
-        this.mWithdrawRecordResponseList.add(withdrawRecordResponse);
-        this.mWithdrawRecordAdapter = new WithdrawRecordAdapter(this,this.mWithdrawRecordResponseList);
+        this.mWithdrawRecordAdapter = new WithdrawRecordAdapter(this,this.mWithdrawRecordDetailModelList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         this.mWithdrawRecyclerView.setLayoutManager(linearLayoutManager);
         this.mWithdrawRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
@@ -104,38 +77,27 @@ public class WithdrawRecordActivity extends BaseActivity{
         this.mWithdrawRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        WithdrawRecordActivity.this.mWithdrawRecyclerView.refreshComplete();
-                    }
-                },3000);
+                isRefresh = true;
+                getData();
             }
 
             @Override
             public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        WithdrawRecordActivity.this.mWithdrawRecyclerView.loadMoreComplete();
-                    }
-                },3000);
-
+                isLoadMore = true;
+                WithdrawRecordActivity.this.mPageSize = WithdrawRecordActivity.this.mPageSize + 10;
+                getData();
             }
         });
         this.mWithdrawRecyclerView.setAdapter(this.mWithdrawRecordAdapter);
     }
     private void getData() {
-        this.mNetWorkCallBack = new NetWorkCallBack();
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String userId = userInfoBean.getCustId();
         String userPhone = userInfoBean.getCustMobile();
         //传入参数
         Map<String,Object> map = new HashMap<>();
-        map.put("page_size",this.mPageSize);
-        map.put("page_num",this.mPageNum);
+        map.put("page_size",String.valueOf(this.mPageSize));
+        map.put("page_num",String.valueOf(this.mPageNum));
         map.put("user_id",userId);
         map.put("user_phone",userPhone);
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_FETCH_CASH_LIST,map,WithdrawRecordActivity.this.mNetWorkCallBack, WithdrawRecordResponse.class);
@@ -156,12 +118,36 @@ public class WithdrawRecordActivity extends BaseActivity{
             if(object instanceof WithdrawRecordResponse) {
                 WithdrawRecordResponse withdrawRecordResponse = (WithdrawRecordResponse)object;
                 LogUtil.i(this,"withdrawRecordResponse = " + withdrawRecordResponse);
+                WithdrawRecordModel model = withdrawRecordResponse.fetchcash_list;
+                WithdrawRecordActivity.this.mWithdrawRecordDetailModelList = model.data_list;
+                if(WithdrawRecordActivity.this.mWithdrawRecordDetailModelList.size() == 0) {
+                    CommonUtil.showToast("亲，暂无提现记录",WithdrawRecordActivity.this);
+                }
+                WithdrawRecordActivity.this.mWithdrawRecordAdapter.setList(WithdrawRecordActivity.this.mWithdrawRecordDetailModelList);
+                WithdrawRecordActivity.this.mWithdrawRecordAdapter.notifyDataSetChanged();
+            }
+            if(isRefresh) {
+                WithdrawRecordActivity.this.mWithdrawRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                WithdrawRecordActivity.this.mWithdrawRecyclerView.loadMoreComplete();
+                isLoadMore = false;
             }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,WithdrawRecordActivity.this);
+            if(isRefresh) {
+                WithdrawRecordActivity.this.mWithdrawRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                WithdrawRecordActivity.this.mWithdrawRecyclerView.loadMoreComplete();
+                isLoadMore = false;
+            }
         }
     }
 }

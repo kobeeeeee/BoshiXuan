@@ -12,17 +12,22 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.boishixuan.R;
+import www.chendanfeng.com.network.model.WithdrawRecordDetailModel;
 import www.chendanfeng.com.network.model.WithdrawRecordResponse;
+import www.chendanfeng.com.util.CommonUtil;
 
 /**
  * Created by Administrator on 2016/7/12 0012.
  */
 public class WithdrawRecordAdapter extends RecyclerView.Adapter<WithdrawRecordAdapter.WithdrawView> {
-    private List<WithdrawRecordResponse> mWithdrawRecordResponse;
+    private List<WithdrawRecordDetailModel> mWithdrawRecordDetailModel;
     private Context mContext;
-    public WithdrawRecordAdapter(Context context, List<WithdrawRecordResponse> response) {
-        this.mWithdrawRecordResponse = response;
+    public WithdrawRecordAdapter(Context context, List<WithdrawRecordDetailModel> model) {
+        this.mWithdrawRecordDetailModel = model;
         this.mContext = context;
+    }
+    public void setList(List<WithdrawRecordDetailModel> modelList) {
+        this.mWithdrawRecordDetailModel = modelList;
     }
     @Override
     public WithdrawView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,10 +37,13 @@ public class WithdrawRecordAdapter extends RecyclerView.Adapter<WithdrawRecordAd
 
     @Override
     public void onBindViewHolder(WithdrawView holder, int position) {
-        holder.mWithdrawMoney.setText(this.mWithdrawRecordResponse.get(position).withdrawMoney);
-        holder.mWithdrawTime.setText(this.mWithdrawRecordResponse.get(position).withdrawTime);
-        holder.mWithdrawBankCard.setText(this.mWithdrawRecordResponse.get(position).withdrawBankCard);
-        holder.mWithdrawBankName.setText(this.mWithdrawRecordResponse.get(position).withdrawBankName);
+        holder.mWithdrawMoney.setText(this.mWithdrawRecordDetailModel.get(position).fetch_money + "元");
+        String time = this.mWithdrawRecordDetailModel.get(position).stamp_created;
+        holder.mWithdrawTime.setText(CommonUtil.formatTime(time));
+        String bankNo = this.mWithdrawRecordDetailModel.get(position).card_number;
+        bankNo = CommonUtil.formatBankNo(bankNo);
+        holder.mWithdrawBankCard.setText(bankNo);
+        holder.mWithdrawBankName.setText(this.mWithdrawRecordDetailModel.get(position).bank_name);
     }
     @Override
     public long getItemId(int position) {
@@ -44,7 +52,7 @@ public class WithdrawRecordAdapter extends RecyclerView.Adapter<WithdrawRecordAd
 
     @Override
     public int getItemCount() {
-        return this.mWithdrawRecordResponse.size();
+        return this.mWithdrawRecordDetailModel.size();
     }
 
     public class WithdrawView extends RecyclerView.ViewHolder {

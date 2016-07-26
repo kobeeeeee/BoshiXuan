@@ -12,19 +12,25 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.boishixuan.R;
+import www.chendanfeng.com.network.model.MatterRecordDetailModel;
 import www.chendanfeng.com.network.model.MatterRecordResponse;
+import www.chendanfeng.com.network.model.WithdrawRecordDetailModel;
+import www.chendanfeng.com.util.CommonUtil;
 
 /**
  * Created by Administrator on 2016/7/13 0013.
  */
 public class MatterRecordAdapter extends RecyclerView.Adapter<MatterRecordAdapter.MatterView> {
-    private List<MatterRecordResponse> mMatterRecordResponseList;
+    private List<MatterRecordDetailModel> mMatterRecordDetailModelList;
     private Context mContext;
-    public MatterRecordAdapter(Context context, List<MatterRecordResponse> responseList) {
-        this.mMatterRecordResponseList = responseList;
+    public MatterRecordAdapter(Context context, List<MatterRecordDetailModel> modelList) {
+        this.mMatterRecordDetailModelList = modelList;
         this.mContext = context;
     }
 
+    public void setList(List<MatterRecordDetailModel> modelList) {
+        this.mMatterRecordDetailModelList = modelList;
+    }
     @Override
     public MatterView onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_matter_record, parent, false);
@@ -33,9 +39,10 @@ public class MatterRecordAdapter extends RecyclerView.Adapter<MatterRecordAdapte
 
     @Override
     public void onBindViewHolder(MatterView holder, int position) {
-        holder.mMatterName.setText(this.mMatterRecordResponseList.get(position).matterName);
-        holder.mBuyMoney.setText(this.mMatterRecordResponseList.get(position).buyMoney);
-        holder.mBuyTime.setText(this.mMatterRecordResponseList.get(position).buyTime);
+        holder.mMatterName.setText(this.mMatterRecordDetailModelList.get(position).finance_name);
+        holder.mBuyMoney.setText(this.mMatterRecordDetailModelList.get(position).finance_money + "元");
+        String time = this.mMatterRecordDetailModelList.get(position).stamp_created;
+        holder.mBuyTime.setText(CommonUtil.formatTime(time));
     }
 
     @Override
@@ -45,7 +52,7 @@ public class MatterRecordAdapter extends RecyclerView.Adapter<MatterRecordAdapte
 
     @Override
     public int getItemCount() {
-        return this.mMatterRecordResponseList.size();
+        return this.mMatterRecordDetailModelList.size();
     }
 
     public class MatterView extends RecyclerView.ViewHolder {

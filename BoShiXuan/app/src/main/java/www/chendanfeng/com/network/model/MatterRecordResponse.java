@@ -12,9 +12,5 @@ public class MatterRecordResponse extends BaseResponse{
     public String buyTime;
     public String buyMoney;
 
-    public List<MatterRecordDetailModel> data_list;
-    public String current_page;
-    public String page_size;
-    public String total_page;
-    public String total_record;
+    public MatterRecordModel finance_list;
 }

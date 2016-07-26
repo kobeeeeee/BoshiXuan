@@ -25,6 +25,7 @@ import www.chendanfeng.com.network.model.MessageListResponse;
 import www.chendanfeng.com.network.model.NewsDetailModel;
 import www.chendanfeng.com.network.model.NewsModel;
 import www.chendanfeng.com.network.model.NewsResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
@@ -116,6 +117,9 @@ public class PersonNewsFragment extends BaseFragment{
                 LogUtil.i(this,"newsResponse = " + newsResponse);
                 NewsModel newsModel = newsResponse.msg_list;
                 List<NewsDetailModel> newsDetailModelList = newsModel.data_list;
+                if(newsDetailModelList.size() == 0) {
+                    CommonUtil.showToast("暂无消息",getActivity());
+                }
                 PersonNewsFragment.this.mNewsListAdapter.setList(newsDetailModelList);
                 PersonNewsFragment.this.mNewsListAdapter.notifyDataSetChanged();
             }
@@ -132,6 +136,8 @@ public class PersonNewsFragment extends BaseFragment{
 
         @Override
         public void onFailure(Object message) {
+            String msg = (String) message;
+            CommonUtil.showToast(msg,getActivity());
             if(isRefresh) {
                 PersonNewsFragment.this.mPersonNewsRecyclerView.refreshComplete();
                 isRefresh = false;

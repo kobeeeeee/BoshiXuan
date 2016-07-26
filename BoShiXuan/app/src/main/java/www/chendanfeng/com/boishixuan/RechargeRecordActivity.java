@@ -16,13 +16,15 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.RechargeRecordAdapter;
-import www.chendanfeng.com.adapter.WithdrawRecordAdapter;
 import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.RechargeRecordDetailModel;
+import www.chendanfeng.com.network.model.RechargeRecordModel;
 import www.chendanfeng.com.network.model.RechargeRecordResponse;
-import www.chendanfeng.com.network.model.WithdrawRecordResponse;
+import www.chendanfeng.com.network.model.WithdrawRecordModel;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
@@ -38,10 +40,12 @@ public class RechargeRecordActivity extends BaseActivity{
     @Bind(R.id.rechargeRecyclerView)
     XRecyclerView mRechargeRecyclerView;
     private RechargeRecordAdapter mRechargeRecordAdapter;
-    private List<RechargeRecordResponse> mRechargeRecordResponseList;
-    private NetWorkCallBack mNetWorkCallBack;
+    private List<RechargeRecordDetailModel> mRechargeRecordDetailModelList = new ArrayList<>();
+    private NetWorkCallBack mNetWorkCallBack = new NetWorkCallBack();
     private int mPageSize = 10;
     private int mPageNum = 1;
+    private boolean isRefresh = false;
+    private boolean isLoadMore = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,37 +66,7 @@ public class RechargeRecordActivity extends BaseActivity{
         });
     }
     private void initRecyclerView() {
-        this.mRechargeRecordResponseList = new ArrayList<>();
-        RechargeRecordResponse rechargeRecordResponse = new RechargeRecordResponse();
-        rechargeRecordResponse.rechargeMode = "门店现金充值";
-        rechargeRecordResponse.rechargeMoney = "1000元";
-        rechargeRecordResponse.orderNo = "241246336548546256";
-        rechargeRecordResponse.rechargeTime = "2016.06.07     11:55:09";
-        this.mRechargeRecordResponseList.add(rechargeRecordResponse);
-
-        rechargeRecordResponse = new RechargeRecordResponse();
-        rechargeRecordResponse.rechargeMode = "门店现金充值";
-        rechargeRecordResponse.rechargeMoney = "10000元";
-        rechargeRecordResponse.orderNo = "241246336548546257";
-        rechargeRecordResponse.rechargeTime = "2016.06.08     16:51:13";
-        this.mRechargeRecordResponseList.add(rechargeRecordResponse);
-
-
-        rechargeRecordResponse = new RechargeRecordResponse();
-        rechargeRecordResponse.rechargeMode = "网上充值";
-        rechargeRecordResponse.rechargeMoney = "200元";
-        rechargeRecordResponse.orderNo = "241246336548546258";
-        rechargeRecordResponse.rechargeTime = "2016.06.09     22:25:11";
-        this.mRechargeRecordResponseList.add(rechargeRecordResponse);
-
-
-        rechargeRecordResponse = new RechargeRecordResponse();
-        rechargeRecordResponse.rechargeMode = "网上充值";
-        rechargeRecordResponse.rechargeMoney = "500元";
-        rechargeRecordResponse.orderNo = "241246336548546259";
-        rechargeRecordResponse.rechargeTime = "2016.06.12     14:55:32";
-        this.mRechargeRecordResponseList.add(rechargeRecordResponse);
-        this.mRechargeRecordAdapter = new RechargeRecordAdapter(this,this.mRechargeRecordResponseList);
+        this.mRechargeRecordAdapter = new RechargeRecordAdapter(this,this.mRechargeRecordDetailModelList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         this.mRechargeRecyclerView.setLayoutManager(linearLayoutManager);
         this.mRechargeRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
@@ -103,38 +77,28 @@ public class RechargeRecordActivity extends BaseActivity{
         this.mRechargeRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        RechargeRecordActivity.this.mRechargeRecyclerView.refreshComplete();
-                    }
-                },3000);
+                isRefresh = true;
+                getData();
             }
 
             @Override
             public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        RechargeRecordActivity.this.mRechargeRecyclerView.loadMoreComplete();
-                    }
-                },3000);
+                isLoadMore = true;
+                RechargeRecordActivity.this.mPageSize = RechargeRecordActivity.this.mPageSize + 10;
+                getData();
 
             }
         });
         this.mRechargeRecyclerView.setAdapter(this.mRechargeRecordAdapter);
     }
     private void getData() {
-        this.mNetWorkCallBack = new NetWorkCallBack();
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String userId = userInfoBean.getCustId();
         String userPhone = userInfoBean.getCustMobile();
         //传入参数
         Map<String,Object> map = new HashMap<>();
-        map.put("page_size",this.mPageSize);
-        map.put("page_num",this.mPageNum);
+        map.put("page_size",String.valueOf(this.mPageSize));
+        map.put("page_num",String.valueOf(this.mPageNum));
         map.put("user_id",userId);
         map.put("user_phone",userPhone);
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_PUT_IN_LIST,map,RechargeRecordActivity.this.mNetWorkCallBack, RechargeRecordResponse.class);
@@ -155,12 +119,37 @@ public class RechargeRecordActivity extends BaseActivity{
             if(object instanceof RechargeRecordResponse) {
                 RechargeRecordResponse rechargeRecordResponse = (RechargeRecordResponse)object;
                 LogUtil.i(this,"rechargeRecordResponse = " + rechargeRecordResponse);
+                RechargeRecordModel model = rechargeRecordResponse.putin_list;
+                RechargeRecordActivity.this.mRechargeRecordDetailModelList = model.data_list;
+                if(RechargeRecordActivity.this.mRechargeRecordDetailModelList.size() == 0) {
+                    CommonUtil.showToast("亲，暂无充值记录",RechargeRecordActivity.this);
+                }
+                RechargeRecordActivity.this.mRechargeRecordAdapter.setList(RechargeRecordActivity.this.mRechargeRecordDetailModelList);
+                RechargeRecordActivity.this.mRechargeRecordAdapter.notifyDataSetChanged();
+            }
+            if(isRefresh) {
+                RechargeRecordActivity.this.mRechargeRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                RechargeRecordActivity.this.mRechargeRecyclerView.loadMoreComplete();
+                isLoadMore = false;
             }
         }
 
         @Override
         public void onFailure(Object message) {
 
+            String msg = (String) message;
+            CommonUtil.showToast(msg,RechargeRecordActivity.this);
+            if(isRefresh) {
+                RechargeRecordActivity.this.mRechargeRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                RechargeRecordActivity.this.mRechargeRecyclerView.loadMoreComplete();
+                isLoadMore = false;
+            }
         }
     }
 }

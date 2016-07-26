@@ -18,6 +18,7 @@ import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.model.OrderDetailModel;
 import www.chendanfeng.com.network.model.OrderResponse;
+import www.chendanfeng.com.util.CommonUtil;
 
 /**
  * Created by Administrator on 2016/7/15 0015.
@@ -47,7 +48,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         if(this.mOrderDetailModelList.get(position).state.equals("B")) {
             holder.mOrderPayTime.setText("未付款");
         }
-        holder.morderCreateTime.setText(this.mOrderDetailModelList.get(position).stamp_created);
+        String time = this.mOrderDetailModelList.get(position).stamp_created;
+        holder.morderCreateTime.setText(CommonUtil.formatTime(time));
         Picasso.with(this.mContext).load(Config.ROOT_URL + this.mOrderDetailModelList.get(position).small_img).error(this.mContext.getResources().getDrawable(R.drawable.order_default_image)).into(holder.mProductImage);
     }
 

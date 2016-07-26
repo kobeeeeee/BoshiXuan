@@ -33,7 +33,6 @@ import www.chendanfeng.com.xrecyclerview.XRecyclerView;
  */
 public class PayOrderFragment extends BaseFragment{
     private View mView;
-    private List<OrderResponse> mOrderResponseList;
     private OrderListAdapter mOrderListAdapter;
     @Bind(R.id.orderRecyclerView)
     XRecyclerView mOrderRecyclerView;
@@ -53,40 +52,8 @@ public class PayOrderFragment extends BaseFragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initData();
         initRecycleView();
         getData();
-    }
-    private void initData() {
-        this.mOrderResponseList = new ArrayList<>();
-        OrderResponse orderResponse = new OrderResponse();
-        orderResponse.productBrand = "芬迪";
-        orderResponse.productDayRent = "250";
-        orderResponse.productDeposit = "12000";
-        orderResponse.orderNo = "37320160712171900991596";
-        orderResponse.orderCreateTime = "2016-07-12 17:19:00";
-        orderResponse.orderPayTime = "2016-07-12 17:19:00";
-        this.mOrderResponseList.add(orderResponse);
-
-
-        orderResponse = new OrderResponse();
-        orderResponse.productBrand = "芬迪1";
-        orderResponse.productDayRent = "251";
-        orderResponse.productDeposit = "120200";
-        orderResponse.orderNo = "37320160712171900991597";
-        orderResponse.orderCreateTime = "2016-07-13 17:19:00";
-        orderResponse.orderPayTime = "2016-07-13 17:19:00";
-        this.mOrderResponseList.add(orderResponse);
-
-        orderResponse = new OrderResponse();
-        orderResponse.productBrand = "芬迪2";
-        orderResponse.productDayRent = "252";
-        orderResponse.productDeposit = "1000";
-        orderResponse.orderNo = "37320160712171900991598";
-        orderResponse.orderCreateTime = "2016-07-13 17:19:00";
-        orderResponse.orderPayTime = "2016-07-13 17:19:00";
-        this.mOrderResponseList.add(orderResponse);
-
     }
     private void initRecycleView() {
         this.mOrderListAdapter = new OrderListAdapter(getActivity(),this.mOrderDetailModelList);

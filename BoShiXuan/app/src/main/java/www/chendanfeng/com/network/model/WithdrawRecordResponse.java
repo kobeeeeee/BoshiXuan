@@ -12,9 +12,5 @@ public class WithdrawRecordResponse extends BaseResponse{
     public String withdrawTime;
     public String withdrawBankCard;
     public String withdrawBankName;
-    public List<WithdrawRecordDetailModel> data_list;
-    public String current_page;
-    public String page_size;
-    public String total_page;
-    public String total_record;
+    public WithdrawRecordModel fetchcash_list;
 }

@@ -12,18 +12,24 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import www.chendanfeng.com.boishixuan.R;
+import www.chendanfeng.com.network.model.RechargeRecordDetailModel;
 import www.chendanfeng.com.network.model.RechargeRecordResponse;
-import www.chendanfeng.com.network.model.WithdrawRecordResponse;
+import www.chendanfeng.com.network.model.WithdrawRecordDetailModel;
+import www.chendanfeng.com.util.CommonUtil;
 
 /**
  * Created by Administrator on 2016/7/13 0013.
  */
 public class RechargeRecordAdapter extends RecyclerView.Adapter<RechargeRecordAdapter.RechargeView>{
-    private List<RechargeRecordResponse> mRechargeRecordResponseList;
+    private List<RechargeRecordDetailModel> mRechargeRecordDetailModelList;
     private Context mContext;
-    public RechargeRecordAdapter(Context context, List<RechargeRecordResponse> responseList) {
-        this.mRechargeRecordResponseList = responseList;
+    public RechargeRecordAdapter(Context context, List<RechargeRecordDetailModel> modelList) {
+        this.mRechargeRecordDetailModelList = modelList;
         this.mContext = context;
+    }
+
+    public void setList(List<RechargeRecordDetailModel> modelList) {
+        this.mRechargeRecordDetailModelList = modelList;
     }
     @Override
     public RechargeView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,10 +39,11 @@ public class RechargeRecordAdapter extends RecyclerView.Adapter<RechargeRecordAd
 
     @Override
     public void onBindViewHolder(RechargeView holder, int position) {
-        holder.mRechargeMode.setText(this.mRechargeRecordResponseList.get(position).rechargeMode);
-        holder.mRechargeMoney.setText(this.mRechargeRecordResponseList.get(position).rechargeMoney);
-        holder.mRechargeTime.setText(this.mRechargeRecordResponseList.get(position).rechargeTime);
-        holder.mOrderNo.setText(this.mRechargeRecordResponseList.get(position).orderNo);
+        holder.mRechargeMode.setText(this.mRechargeRecordDetailModelList.get(position).state);
+        holder.mRechargeMoney.setText(this.mRechargeRecordDetailModelList.get(position).putin_money + "元");
+        String time = this.mRechargeRecordDetailModelList.get(position).stamp_created;
+        holder.mRechargeTime.setText(CommonUtil.formatTime(time));
+        holder.mOrderNo.setText(this.mRechargeRecordDetailModelList.get(position).putin_num);
     }
 
     @Override
@@ -46,7 +53,7 @@ public class RechargeRecordAdapter extends RecyclerView.Adapter<RechargeRecordAd
 
     @Override
     public int getItemCount() {
-        return this.mRechargeRecordResponseList.size();
+        return this.mRechargeRecordDetailModelList.size();
     }
 
 

@@ -4,6 +4,8 @@ package www.chendanfeng.com.util;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Xml;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -161,5 +163,20 @@ public class CommonUtil {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(longTime);
         return formatter.format(date);
+    }
+
+    /**
+     * 显示Toast
+     * @param message toast信息
+     * @param context context
+     */
+    public static void showToast(String message,Context context) {
+        Toast toast = Toast.makeText(context,message,Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+    public static String formatBankNo(String bankNo) {
+        String cardNo = bankNo.substring(0,4) + "***********" + bankNo.substring(15,19);
+        return cardNo;
     }
 }

@@ -21,9 +21,13 @@ import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.MatterRecordDetailModel;
+import www.chendanfeng.com.network.model.MatterRecordModel;
 import www.chendanfeng.com.network.model.MatterRecordResponse;
 import www.chendanfeng.com.network.model.RechargeRecordResponse;
+import www.chendanfeng.com.network.model.WithdrawRecordModel;
 import www.chendanfeng.com.network.model.WithdrawRecordResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
@@ -39,10 +43,12 @@ public class MatterRecordActivity extends BaseActivity{
     @Bind(R.id.matterRecyclerView)
     XRecyclerView mMatterRecyclerView;
     private MatterRecordAdapter mMatterRecordAdapter;
-    private List<MatterRecordResponse> mMatterRecordResponseList;
-    private NetWorkCallBack mNetWorkCallBack;
+    private List<MatterRecordDetailModel> mMatterRecordModelList = new ArrayList<>();
+    private NetWorkCallBack mNetWorkCallBack = new NetWorkCallBack();
     private int mPageSize = 10;
     private int mPageNum = 1;
+    private boolean isRefresh = false;
+    private boolean isLoadMore = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,33 +71,7 @@ public class MatterRecordActivity extends BaseActivity{
         });
     }
     private void initRecyclerView() {
-        this.mMatterRecordResponseList = new ArrayList<>();
-        MatterRecordResponse matterRecordResponse = new MatterRecordResponse();
-        matterRecordResponse.matterName = "360理财产品";
-        matterRecordResponse.buyMoney = "300元";
-        matterRecordResponse.buyTime = "2016.06.07     11:55:09";
-        this.mMatterRecordResponseList.add(matterRecordResponse);
-
-        matterRecordResponse = new MatterRecordResponse();
-        matterRecordResponse.matterName = "361理财产品";
-        matterRecordResponse.buyMoney = "500元";
-        matterRecordResponse.buyTime = "2016.06.08     16:51:13";
-        this.mMatterRecordResponseList.add(matterRecordResponse);
-
-
-        matterRecordResponse = new MatterRecordResponse();
-        matterRecordResponse.matterName = "362理财产品";
-        matterRecordResponse.buyMoney = "600元";
-        matterRecordResponse.buyTime = "2016.06.09     22:25:11";
-        this.mMatterRecordResponseList.add(matterRecordResponse);
-
-
-//        matterRecordResponse = new MatterRecordResponse();
-//        matterRecordResponse.matterName = "622************2445";
-//        matterRecordResponse.buyMoney = "700元";
-//        matterRecordResponse.buyTime = "2016.06.12     14:55:32";
-//        this.mMatterRecordResponseList.add(matterRecordResponse);
-        this.mMatterRecordAdapter = new MatterRecordAdapter(this,this.mMatterRecordResponseList);
+        this.mMatterRecordAdapter = new MatterRecordAdapter(this,this.mMatterRecordModelList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         this.mMatterRecyclerView.setLayoutManager(linearLayoutManager);
         this.mMatterRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
@@ -102,38 +82,28 @@ public class MatterRecordActivity extends BaseActivity{
         this.mMatterRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        MatterRecordActivity.this.mMatterRecyclerView.refreshComplete();
-                    }
-                },3000);
+                isRefresh = true;
+                getData();
             }
 
             @Override
             public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO
-                        MatterRecordActivity.this.mMatterRecyclerView.loadMoreComplete();
-                    }
-                },3000);
+                isLoadMore = true;
+                MatterRecordActivity.this.mPageSize = MatterRecordActivity.this.mPageSize + 10;
+                getData();
 
             }
         });
         this.mMatterRecyclerView.setAdapter(this.mMatterRecordAdapter);
     }
     private void getData() {
-        this.mNetWorkCallBack = new NetWorkCallBack();
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String userId = userInfoBean.getCustId();
         String userPhone = userInfoBean.getCustMobile();
         //传入参数
         Map<String,Object> map = new HashMap<>();
-        map.put("page_size",this.mPageSize);
-        map.put("page_num",this.mPageNum);
+        map.put("page_size",String.valueOf(this.mPageSize));
+        map.put("page_num",String.valueOf(this.mPageNum));
         map.put("user_id",userId);
         map.put("user_phone",userPhone);
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_FINANCE_LIST,map,MatterRecordActivity.this.mNetWorkCallBack, MatterRecordResponse.class);
@@ -154,12 +124,36 @@ public class MatterRecordActivity extends BaseActivity{
             if(object instanceof MatterRecordResponse) {
                 MatterRecordResponse matterRecordResponse = (MatterRecordResponse)object;
                 LogUtil.i(this,"matterRecordResponse = " + matterRecordResponse);
+                MatterRecordModel model = matterRecordResponse.finance_list;
+                MatterRecordActivity.this.mMatterRecordModelList = model.data_list;
+                if(MatterRecordActivity.this.mMatterRecordModelList.size() == 0) {
+                    CommonUtil.showToast("亲，还没有购买过理财产品呢",MatterRecordActivity.this);
+                }
+                MatterRecordActivity.this.mMatterRecordAdapter.setList(MatterRecordActivity.this.mMatterRecordModelList);
+                MatterRecordActivity.this.mMatterRecordAdapter.notifyDataSetChanged();
+            }
+            if(isRefresh) {
+                MatterRecordActivity.this.mMatterRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                MatterRecordActivity.this.mMatterRecyclerView.loadMoreComplete();
+                isLoadMore = false;
             }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,MatterRecordActivity.this);
+            if(isRefresh) {
+                MatterRecordActivity.this.mMatterRecyclerView.refreshComplete();
+                isRefresh = false;
+            }
+            if(isLoadMore) {
+                MatterRecordActivity.this.mMatterRecyclerView.loadMoreComplete();
+                isLoadMore = false;
+            }
         }
     }
 }

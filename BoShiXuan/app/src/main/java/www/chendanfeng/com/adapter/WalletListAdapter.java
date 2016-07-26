@@ -125,6 +125,7 @@ public class WalletListAdapter extends BaseAdapter{
                     break;
                 case TYPE_BANK_LIST:
                     intent = new Intent(WalletListAdapter.this.mContext, BankCardSelectActivity.class);
+                    intent.putExtra("type",1);
                     break;
                 case TYPE_WITHDRAW_RECORD:
                     intent = new Intent(WalletListAdapter.this.mContext, WithdrawRecordActivity.class);

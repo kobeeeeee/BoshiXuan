@@ -88,6 +88,7 @@ public class WithdrawActivity extends BaseActivity {
             switch (this.mType) {
                 case TYPE_SELECT:
                     intent = new Intent(WithdrawActivity.this,BankCardSelectActivity.class);
+                    intent.putExtra("type",0);
                     startActivityForResult(intent,SELECT_CARD);
                     break;
                 case TYPE_WITHDRAW:
