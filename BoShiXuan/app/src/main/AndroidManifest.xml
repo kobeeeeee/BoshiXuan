@@ -75,6 +75,10 @@
         </activity>
         <activity android:name=".AgreementActivity">
         </activity>
+        <activity android:name=".ShopActivity">
+        </activity>
+        <activity android:name=".HelpActivity">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.CALL_PHONE"/>

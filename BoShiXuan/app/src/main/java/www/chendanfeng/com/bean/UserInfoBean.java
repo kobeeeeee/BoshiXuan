@@ -22,7 +22,7 @@ public class UserInfoBean {
     //交易时间
     private static String txnTime = "";
     //密码
-    private static String password = "111111";
+    private static String password = "";
     //支付密码
     private static String payPsw = "";
     //用户名称

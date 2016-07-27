@@ -61,7 +61,6 @@ public class SettingFragment extends BaseFragment{
             Intent intent = new Intent();
             switch (this.mType) {
                 case TYPE_ABOUT:
-                    //TODO 测试跳转主页面代码
                     intent = new Intent(getActivity(),AboutActivity.class);
                     startActivity(intent);
                     break;

@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ import www.chendanfeng.com.network.RegisterResponse;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.VerifyCodeResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 
 public class LoginActivity extends BaseActivity {
@@ -74,19 +76,6 @@ public class LoginActivity extends BaseActivity {
         forgetTextView.setOnClickListener(new MyOnClickListener(TYPE_FORGET));
        this.mNetWorkCallBack = new NetWorkCallBack();
     }
-
-    public static  boolean checkPhoneNumber(String phoneNumber){
-        Pattern pattern = Pattern.compile("^1[0-9]{10}$");
-        Matcher matcher = pattern.matcher(phoneNumber);
-        return matcher.matches();
-    }
-
-    public static  boolean checkPassword(String password){
-        Pattern pattern = Pattern.compile(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]");
-        //Pattern pattern = Pattern.compile("^[A-Za-z0-9]{6,20}$");
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
     /**
      * 当进入登录画面时，初始化userBean的信息
      */
@@ -122,20 +111,32 @@ public class LoginActivity extends BaseActivity {
             Intent intent;
             switch (this.mType) {
                 case TYPE_LOGIN:
-//                    String phoneNumber = userEditText.getText().toString();
-//                    String password = passwordEditText.getText().toString();
-//                    if(!checkPhoneNumber(phoneNumber)) {
-//                        Toast toast = Toast.makeText(LoginActivity.this,"无效的手机号码",Toast.LENGTH_SHORT);
-//                        toast.setGravity(Gravity.CENTER, 0, 0);
-//                        toast.show();
+                    String phoneNumber = userEditText.getText().toString();
+                    String password = passwordEditText.getText().toString();
+//                    if(TextUtils.isEmpty(phoneNumber)) {
+//                        CommonUtil.showToast("请输入手机号码",LoginActivity.this);
 //                        break;
 //                    }
+//                    if(!CommonUtil.checkPhoneNumber(phoneNumber)) {
+//                        CommonUtil.showToast("无效的手机号码",LoginActivity.this);
+//                        break;
+//                    }
+//                    if(TextUtils.isEmpty(password)) {
+//                        CommonUtil.showToast("请输入密码",LoginActivity.this);
+//                        break;
+//                    }
+//                    if(!CommonUtil.checkPassword(password)){
+//                        CommonUtil.showToast("密码长度为6-20位字母或有效数字组成",LoginActivity.this);
+//                        break;
+//                    }
+
 //                    //根据输入的用户名、密码调用接口校验用户名密码是否正确
 //                    Map<String,Object> map = new HashMap<>();
 //                    map.put("user_phone",phoneNumber);
 //                    map.put("user_passwd",password);
 //                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_USER_LOGIN,map,LoginActivity.this.mNetWorkCallBack,LoginResponse.class);
 
+                    //TODO 测试登录用
                     intent = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();
@@ -167,16 +168,21 @@ public class LoginActivity extends BaseActivity {
             if (object instanceof LoginResponse) {
                 LoginResponse loginResponse = (LoginResponse)object;
                 LogUtil.i(this,"loginResponse = " + loginResponse);
+                CommonUtil.showToast("登录成功",LoginActivity.this);
                 UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                 userInfoBean.setCustId(loginResponse.custId);
                 userInfoBean.setCustMobile(loginResponse.user_phone);
                 userInfoBean.setUserName(loginResponse.user_name);
+                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(intent);
+                LoginActivity.this.finish();
             }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,LoginActivity.this);
         }
     }
 }

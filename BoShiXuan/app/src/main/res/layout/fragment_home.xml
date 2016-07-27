@@ -160,8 +160,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rechargeImage"
-            android:src="@drawable/home_recharger"
+            android:id="@+id/shopImage"
+            android:src="@drawable/home_shop"
             android:layout_marginLeft="50dp"
             android:layout_alignTop="@+id/withdrawImage"
             android:layout_toRightOf="@+id/withdrawImage"
@@ -170,10 +170,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="充值"
+            android:text="旗舰店"
             android:id="@+id/textView6"
             android:textSize="17sp"
-            android:layout_marginLeft="65dp"
+            android:layout_marginLeft="55dp"
             android:layout_alignTop="@+id/textView5"
             android:layout_toRightOf="@+id/withdrawImage"
             android:layout_toEndOf="@+id/withdrawImage" />
@@ -225,8 +225,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/home_more"
-            android:id="@+id/moreImage"
+            android:src="@drawable/home_help"
+            android:id="@+id/helpImage"
             android:layout_marginLeft="50dp"
             android:layout_alignTop="@+id/orderImage"
             android:layout_toRightOf="@+id/orderImage"
@@ -235,10 +235,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="更多"
+            android:text="使用帮助"
             android:id="@+id/textView9"
             android:textSize="17sp"
-            android:layout_marginLeft="65dp"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="10.5dp"
             android:layout_below="@+id/orderImage"
             android:layout_toRightOf="@+id/orderImage"

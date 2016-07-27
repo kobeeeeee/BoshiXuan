@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import www.chendanfeng.com.bean.UserInfoBean;
@@ -22,6 +24,7 @@ import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.RechargeRecordActivity;
 import www.chendanfeng.com.boishixuan.WithdrawActivity;
 import www.chendanfeng.com.boishixuan.WithdrawRecordActivity;
+import www.chendanfeng.com.util.CommonUtil;
 
 /**
  * Created by Administrator on 2016/7/4 0004.
@@ -107,6 +110,13 @@ public class WalletListAdapter extends BaseAdapter{
             Intent intent = null;
             switch (this.mType) {
                 case TYPE_WITHDRAW:
+                    Date date = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH");
+                    int time = Integer.valueOf(sdf.format(date));
+                    if(time >= 22 || time <6) {
+                        CommonUtil.showToast("晚十点到早六点不能体现哦",WalletListAdapter.this.mContext);
+                        break;
+                    }
                     intent = new Intent(WalletListAdapter.this.mContext, WithdrawActivity.class);
                     break;
                 case TYPE_MODIFY_PASSWORD:
@@ -116,9 +126,7 @@ public class WalletListAdapter extends BaseAdapter{
                     UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                     String isVerify = userInfoBean.getIsVerity();
                     if(isVerify.equals("2")) {
-                        Toast toast = Toast.makeText(WalletListAdapter.this.mContext,"已实名认证",Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                        CommonUtil.showToast("已实名认证",WalletListAdapter.this.mContext);
                         return;
                     }
                     intent = new Intent(WalletListAdapter.this.mContext, CertificationActivity.class);

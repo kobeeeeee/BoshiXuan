@@ -17,4 +17,5 @@ public class ProductDetailModel {
     public String brand_name;
     public String goods_type;
     public String shop_id;
+    public String state;
 }

@@ -110,6 +110,8 @@
         android:layout_width="113dp"
         android:layout_height="wrap_content"
         android:background="@drawable/register_input_version"
+        android:gravity="center"
+        android:inputType="number"
         android:layout_below="@+id/confirmPassword"
         android:layout_alignLeft="@+id/confirmPassword"
         android:layout_marginTop="45dp"

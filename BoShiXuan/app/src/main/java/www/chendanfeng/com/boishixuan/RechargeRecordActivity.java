@@ -53,6 +53,7 @@ public class RechargeRecordActivity extends BaseActivity{
         ButterKnife.bind(this);
         initHeader();
         initRecyclerView();
+        getData();
     }
     private void initHeader(){
         this.mHeader.setVisibility(View.VISIBLE);

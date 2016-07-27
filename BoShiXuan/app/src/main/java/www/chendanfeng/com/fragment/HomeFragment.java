@@ -1,7 +1,6 @@
 package www.chendanfeng.com.fragment;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -25,11 +23,13 @@ import butterknife.ButterKnife;
 import www.chendanfeng.com.adapter.BannerViewPagerAdapter;
 import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.boishixuan.DepositActivity;
+import www.chendanfeng.com.boishixuan.HelpActivity;
 import www.chendanfeng.com.boishixuan.LeaseActivity;
+import www.chendanfeng.com.boishixuan.LeaseProductActivity;
 import www.chendanfeng.com.boishixuan.MoreActivity;
 import www.chendanfeng.com.boishixuan.MyOrderActivity;
 import www.chendanfeng.com.boishixuan.R;
-import www.chendanfeng.com.boishixuan.RechargeActivity;
+import www.chendanfeng.com.boishixuan.ShopActivity;
 import www.chendanfeng.com.boishixuan.WithdrawActivity;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
@@ -42,10 +42,10 @@ import www.chendanfeng.com.network.model.AccountBalanceResponse;
 public class HomeFragment extends BaseFragment{
     public static final int TYPE_LEASE = 1;
     public static final int TYPE_WITHDRAW = 2;
-    public static final int TYPE_RECHARGE = 3;
+    public static final int TYPE_SHOP = 3;
     public static final int TYPE_DEPOSIT = 4;
     public static final int TYPE_ORDER = 5;
-    public static final int TYPE_MORE = 6;
+    public static final int TYPE_HELP = 6;
 
     @Bind(R.id.tv_head)
     TextView mHeader;
@@ -67,14 +67,14 @@ public class HomeFragment extends BaseFragment{
     ImageView mLeaseImage;
     @Bind(R.id.withdrawImage)
     ImageView mWithdrawImage;
-    @Bind(R.id.rechargeImage)
-    ImageView mRechargeImage;
+    @Bind(R.id.shopImage)
+    ImageView mShopImage;
     @Bind(R.id.depositImage)
     ImageView mDepositeImage;
     @Bind(R.id.orderImage)
     ImageView mOrderImage;
-    @Bind(R.id.moreImage)
-    ImageView mMoreImage;
+    @Bind(R.id.helpImage)
+    ImageView mHelpImage;
 
     @Bind(R.id.accountBalance)
     TextView mAccountBalance;
@@ -147,7 +147,7 @@ public class HomeFragment extends BaseFragment{
             image.setScaleType(ImageView.ScaleType.FIT_XY);
             mAdvancePicList.add(image);
         }
-        BannerViewPagerAdapter adapter = new BannerViewPagerAdapter(mAdvancePicList);
+        BannerViewPagerAdapter adapter = new BannerViewPagerAdapter(mAdvancePicList,getActivity());
         mViewBanner.setAdapter(adapter);
         mViewBanner.setCurrentItem(1);
         mViewBanner.addOnPageChangeListener(new GuidePageChangeListener());
@@ -170,6 +170,31 @@ public class HomeFragment extends BaseFragment{
                 return false;
             }
         });
+
+        for(int i=0;i<this.mAdvancePicList.size();i++) {
+            final int position = i;
+            ImageView view = this.mAdvancePicList.get(i);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), LeaseProductActivity.class);
+                    switch (position) {
+                        case 1:
+                        case 4:
+                            intent.putExtra("type",2);
+                            break;
+                        case 2:
+                            intent.putExtra("type",1);
+                            break;
+                        case 0:
+                        case 3:
+                            intent.putExtra("type",3);
+                            break;
+                    }
+                    getActivity().startActivity(intent);
+                }
+            });
+        }
         if (!this.mThread.isAlive()){
             this.mThread.start();
         }
@@ -227,10 +252,10 @@ public class HomeFragment extends BaseFragment{
     private void initClickListener() {
         this.mLeaseImage.setOnClickListener(new MyOnClickListener(TYPE_LEASE));
         this.mWithdrawImage.setOnClickListener(new MyOnClickListener(TYPE_WITHDRAW));
-        this.mRechargeImage.setOnClickListener(new MyOnClickListener(TYPE_RECHARGE));
+        this.mShopImage.setOnClickListener(new MyOnClickListener(TYPE_SHOP));
         this.mDepositeImage.setOnClickListener(new MyOnClickListener(TYPE_DEPOSIT));
         this.mOrderImage.setOnClickListener(new MyOnClickListener(TYPE_ORDER));
-        this.mMoreImage.setOnClickListener(new MyOnClickListener(TYPE_MORE));
+        this.mHelpImage.setOnClickListener(new MyOnClickListener(TYPE_HELP));
     }
     private Thread mThread = new Thread(new Runnable() {
 
@@ -307,8 +332,8 @@ public class HomeFragment extends BaseFragment{
                     intent = new Intent(getActivity(), WithdrawActivity.class);
                     startActivity(intent);
                     break;
-                case TYPE_RECHARGE:
-                    intent = new Intent(getActivity(), RechargeActivity.class);
+                case TYPE_SHOP:
+                    intent = new Intent(getActivity(), ShopActivity.class);
                     startActivity(intent);
                     break;
                 case TYPE_DEPOSIT:
@@ -319,8 +344,8 @@ public class HomeFragment extends BaseFragment{
                     intent = new Intent(getActivity(), MyOrderActivity.class);
                     startActivity(intent);
                     break;
-                case TYPE_MORE:
-                    intent = new Intent(getActivity(), MoreActivity.class);
+                case TYPE_HELP:
+                    intent = new Intent(getActivity(), HelpActivity.class);
                     startActivity(intent);
                     break;
             }

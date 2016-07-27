@@ -1,5 +1,7 @@
 package www.chendanfeng.com.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -8,15 +10,18 @@ import android.widget.ImageView;
 
 import java.util.List;
 
+import www.chendanfeng.com.boishixuan.LeaseProductActivity;
+
 /**
  * Created by Administrator on 2016/7/2 0002.
  */
 public class BannerViewPagerAdapter extends PagerAdapter {
     private List<ImageView> mViewList = null;
     private int mChildCount = 0;
-
-    public BannerViewPagerAdapter(List<ImageView> views) {
+    private Context mContext;
+    public BannerViewPagerAdapter(List<ImageView> views, Context context) {
         this.mViewList = views;
+        this.mContext = context;
     }
 
     @Override
@@ -30,7 +35,7 @@ public class BannerViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(View arg0, int arg1) {
+    public Object instantiateItem(View arg0, final int arg1) {
         if (mViewList.get(arg1 % mViewList.size()).getParent() != null) {
             ((ViewPager) mViewList.get(arg1 % mViewList.size())
                     .getParent()).removeView(mViewList.get(arg1

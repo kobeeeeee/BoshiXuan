@@ -1,6 +1,8 @@
 package www.chendanfeng.com.boishixuan;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -33,6 +35,7 @@ import www.chendanfeng.com.network.model.UnBindBankResponse;
 import www.chendanfeng.com.network.model.WithDrawResponse;
 import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
+import www.chendanfeng.com.view.CustomDialog;
 
 /**
  * Created by Administrator on 2016/7/8 0008.
@@ -137,10 +140,27 @@ public class BankCardSelectActivity extends BaseActivity{
         }
     }
     @Subscribe
-    public void onEvent(BaseEvent event) {
+    public void onEvent(final BaseEvent event) {
         if(event instanceof BankSelectEvent) {
-            BankDetailModel model = ((BankSelectEvent) event).mBankDetailModel;
-            unBindBankCard(model);
+            StringBuffer message = new StringBuffer();
+            message.append("确定解除绑定么");
+            CustomDialog.Builder builder=new CustomDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setMessage(message.toString());
+            builder.setNegativeButton("取消",new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.setPositiveButton("确定",new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    BankDetailModel model = ((BankSelectEvent) event).mBankDetailModel;
+                    unBindBankCard(model);
+                }
+            });
+            builder.create().show();
         }
     }
     /**
