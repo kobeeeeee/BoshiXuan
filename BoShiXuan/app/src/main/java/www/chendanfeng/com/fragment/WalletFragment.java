@@ -37,6 +37,8 @@ public class WalletFragment extends BaseFragment {
     ListView mWalletListView;
     @Bind(R.id.userName)
     TextView mUserName;
+    @Bind(R.id.phoneNo)
+    TextView mPhoneNo;
     private View mView;
     private List<String> mWalletTextList;
     private List<Integer> mWalletImageList;
@@ -70,8 +72,10 @@ public class WalletFragment extends BaseFragment {
     public void initData() {
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String phone = userInfoBean.getCustMobile();
-        String userName = phone.substring(0,3) + "****" + phone.substring(7,11);
+        String userName = userInfoBean.getUserName();
+        String phoneNo = phone.substring(0,3) + "****" + phone.substring(7,11);
         this.mUserName.setText(userName);
+        this.mPhoneNo.setText(phoneNo);
         this.mWalletTextList = new ArrayList<>();
         this.mWalletTextList.add("提款到银行账户");
         this.mWalletTextList.add("修改密码");
