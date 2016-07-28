@@ -2,13 +2,16 @@ package www.chendanfeng.com.boishixuan;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -19,6 +22,7 @@ import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.BankAddResponse;
 import www.chendanfeng.com.util.LogUtil;
+import www.chendanfeng.com.view.pickerview.Picker;
 
 /**
  * Created by Administrator on 2016/7/9 0009.
@@ -36,7 +40,11 @@ public class BankCardAddActivity extends BaseActivity{
     EditText mBankName;
     @Bind(R.id.BankAddBtn)
     ImageView mBankAddBtn;
+    @Bind(R.id.expansionLayout)
+    RelativeLayout mExpansionLayout;
+    private Picker mPicker;
     private NetWorkCallBack mNetWorkCallBack;
+    private List<String> bankList = new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +75,22 @@ public class BankCardAddActivity extends BaseActivity{
                 getData();
             }
         });
+
+        this.mExpansionLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BankCardAddActivity.this.mPicker.show();
+                BankCardAddActivity.this.mPicker.setOnSelectDoneListener(new Picker.OnSelectDoneListener() {
+                    @Override
+                    public void onSelectDone(String text) {
+                        mBankName.setText(text);
+                    }
+                });
+            }
+        });
+        putBankIntoList();
+        View parentView = LayoutInflater.from(BankCardAddActivity.this).inflate(R.layout.activity_bank_add,null);
+        this.mPicker = new Picker(this, parentView, bankList);
     }
     private void getData() {
         this.mNetWorkCallBack = new NetWorkCallBack();
@@ -84,6 +108,35 @@ public class BankCardAddActivity extends BaseActivity{
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_BANDING_BANK,map,BankCardAddActivity.this.mNetWorkCallBack, BankAddResponse.class);
 
 
+    }
+    private void putBankIntoList() {
+        bankList.add("中国银行");
+        bankList.add("中国农业银行");
+        bankList.add("中国工商银行");
+        bankList.add("中国建设银行");
+        bankList.add("中国民生银行");
+        bankList.add("招商银行");
+        bankList.add("中国邮政储蓄银行");
+        bankList.add("农村信用社");
+        bankList.add("平安银行");
+        bankList.add("交通银行");
+        bankList.add("兴业银行");
+        bankList.add("上海浦东发展银行");
+        bankList.add("中信银行");
+        bankList.add("华夏银行");
+        bankList.add("中国光大银行");
+        bankList.add("农村商业银行");
+        bankList.add("华一银行");
+        bankList.add("南洋商业银行");
+        bankList.add("厦门国际银行");
+        bankList.add("城市信用社");
+        bankList.add("城市商业银行");
+        bankList.add("广东发展银行");
+        bankList.add("恒生银行");
+        bankList.add("渣打银行");
+        bankList.add("渤海银行");
+        bankList.add("花旗银行");
+        bankList.add("香港上海汇丰银行");
     }
     private class NetWorkCallBack implements RequestListener {
 
