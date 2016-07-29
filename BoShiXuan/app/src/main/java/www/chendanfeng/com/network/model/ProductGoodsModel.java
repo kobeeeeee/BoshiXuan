@@ -8,4 +8,6 @@ import java.util.List;
 public class ProductGoodsModel {
     public List<ProductDetailModel> data_list;
     public int current_page;
+    public int total_page;
+    public int total_record;
 }

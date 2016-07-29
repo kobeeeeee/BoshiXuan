@@ -26,6 +26,7 @@ import www.chendanfeng.com.network.model.ProductResponse;
 import www.chendanfeng.com.network.model.RegularDetailModel;
 import www.chendanfeng.com.network.model.RegularModel;
 import www.chendanfeng.com.network.model.RegularResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
@@ -44,6 +45,8 @@ public class RegularFragment extends BaseFragment{
     public int mPageSize = 10;
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
+    private int mCurrentPage = 0;
+    private int mTotalPage = 0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,6 +81,12 @@ public class RegularFragment extends BaseFragment{
 
             @Override
             public void onLoadMore() {
+                if(RegularFragment.this.mCurrentPage == RegularFragment.this.mTotalPage) {
+                    CommonUtil.showToast("亲，就只有这么多了",getActivity());
+                    RegularFragment.this.mRegularRecyclerView.loadMoreComplete();
+                    return;
+                }
+
                 isLoadMore = true;
                 RegularFragment.this.mPageSize = RegularFragment.this.mPageSize + 10;
                 getData();
@@ -115,18 +124,25 @@ public class RegularFragment extends BaseFragment{
                 RegularResponse regularResponse = (RegularResponse)object;
                 LogUtil.i(this,"regularResponse = " + regularResponse);
                 RegularModel regularModel = regularResponse.financeproduct_list;
+                RegularFragment.this.mCurrentPage = regularModel.current_page;
+                RegularFragment.this.mTotalPage = regularModel.total_page;
                 List<RegularDetailModel> regularDetailModelList = regularModel.data_list;
+                if(regularDetailModelList.size() == 0) {
+                    CommonUtil.showToast("暂无产品",getActivity());
+                }
                 RegularFragment.this.mRegularListAdapter.setList(regularDetailModelList);
                 RegularFragment.this.mRegularListAdapter.notifyDataSetChanged();
-
             }
             if(isRefresh) {
                 RegularFragment.this.mRegularRecyclerView.refreshComplete();
                 isRefresh = false;
             }
             if(isLoadMore) {
+                if(RegularFragment.this.mCurrentPage == RegularFragment.this.mTotalPage) {
+                    CommonUtil.showToast("亲，就只有这么多了",getActivity());
+                }
                 RegularFragment.this.mRegularRecyclerView.loadMoreComplete();
-               isLoadMore = false;
+                isLoadMore = false;
             }
         }
 

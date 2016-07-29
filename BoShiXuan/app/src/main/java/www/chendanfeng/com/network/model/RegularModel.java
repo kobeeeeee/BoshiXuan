@@ -8,4 +8,5 @@ import java.util.List;
 public class RegularModel {
     public List<RegularDetailModel> data_list;
     public int current_page;
+    public int total_page;
 }

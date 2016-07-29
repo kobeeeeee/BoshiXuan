@@ -7,5 +7,6 @@ import java.util.List;
  */
 public class OrderModel {
     public int current_page;
+    public int total_page;
     public List<OrderDetailModel> data_list;
 }

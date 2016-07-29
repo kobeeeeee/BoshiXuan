@@ -26,6 +26,7 @@ import www.chendanfeng.com.network.model.MessageListResponse;
 import www.chendanfeng.com.network.model.OrderDetailModel;
 import www.chendanfeng.com.network.model.OrderModel;
 import www.chendanfeng.com.network.model.OrderResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.xrecyclerview.ProgressStyle;
 import www.chendanfeng.com.xrecyclerview.XRecyclerView;
@@ -44,6 +45,8 @@ public class UnPayOrderFragment extends BaseFragment{
     private int mPageSize = 10;
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
+    private int mCurrentPage = 0;
+    private int mTotalPage = 0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,6 +78,12 @@ public class UnPayOrderFragment extends BaseFragment{
 
             @Override
             public void onLoadMore() {
+                if(UnPayOrderFragment.this.mCurrentPage == UnPayOrderFragment.this.mTotalPage) {
+                    CommonUtil.showToast("亲，就只有这么多了",getActivity());
+                    UnPayOrderFragment.this.mDisPayOrderRecyclerView.loadMoreComplete();
+                    return;
+                }
+
                 isLoadMore = true;
                 UnPayOrderFragment.this.mPageSize = UnPayOrderFragment.this.mPageSize + 10;
                 getData();
@@ -112,7 +121,12 @@ public class UnPayOrderFragment extends BaseFragment{
                 OrderResponse orderResponse = (OrderResponse)object;
                 LogUtil.i(this,"orderResponse = " + orderResponse);
                 OrderModel orderModel = orderResponse.order_list;
+                UnPayOrderFragment.this.mCurrentPage = orderModel.current_page;
+                UnPayOrderFragment.this.mTotalPage = orderModel.total_page;
                 List<OrderDetailModel> orderDetailModelList = orderModel.data_list;
+                if(orderDetailModelList.size() == 0) {
+                    CommonUtil.showToast("暂无已支付订单",getActivity());
+                }
                 UnPayOrderFragment.this.mOrderListAdapter.setList(orderDetailModelList);
                 UnPayOrderFragment.this.mOrderListAdapter.notifyDataSetChanged();
             }
