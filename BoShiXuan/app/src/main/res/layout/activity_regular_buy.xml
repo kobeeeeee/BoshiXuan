@@ -170,6 +170,7 @@
                 android:gravity="center"
                 android:textColorHint="@color/regular_input_gray"
                 android:textSize="12sp"
+                android:inputType="number"
                 android:id="@+id/inputBuyMoney"
                 android:layout_below="@+id/accountBalance"
                 android:layout_toRightOf="@+id/textView78"

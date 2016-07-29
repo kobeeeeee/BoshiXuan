@@ -1,8 +1,11 @@
 package www.chendanfeng.com.boishixuan;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,10 +21,13 @@ import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
+import www.chendanfeng.com.network.model.AccountBalanceResponse;
 import www.chendanfeng.com.network.model.MessageListResponse;
 import www.chendanfeng.com.network.model.OrderResponse;
 import www.chendanfeng.com.network.model.RegularBuyResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
+import www.chendanfeng.com.view.CustomDialog;
 
 /**
  * Created by Administrator on 2016/7/17 0017.
@@ -57,6 +63,7 @@ public class RegularBuyActivity extends BaseActivity{
         initHeader();
         initClick();
         initData();
+        getAccountBalance();
     }
     private void initHeader() {
         this.mHeader.setVisibility(View.VISIBLE);
@@ -78,6 +85,15 @@ public class RegularBuyActivity extends BaseActivity{
         this.mRegularBuyMin.setText(investMoney);
         this.mRegularYearIncome.setText(interestRate);
     }
+    private void getAccountBalance() {
+        Map<String,Object> map = new HashMap<>();
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String userId = userInfoBean.getCustId();
+        String userPhone = userInfoBean.getCustMobile();
+        map.put("user_id",userId);
+        map.put("user_phone",userPhone);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_BALANCE_STATISTIC,map,this.mNetWorkCallBack, AccountBalanceResponse.class);
+    }
     private void initClick() {
         this.mNetWorkCallBack = new NetWorkCallBack();
         this.mCheckProtocolBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +110,24 @@ public class RegularBuyActivity extends BaseActivity{
                     isChecked = false;
                     RegularBuyActivity.this.mRegularCheckbox.setImageResource(R.drawable.regular_checkbox_normal);
                 } else {
+                    String investDay = RegularBuyActivity.this.mRegularBuyDay.getText().toString();
+                    String buyMoney = RegularBuyActivity.this.mInputBuyMoney.getText().toString();
+                    String interestRate = RegularBuyActivity.this.mRegularYearIncome.getText().toString();
+                    float dayNum = 0.0f;
+                    float rate = 0.0f;
+                    float money = 0.0f;
+                    if(!TextUtils.isEmpty(investDay)) {
+                        dayNum = Float.valueOf(investDay.substring(0,investDay.length()-1));
+                    }
+                    if(!TextUtils.isEmpty(interestRate)) {
+                        rate = Float.valueOf(interestRate.substring(0,interestRate.length()-1));
+                    }
+                    if(!TextUtils.isEmpty(buyMoney)) {
+                        money = Float.valueOf(buyMoney);
+                    }
+                    float income = dayNum/360 * rate * money/100;
+                    String toastString = investDay + "后到期预计收益为" + String.valueOf(income) + "元";
+                    CommonUtil.showToast(toastString,RegularBuyActivity.this);
                     isChecked = true;
                     RegularBuyActivity.this.mRegularCheckbox.setImageResource(R.drawable.regular_checkbox_press);
                 }
@@ -102,6 +136,39 @@ public class RegularBuyActivity extends BaseActivity{
         this.mRegularBuyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!isChecked) {
+                    CommonUtil.showToast("请先同意支付协议",RegularBuyActivity.this);
+                    return;
+                }
+                String inputNumber = RegularBuyActivity.this.mInputBuyMoney.getText().toString();
+                if(TextUtils.isEmpty(inputNumber)) {
+                    CommonUtil.showToast("请输入购买金额",RegularBuyActivity.this);
+                    return;
+                }
+                String accountBalance = RegularBuyActivity.this.mAccountBalance.getText().toString();
+                if(Float.valueOf(inputNumber) > Float.valueOf(accountBalance)) {
+                    StringBuffer message = new StringBuffer();
+                    message.append("亲，请问需要充值吗");
+                    CustomDialog.Builder builder=new CustomDialog.Builder(RegularBuyActivity.this);
+                    builder.setTitle("账户余额不足");
+                    builder.setMessage(message.toString());
+                    builder.setNegativeButton("取消",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton("立刻充值",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(RegularBuyActivity.this,RechargeActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    builder.create().show();
+                    return;
+                }
                 confirmBuy();
             }
         });
@@ -151,11 +218,17 @@ public class RegularBuyActivity extends BaseActivity{
                 RegularBuyResponse regularBuyResponse = (RegularBuyResponse)object;
                 LogUtil.i(this,"regularBuyResponse = " + regularBuyResponse);
             }
+
+            if (object instanceof AccountBalanceResponse) {
+                AccountBalanceResponse accountBalanceResponse = (AccountBalanceResponse)object;
+                RegularBuyActivity.this.mAccountBalance.setText(accountBalanceResponse.balance);
+            }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,RegularBuyActivity.this);
         }
     }
 }

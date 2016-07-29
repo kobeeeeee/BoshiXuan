@@ -62,11 +62,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView10"
             android:layout_marginTop="10.5dp"
-            android:layout_marginLeft="90.5dp"
             android:src="@drawable/regular_buy_button"
             android:layout_below="@+id/regularProductName"
-            android:layout_toRightOf="@+id/regularProductName"
-            android:layout_toEndOf="@+id/regularProductName" />
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="54.5dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -85,11 +84,10 @@
             android:text="1000元起投"
             android:textColor="@color/font_for_black"
             android:textSize="14sp"
-            android:layout_marginLeft="85dp"
             android:layout_marginTop="12dp"
             android:id="@+id/regularProductMin"
             android:layout_below="@+id/imageView10"
-            android:layout_toRightOf="@+id/regularProductName"
-            android:layout_toEndOf="@+id/regularProductName" />
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"/>
     </RelativeLayout>
 </LinearLayout>
