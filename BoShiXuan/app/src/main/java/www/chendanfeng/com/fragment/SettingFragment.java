@@ -22,6 +22,7 @@ import www.chendanfeng.com.boishixuan.MainActivity;
 import www.chendanfeng.com.boishixuan.PasswordActivity;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.RegisterActivity;
+import www.chendanfeng.com.boishixuan.UsehelpActivity;
 import www.chendanfeng.com.view.CustomDialog;
 
 /**
@@ -33,12 +34,15 @@ public class SettingFragment extends BaseFragment{
     public static final int TYPE_SHARE = 2;
     public static final int TYPE_PHONE = 3;
     public static final int TYPE_LOGOUT = 4;
+    public static final int TYPE_USEHELP = 5;
     @Bind(R.id.aboutus)
     TextView aboutusText;
     @Bind(R.id.phone)
     TextView phoneText;
     @Bind(R.id.logout)
     ImageView logoutButton;
+    @Bind(R.id.usehelp)
+    TextView usehelpText;
 
     @Nullable
     @Override
@@ -48,6 +52,7 @@ public class SettingFragment extends BaseFragment{
         aboutusText.setOnClickListener(new MyOnClickListener(TYPE_ABOUT));
         phoneText.setOnClickListener(new MyOnClickListener(TYPE_PHONE));
         logoutButton.setOnClickListener(new MyOnClickListener(TYPE_LOGOUT));
+        usehelpText.setOnClickListener(new MyOnClickListener(TYPE_USEHELP));
         return this.mView;
     }
 
@@ -96,6 +101,11 @@ public class SettingFragment extends BaseFragment{
                     break;
                 case TYPE_LOGOUT:
                     getActivity().finish();
+                    break;
+                case TYPE_USEHELP:
+                    intent = new Intent(getActivity(),UsehelpActivity.class);
+                    startActivity(intent);
+                    break;
             }
         }
     }

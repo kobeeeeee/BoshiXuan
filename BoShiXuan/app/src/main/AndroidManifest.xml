@@ -79,6 +79,8 @@
         </activity>
         <activity android:name=".HelpActivity">
         </activity>
+        <activity android:name=".UsehelpActivity">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.CALL_PHONE"/>
