@@ -15,6 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -132,12 +135,16 @@ public class PasswordActivity extends BaseActivity {
                         CommonUtil.showToast("验证码错误，请重新输入",PasswordActivity.this);
                         break;
                     }
+
+                    String encryptNewPasswd = md5(password);
+                    LogUtil.i(this,"修改密码加密密码 = " + encryptNewPasswd);
+
                     UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                     Map<String,Object> mapModify = new HashMap<>();
                     mapModify.put("passwd_type","1");
                     mapModify.put("modify_type","2");
                     mapModify.put("old_passwd",code);
-                    mapModify.put("new_passwd",password);
+                    mapModify.put("new_passwd",encryptNewPasswd);
                     mapModify.put("user_phone",userInfoBean.getCustMobile());
                     RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_MODIFY_PWD,mapModify,PasswordActivity.this.mNetWorkCallBack, ModifyPswResponse.class);
 
@@ -216,5 +223,23 @@ public class PasswordActivity extends BaseActivity {
             codeButton.setClickable(false);//防止重复点击
             codeButton.setText(millisUntilFinished / 1000 + "秒");
         }
+    }
+
+    public static String md5(String string) {
+        byte[] hash;
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Huh, MD5 should be supported?", e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
+        }
+
+        StringBuilder hex = new StringBuilder(hash.length * 2);
+        for (byte b : hash) {
+            if ((b & 0xFF) < 0x10) hex.append("0");
+            hex.append(Integer.toHexString(b & 0xFF));
+        }
+        return hex.toString();
     }
 }

@@ -18,6 +18,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -129,11 +132,12 @@ public class LoginActivity extends BaseActivity {
 //                        CommonUtil.showToast("密码长度为6-20位字母或有效数字组成",LoginActivity.this);
 //                        break;
 //                    }
-
+//                    String encryptPasswd = md5(password);
+//                    LogUtil.i(this,"登录加密密码 = " + encryptPasswd);
 //                    //根据输入的用户名、密码调用接口校验用户名密码是否正确
 //                    Map<String,Object> map = new HashMap<>();
 //                    map.put("user_phone",phoneNumber);
-//                    map.put("user_passwd",password);
+//                    map.put("user_passwd",encryptPasswd);
 //                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_USER_LOGIN,map,LoginActivity.this.mNetWorkCallBack,LoginResponse.class);
 
                     //TODO 测试登录用
@@ -184,5 +188,23 @@ public class LoginActivity extends BaseActivity {
             String msg = (String) message;
             CommonUtil.showToast(msg,LoginActivity.this);
         }
+    }
+
+    public static String md5(String string) {
+        byte[] hash;
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Huh, MD5 should be supported?", e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
+        }
+
+        StringBuilder hex = new StringBuilder(hash.length * 2);
+        for (byte b : hash) {
+            if ((b & 0xFF) < 0x10) hex.append("0");
+            hex.append(Integer.toHexString(b & 0xFF));
+        }
+        return hex.toString();
     }
 }
