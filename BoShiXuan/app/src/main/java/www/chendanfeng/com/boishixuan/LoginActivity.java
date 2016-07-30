@@ -74,6 +74,14 @@ public class LoginActivity extends BaseActivity {
             startActivity(intent);
             this.finish();
         }
+        else
+        {
+            LogUtil.i(this,"logintest2");
+            UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+            String mobile = userInfoBean.getCustMobile();
+            LogUtil.i(this,"login phone = " + mobile);
+            userEditText.setText(mobile);
+        }
         registerTextView.setOnClickListener(new MyOnClickListener(TYPE_REGISTER));
         loginButton.setOnClickListener(new MyOnClickListener(TYPE_LOGIN));
         forgetTextView.setOnClickListener(new MyOnClickListener(TYPE_FORGET));
@@ -177,6 +185,7 @@ public class LoginActivity extends BaseActivity {
                 userInfoBean.setCustId(loginResponse.user_id);
                 userInfoBean.setCustMobile(loginResponse.user_phone);
                 userInfoBean.setUserName(loginResponse.user_name);
+                LogUtil.i(this,"userphone = " + loginResponse.user_phone);
                 Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                 startActivity(intent);
                 LoginActivity.this.finish();
