@@ -30,6 +30,7 @@ import www.chendanfeng.com.boishixuan.MoreActivity;
 import www.chendanfeng.com.boishixuan.MyOrderActivity;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.ShopActivity;
+import www.chendanfeng.com.boishixuan.UsehelpActivity;
 import www.chendanfeng.com.boishixuan.WithdrawActivity;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
@@ -345,7 +346,7 @@ public class HomeFragment extends BaseFragment{
                     startActivity(intent);
                     break;
                 case TYPE_HELP:
-                    intent = new Intent(getActivity(), HelpActivity.class);
+                    intent = new Intent(getActivity(), UsehelpActivity.class);
                     startActivity(intent);
                     break;
             }

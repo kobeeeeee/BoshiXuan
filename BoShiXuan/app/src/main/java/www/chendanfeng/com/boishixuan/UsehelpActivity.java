@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,10 @@ public class UsehelpActivity extends BaseActivity {
     RadioButton financingTab;
     @Bind(R.id.tab_withdraw)
     RadioButton withdrawTab;
+    @Bind(R.id.tv_head)
+    TextView mHeader;
+    @Bind(R.id.bar_left_btn)
+    RelativeLayout mBackBtn;
 
     private FragmentManager mFragmentManager;
     private ChargeFragment mChargeFragment;
@@ -45,6 +52,18 @@ public class UsehelpActivity extends BaseActivity {
         ButterKnife.bind(this);
         mFragmentManager = getSupportFragmentManager();
         initFragments();
+        initHeader();
+    }
+    private void initHeader() {
+        this.mHeader.setVisibility(View.VISIBLE);
+        this.mHeader.setText("使用帮助");
+        this.mBackBtn.setVisibility(View.VISIBLE);
+        this.mBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     private void initFragments(){
         mChargeFragment = new ChargeFragment();
@@ -55,8 +74,8 @@ public class UsehelpActivity extends BaseActivity {
         mFragmentList.add(mFinancingFragment);
         mFragmentList.add(mWithdrawFragment);
         chargeTab.setChecked(true);
-        chargeTab.setTextColor(getResources().getColor(R.color.coffee));
-        mTabFragmentAdapter = new MainTabFragmentAdapter(this, mFragmentList, R.id.main_tab, useGroup,1);
+        chargeTab.setTextColor(getResources().getColor(R.color.white));
+        mTabFragmentAdapter = new MainTabFragmentAdapter(this, mFragmentList, R.id.main_tab, useGroup,5);
 
     }
 }

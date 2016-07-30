@@ -3,6 +3,7 @@ package www.chendanfeng.com.boishixuan;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -16,6 +17,7 @@ import www.chendanfeng.com.fragment.HomeFragment;
 import www.chendanfeng.com.fragment.NewsFragment;
 import www.chendanfeng.com.fragment.SettingFragment;
 import www.chendanfeng.com.fragment.WalletFragment;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 
 public class MainActivity extends BaseActivity {
@@ -36,6 +38,7 @@ public class MainActivity extends BaseActivity {
     private SettingFragment mSettingFragment;
     private WalletFragment mWalletFragment;
     MainTabFragmentAdapter mTabFragmentAdapter;
+    private long time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LogUtil.init(this);
@@ -59,5 +62,20 @@ public class MainActivity extends BaseActivity {
         homeTab.setTextColor(getResources().getColor(R.color.coffee));
         mTabFragmentAdapter = new MainTabFragmentAdapter(this, mFragmentList, R.id.main_tab, mainGroup,1);
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == event.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - time < 3000) {
+                finish();
+                return false;
+            } else {
+                time = System.currentTimeMillis();
+                CommonUtil.showToast("再按一次退出程序",MainActivity.this);
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 }
