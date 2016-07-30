@@ -100,7 +100,7 @@ public class BankCardAddActivity extends BaseActivity{
         String bankNo = this.mBankNo.getText().toString();
         String bankName = this.mBankName.getText().toString();
         String userName = this.mUserName.getText().toString();
-        if(bankNo.length() != 19) {
+        if(bankNo.length() == 0) {
             CommonUtil.showToast("请输入正确的银行卡号",BankCardAddActivity.this);
             return;
         }
@@ -158,6 +158,8 @@ public class BankCardAddActivity extends BaseActivity{
             if(object instanceof BankAddResponse) {
                 BankAddResponse bankAddResponse = (BankAddResponse)object;
                 LogUtil.i(this,"bankListResponse = " + bankAddResponse);
+                CommonUtil.showToast("银行卡绑定成功",BankCardAddActivity.this);
+                finish();
             }
         }
 

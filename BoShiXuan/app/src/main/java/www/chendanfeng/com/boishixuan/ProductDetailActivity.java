@@ -3,6 +3,7 @@ package www.chendanfeng.com.boishixuan;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -83,6 +84,15 @@ public class ProductDetailActivity extends BaseActivity{
                 final String depositPrice = ProductDetailActivity.this.mDepositText.getText().toString();
                 final String rentPrice = ProductDetailActivity.this.mDayRentText.getText().toString();
 
+                if(TextUtils.isEmpty(depositPrice)) {
+                    CommonUtil.showToast("请输入押金",ProductDetailActivity.this);
+                    return;
+                }
+
+                if(TextUtils.isEmpty(rentPrice)) {
+                    CommonUtil.showToast("请输入日租金",ProductDetailActivity.this);
+                    return;
+                }
                 UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                 String userId = userInfoBean.getCustId();
                 String userPhone = userInfoBean.getCustMobile();

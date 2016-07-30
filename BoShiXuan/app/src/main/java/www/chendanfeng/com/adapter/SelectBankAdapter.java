@@ -80,12 +80,17 @@ public class SelectBankAdapter extends BaseAdapter{
         if(model == null) {
             return convertView;
         }
+        String cardNumber="";
         if(!TextUtils.isEmpty(model.card_number)) {
             int length = model.card_number.length();
-            model.card_number = model.card_number.substring(0,4) + "***********" + model.card_number.substring(length-5,length-1);
+            cardNumber = model.card_number.substring(0,4);
+            for(int i=0;i<length-8;i++) {
+                cardNumber = cardNumber + "*";
+            }
+            cardNumber = cardNumber + model.card_number.substring(length-5,length-1);
         }
         holder.bankName.setText(model.bank_name);
-        holder.bankNo.setText(model.card_number);
+        holder.bankNo.setText(cardNumber);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

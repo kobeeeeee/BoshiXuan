@@ -205,4 +205,8 @@ public class CommonUtil {
         }
         return hex.toString();
     }
+    public static boolean checkIfInteger(String str) {
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        return pattern.matcher(str).matches();
+    }
 }

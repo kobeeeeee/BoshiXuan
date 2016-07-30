@@ -3,6 +3,7 @@ package www.chendanfeng.com.boishixuan;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -107,6 +108,20 @@ public class WithdrawActivity extends BaseActivity {
         String cardNumber = this.mBankNo.getText().toString();
         String bankNumber = this.mBankName.getText().toString();
 
+        if(TextUtils.isEmpty(fetchMoney)) {
+            CommonUtil.showToast("请输入提现金额",WithdrawActivity.this);
+            return;
+        }
+        float money = Float.valueOf(fetchMoney);
+        if(money < 100) {
+            CommonUtil.showToast("账户提现最少金额为100元",WithdrawActivity.this);
+            return;
+        }
+        String accountBalance = this.mAccountBalanceText.getText().toString();
+        if(Float.valueOf(accountBalance) < money) {
+            CommonUtil.showToast("余额不足",WithdrawActivity.this);
+            return;
+        }
         //传入参数
         Map<String,Object> map = new HashMap<>();
         map.put("fetch_money",fetchMoney);

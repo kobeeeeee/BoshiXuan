@@ -186,6 +186,8 @@ public class LoginActivity extends BaseActivity {
                 userInfoBean.setCustMobile(loginResponse.user_phone);
                 userInfoBean.setUserName(loginResponse.user_name);
                 LogUtil.i(this,"userphone = " + loginResponse.user_phone);
+                String password = passwordEditText.getText().toString();
+                userInfoBean.setPassword(password);
                 Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                 startActivity(intent);
                 LoginActivity.this.finish();
