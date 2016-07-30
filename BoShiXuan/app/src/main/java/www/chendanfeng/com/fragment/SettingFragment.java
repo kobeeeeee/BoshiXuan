@@ -1,10 +1,15 @@
 package www.chendanfeng.com.fragment;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +42,7 @@ public class SettingFragment extends BaseFragment{
     public static final int TYPE_LOGOUT = 4;
     public static final int TYPE_USEHELP = 5;
     public static final int TYPE_CLEAN = 6;
+    public static final int CALL_PHONE_REQUEST_CODE = 10;
     @Bind(R.id.tv_head)
     TextView mHeader;
     @Bind(R.id.aboutLayout)
@@ -96,17 +102,20 @@ public class SettingFragment extends BaseFragment{
                            dialog.dismiss();
                        }
                    });
-                    builder.setPositiveButton("拨打",new DialogInterface.OnClickListener(){
-                       @Override
-                       public void onClick(DialogInterface dialog, int which) {
-                           dialog.dismiss();
-                           Intent intent = new Intent();
-                           intent.setAction(Intent.ACTION_CALL);
-                           intent.setData(Uri.parse("tel:" + callPhone));
-                           //开启系统拨号器
-                           startActivity(intent);
-                       }
-                   });
+                    builder.setPositiveButton("拨打", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_CALL);
+                            intent.setData(Uri.parse("tel:" + callPhone));
+                            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                              requestPermissions(new String[]{Manifest.permission.CALL_PHONE},CALL_PHONE_REQUEST_CODE);
+                            }
+                            //开启系统拨号器
+                            startActivity(intent);
+                        }
+                    });
                     builder.create().show();
                     break;
                 case TYPE_LOGOUT:
@@ -136,5 +145,38 @@ public class SettingFragment extends BaseFragment{
                     break;
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,  String[] permissions,
+                                            int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CALL_PHONE_REQUEST_CODE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)) {
+                    AskForPermission();
+                }
+            }
+        }
+    }
+
+    private void AskForPermission() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Need Permission!");
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                intent.setData(Uri.parse("package:" + getPackageName())); // 根据包名打开对应的设置界面
+//                startActivity(intent);
+            }
+        });
+        builder.create().show();
     }
 }
