@@ -45,6 +45,7 @@ public class WithdrawRecordActivity extends BaseActivity{
     private int mPageNum = 1;
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
+    private int mCurrentListSize = -1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,14 +126,19 @@ public class WithdrawRecordActivity extends BaseActivity{
                 }
                 WithdrawRecordActivity.this.mWithdrawRecordAdapter.setList(WithdrawRecordActivity.this.mWithdrawRecordDetailModelList);
                 WithdrawRecordActivity.this.mWithdrawRecordAdapter.notifyDataSetChanged();
-            }
-            if(isRefresh) {
-                WithdrawRecordActivity.this.mWithdrawRecyclerView.refreshComplete();
-                isRefresh = false;
-            }
-            if(isLoadMore) {
-                WithdrawRecordActivity.this.mWithdrawRecyclerView.loadMoreComplete();
-                isLoadMore = false;
+
+                if(isRefresh) {
+                    WithdrawRecordActivity.this.mWithdrawRecyclerView.refreshComplete();
+                    isRefresh = false;
+                }
+                if(isLoadMore) {
+                    if(WithdrawRecordActivity.this.mCurrentListSize == model.data_list.size()) {
+                        CommonUtil.showToast("亲，就只有这么多了",WithdrawRecordActivity.this);
+                    }
+                    WithdrawRecordActivity.this.mWithdrawRecyclerView.loadMoreComplete();
+                    isLoadMore = false;
+                }
+                WithdrawRecordActivity.this.mCurrentListSize = model.data_list.size();
             }
         }
 

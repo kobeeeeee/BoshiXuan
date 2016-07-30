@@ -43,8 +43,7 @@ public class PayOrderFragment extends BaseFragment{
     private int mPageSize = 10;
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
-    private int mCurrentPage = 0;
-    private int mTotalPage = 0;
+    private int mCurrentListSize = -1;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,11 +75,6 @@ public class PayOrderFragment extends BaseFragment{
 
             @Override
             public void onLoadMore() {
-                if(PayOrderFragment.this.mCurrentPage == PayOrderFragment.this.mTotalPage) {
-                    CommonUtil.showToast("亲，就只有这么多了",getActivity());
-                    PayOrderFragment.this.mOrderRecyclerView.loadMoreComplete();
-                    return;
-                }
                 isLoadMore = true;
                 PayOrderFragment.this.mPageSize = PayOrderFragment.this.mPageSize + 10;
                 getData();
@@ -118,22 +112,24 @@ public class PayOrderFragment extends BaseFragment{
                 OrderResponse orderResponse = (OrderResponse)object;
                 LogUtil.i(this,"orderResponse = " + orderResponse);
                 OrderModel orderModel = orderResponse.order_list;
-                PayOrderFragment.this.mCurrentPage = orderModel.current_page;
-                PayOrderFragment.this.mTotalPage = orderModel.total_page;
                 List<OrderDetailModel> orderDetailModelList = orderModel.data_list;
                 if(orderDetailModelList.size() == 0) {
                     CommonUtil.showToast("暂无待支付订单",getActivity());
                 }
                 PayOrderFragment.this.mOrderListAdapter.setList(orderDetailModelList);
                 PayOrderFragment.this.mOrderListAdapter.notifyDataSetChanged();
-            }
-            if(isRefresh) {
-                PayOrderFragment.this.mOrderRecyclerView.refreshComplete();
-                isRefresh = false;
-            }
-            if(isLoadMore) {
-                PayOrderFragment.this.mOrderRecyclerView.loadMoreComplete();
-                isLoadMore = false;
+                if(isRefresh) {
+                    PayOrderFragment.this.mOrderRecyclerView.refreshComplete();
+                    isRefresh = false;
+                }
+                if(isLoadMore) {
+                    if(PayOrderFragment.this.mCurrentListSize == orderDetailModelList.size()) {
+                        CommonUtil.showToast("亲，就只有这么多了",getActivity());
+                    }
+                    PayOrderFragment.this.mOrderRecyclerView.loadMoreComplete();
+                    isLoadMore = false;
+                }
+                PayOrderFragment.this.mCurrentListSize = orderDetailModelList.size();
             }
 
         }

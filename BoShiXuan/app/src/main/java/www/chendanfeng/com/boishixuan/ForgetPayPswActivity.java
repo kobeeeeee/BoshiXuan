@@ -1,10 +1,12 @@
 package www.chendanfeng.com.boishixuan;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -46,8 +48,10 @@ public class ForgetPayPswActivity extends BaseActivity{
     @Bind(R.id.confirmPswText)
     EditText mConfirmPswText;
     @Bind(R.id.buttonCode)
-    ImageView mCodeBtn;
+    Button mCodeBtn;
     public NetWorkCallBack mNetWorkCallBack;
+    private TimeCount time;
+    private String mVerifyCode="";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,45 +83,35 @@ public class ForgetPayPswActivity extends BaseActivity{
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
         String phoneNumber = userInfoBean.getCustMobile();
         if(TextUtils.isEmpty(phoneNo)) {
-            Toast toast = Toast.makeText(ForgetPayPswActivity.this,"请输入手机号",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("请输入手机号",ForgetPayPswActivity.this);
             return;
         }
         if(!phoneNo.equals(phoneNumber)) {
-            Toast toast = Toast.makeText(ForgetPayPswActivity.this,"手机号码输入有误",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("手机号码输入有误",ForgetPayPswActivity.this);
             return;
         }
         if(TextUtils.isEmpty(newPsw)) {
-            Toast toast = Toast.makeText(ForgetPayPswActivity.this,"请输入新密码",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("请输入新密码",ForgetPayPswActivity.this);
             return;
         }
         if(TextUtils.isEmpty(confirmPassword)) {
-            Toast toast = Toast.makeText(ForgetPayPswActivity.this,"请输入确认密码",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("请输入确认密码",ForgetPayPswActivity.this);
             return;
         }
         if(!newPsw.equals(confirmPassword)){
-            Toast toast = Toast.makeText(ForgetPayPswActivity.this,"两次输入密码不一致",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("两次输入密码不一致",ForgetPayPswActivity.this);
             return;
         }
         if(!CommonUtil.checkPassword(confirmPassword)){
-            Toast toast = Toast.makeText(ForgetPayPswActivity.this,"密码长度为6-20位字母或有效数字组成",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("密码长度为6-20位字母或有效数字组成",ForgetPayPswActivity.this);
             return;
         }
         if(TextUtils.isEmpty(verifyCode)) {
-            Toast toast = Toast.makeText(ForgetPayPswActivity.this,"请输入验证码",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("请输入验证码",ForgetPayPswActivity.this);
+            return;
+        }
+        if(!verifyCode.equals(ForgetPayPswActivity.this.mVerifyCode)) {
+            CommonUtil.showToast("验证码错误，请重新输入",ForgetPayPswActivity.this);
             return;
         }
         //传入参数
@@ -135,9 +129,11 @@ public class ForgetPayPswActivity extends BaseActivity{
         Map<String,Object> map = new HashMap<>();
         map.put("user_phone",phoneNo);
         if(TextUtils.isEmpty(phoneNo)) {
-            Toast toast = Toast.makeText(ForgetPayPswActivity.this,"请输入手机号",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("请输入手机号码",ForgetPayPswActivity.this);
+            return;
+        }
+        if(!CommonUtil.checkPhoneNumber(phoneNo)) {
+            CommonUtil.showToast("无效的手机号码",ForgetPayPswActivity.this);
             return;
         }
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,ForgetPayPswActivity.this.mNetWorkCallBack, VerifyCodeResponse.class);
@@ -161,16 +157,15 @@ public class ForgetPayPswActivity extends BaseActivity{
             if(object instanceof ModifyPswResponse) {
                 ModifyPswResponse modifyPswResponse = (ModifyPswResponse)object;
                 LogUtil.i(this,"modifyPswResponse = " + modifyPswResponse);
-                Toast toast = Toast.makeText(ForgetPayPswActivity.this,"密码修改成功",Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
+                CommonUtil.showToast("密码修改成功",ForgetPayPswActivity.this);
                 finish();
             }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,ForgetPayPswActivity.this);
         }
     }
     class MyClickListener implements View.OnClickListener {
@@ -188,6 +183,23 @@ public class ForgetPayPswActivity extends BaseActivity{
                     modifyClick();
                     break;
             }
+        }
+    }
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onFinish() {// 计时完毕
+            mCodeBtn.setText("获取验证码");
+            mCodeBtn.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {// 计时过程
+            mCodeBtn.setClickable(false);//防止重复点击
+            mCodeBtn.setText(millisUntilFinished / 1000 + "秒");
         }
     }
 }
