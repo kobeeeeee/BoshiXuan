@@ -37,6 +37,8 @@ public class SettingFragment extends BaseFragment{
     public static final int TYPE_LOGOUT = 4;
     public static final int TYPE_USEHELP = 5;
     public static final int TYPE_CLEAN = 6;
+    @Bind(R.id.tv_head)
+    TextView mHeader;
     @Bind(R.id.aboutLayout)
     RelativeLayout aboutus;
     @Bind(R.id.phoneLayout)
@@ -53,11 +55,17 @@ public class SettingFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.mView = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, this.mView);
+        initHeader();
         aboutus.setOnClickListener(new MyOnClickListener(TYPE_ABOUT));
         phone.setOnClickListener(new MyOnClickListener(TYPE_PHONE));
         logoutButton.setOnClickListener(new MyOnClickListener(TYPE_LOGOUT));
         usehelp.setOnClickListener(new MyOnClickListener(TYPE_USEHELP));
         return this.mView;
+    }
+
+    private void initHeader() {
+        this.mHeader.setVisibility(View.VISIBLE);
+        this.mHeader.setText("设置");
     }
 
     class MyOnClickListener implements  View.OnClickListener {
