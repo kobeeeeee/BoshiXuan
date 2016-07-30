@@ -102,7 +102,23 @@ public class SettingFragment extends BaseFragment{
                     builder.create().show();
                     break;
                 case TYPE_LOGOUT:
-                    getActivity().finish();
+                    CustomDialog.Builder buildeLogout=new CustomDialog.Builder(getActivity());
+                    buildeLogout.setTitle("提示");
+                    buildeLogout.setMessage("真的要退出吗，亲");
+                    buildeLogout.setNegativeButton("取消",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    buildeLogout.setPositiveButton("确定",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            getActivity().finish();
+                        }
+                    });
+                    buildeLogout.create().show();
                     break;
                 case TYPE_USEHELP:
                     intent = new Intent(getActivity(),UsehelpActivity.class);
