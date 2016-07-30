@@ -36,6 +36,7 @@ import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.AccountBalanceResponse;
+import www.chendanfeng.com.util.CommonUtil;
 
 /**
  * Created by Administrator on 2016/7/2 0002.
@@ -371,7 +372,8 @@ public class HomeFragment extends BaseFragment{
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,getActivity());
         }
     }
 }

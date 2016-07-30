@@ -24,6 +24,7 @@ import www.chendanfeng.com.network.model.AccountBalanceResponse;
 import www.chendanfeng.com.network.model.ModifyPswResponse;
 import www.chendanfeng.com.network.model.RegularResponse;
 import www.chendanfeng.com.network.model.WithDrawResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 
 /**
@@ -158,9 +159,7 @@ public class WithdrawActivity extends BaseActivity {
         @Override
         public void onFailure(Object message) {
             String msg = (String) message;
-            Toast toast = Toast.makeText(WithdrawActivity.this,msg,Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast(msg,WithdrawActivity.this);
         }
     }
 

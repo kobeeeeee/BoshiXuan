@@ -116,7 +116,7 @@ public class UnPayOrderFragment extends BaseFragment{
                 OrderModel orderModel = orderResponse.order_list;
                 List<OrderDetailModel> orderDetailModelList = orderModel.data_list;
                 if(orderDetailModelList.size() == 0) {
-                    CommonUtil.showToast("暂无已支付订单",getActivity());
+                    CommonUtil.showToast("暂无待支付订单",getActivity());
                 }
                 UnPayOrderFragment.this.mOrderListAdapter.setList(orderDetailModelList);
                 UnPayOrderFragment.this.mOrderListAdapter.notifyDataSetChanged();

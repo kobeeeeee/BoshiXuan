@@ -24,6 +24,7 @@ import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.CertificationResponse;
 import www.chendanfeng.com.network.model.MessageListResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 
 /**
@@ -80,39 +81,27 @@ public class CertificationActivity extends BaseActivity{
         String password = userInfoBean.getPayPsw();
         String name = userInfoBean.getUserName();
         if(TextUtils.isEmpty(realName)) {
-            Toast toast = Toast.makeText(CertificationActivity.this,"请输入真实姓名",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("请输入真实姓名",CertificationActivity.this);
             return;
         }
         if(!name.equals(realName)) {
-            Toast toast = Toast.makeText(CertificationActivity.this,"真实姓名输入有误",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("真实姓名输入有误",CertificationActivity.this);
             return;
         }
         if(TextUtils.isEmpty(identity)) {
-            Toast toast = Toast.makeText(CertificationActivity.this,"请输入身份证号码",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("请输入身份证号码",CertificationActivity.this);
             return;
         }
         if(identity.length() != 18) {
-            Toast toast = Toast.makeText(CertificationActivity.this,"身份证号码输入不正确",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("身份证号码输入不正确",CertificationActivity.this);
             return;
         }
         if(TextUtils.isEmpty(payPsw)) {
-            Toast toast = Toast.makeText(CertificationActivity.this,"请输入支付密码",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("请输入支付密码",CertificationActivity.this);
             return;
         }
         if(!password.equals(payPsw)) {
-            Toast toast = Toast.makeText(CertificationActivity.this,"支付密码不正确",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CommonUtil.showToast("支付密码不正确",CertificationActivity.this);
             return;
         }
         String userId = userInfoBean.getCustId();
@@ -147,7 +136,8 @@ public class CertificationActivity extends BaseActivity{
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,CertificationActivity.this);
         }
     }
 }

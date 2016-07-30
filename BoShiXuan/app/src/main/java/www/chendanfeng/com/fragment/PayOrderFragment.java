@@ -114,7 +114,7 @@ public class PayOrderFragment extends BaseFragment{
                 OrderModel orderModel = orderResponse.order_list;
                 List<OrderDetailModel> orderDetailModelList = orderModel.data_list;
                 if(orderDetailModelList.size() == 0) {
-                    CommonUtil.showToast("暂无待支付订单",getActivity());
+                    CommonUtil.showToast("暂无已支付订单",getActivity());
                 }
                 PayOrderFragment.this.mOrderListAdapter.setList(orderDetailModelList);
                 PayOrderFragment.this.mOrderListAdapter.notifyDataSetChanged();
@@ -136,6 +136,8 @@ public class PayOrderFragment extends BaseFragment{
 
         @Override
         public void onFailure(Object message) {
+            String msg = (String) message;
+            CommonUtil.showToast(msg,getActivity());
             if(isRefresh) {
                 PayOrderFragment.this.mOrderRecyclerView.refreshComplete();
                 isRefresh = false;
