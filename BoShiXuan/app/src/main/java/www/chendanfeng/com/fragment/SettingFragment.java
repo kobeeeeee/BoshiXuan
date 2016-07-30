@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -35,24 +36,27 @@ public class SettingFragment extends BaseFragment{
     public static final int TYPE_PHONE = 3;
     public static final int TYPE_LOGOUT = 4;
     public static final int TYPE_USEHELP = 5;
-    @Bind(R.id.aboutus)
-    TextView aboutusText;
+    public static final int TYPE_CLEAN = 6;
+    @Bind(R.id.aboutLayout)
+    RelativeLayout aboutus;
+    @Bind(R.id.phoneLayout)
+    RelativeLayout phone;
     @Bind(R.id.phone)
-    TextView phoneText;
+    TextView call;
     @Bind(R.id.logout)
     ImageView logoutButton;
-    @Bind(R.id.usehelp)
-    TextView usehelpText;
+    @Bind(R.id.usehelpLayout)
+    RelativeLayout usehelp;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.mView = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, this.mView);
-        aboutusText.setOnClickListener(new MyOnClickListener(TYPE_ABOUT));
-        phoneText.setOnClickListener(new MyOnClickListener(TYPE_PHONE));
+        aboutus.setOnClickListener(new MyOnClickListener(TYPE_ABOUT));
+        phone.setOnClickListener(new MyOnClickListener(TYPE_PHONE));
         logoutButton.setOnClickListener(new MyOnClickListener(TYPE_LOGOUT));
-        usehelpText.setOnClickListener(new MyOnClickListener(TYPE_USEHELP));
+        usehelp.setOnClickListener(new MyOnClickListener(TYPE_USEHELP));
         return this.mView;
     }
 
@@ -72,13 +76,11 @@ public class SettingFragment extends BaseFragment{
                 case TYPE_SHARE:
                     break;
                 case TYPE_PHONE:
-                    final String phone =  phoneText.getText().toString();
+                    final String callPhone =  call.getText().toString();
                     StringBuffer message = new StringBuffer();
-                    message.append("确定要拨打").append(phone).append("么？");
-                    //AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+                    message.append("确定要拨打").append(callPhone).append("么？");
                     CustomDialog.Builder builder=new CustomDialog.Builder(getActivity());
                     builder.setTitle("温馨提示");
-                    //builder.setMessage("确定要拨打4008-597-333么？");
                     builder.setMessage(message.toString());
                     builder.setNegativeButton("取消",new DialogInterface.OnClickListener(){
                        @Override
@@ -92,7 +94,7 @@ public class SettingFragment extends BaseFragment{
                            dialog.dismiss();
                            Intent intent = new Intent();
                            intent.setAction(Intent.ACTION_CALL);
-                           intent.setData(Uri.parse("tel:" + phone));
+                           intent.setData(Uri.parse("tel:" + callPhone));
                            //开启系统拨号器
                            startActivity(intent);
                        }
@@ -105,6 +107,8 @@ public class SettingFragment extends BaseFragment{
                 case TYPE_USEHELP:
                     intent = new Intent(getActivity(),UsehelpActivity.class);
                     startActivity(intent);
+                    break;
+                case TYPE_CLEAN:
                     break;
             }
         }
