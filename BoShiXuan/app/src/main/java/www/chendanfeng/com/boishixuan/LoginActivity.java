@@ -116,34 +116,34 @@ public class LoginActivity extends BaseActivity {
                 case TYPE_LOGIN:
                     String phoneNumber = userEditText.getText().toString();
                     String password = passwordEditText.getText().toString();
-//                    if(TextUtils.isEmpty(phoneNumber)) {
-//                        CommonUtil.showToast("请输入手机号码",LoginActivity.this);
-//                        break;
-//                    }
-//                    if(!CommonUtil.checkPhoneNumber(phoneNumber)) {
-//                        CommonUtil.showToast("无效的手机号码",LoginActivity.this);
-//                        break;
-//                    }
-//                    if(TextUtils.isEmpty(password)) {
-//                        CommonUtil.showToast("请输入密码",LoginActivity.this);
-//                        break;
-//                    }
-//                    if(!CommonUtil.checkPassword(password)){
-//                        CommonUtil.showToast("密码长度为6-20位字母或有效数字组成",LoginActivity.this);
-//                        break;
-//                    }
-//                    String encryptPasswd = md5(password);
-//                    LogUtil.i(this,"登录加密密码 = " + encryptPasswd);
-//                    //根据输入的用户名、密码调用接口校验用户名密码是否正确
-//                    Map<String,Object> map = new HashMap<>();
-//                    map.put("user_phone",phoneNumber);
-//                    map.put("user_passwd",encryptPasswd);
-//                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_USER_LOGIN,map,LoginActivity.this.mNetWorkCallBack,LoginResponse.class);
+                    if(TextUtils.isEmpty(phoneNumber)) {
+                        CommonUtil.showToast("请输入手机号码",LoginActivity.this);
+                        break;
+                    }
+                    if(!CommonUtil.checkPhoneNumber(phoneNumber)) {
+                        CommonUtil.showToast("无效的手机号码",LoginActivity.this);
+                        break;
+                    }
+                    if(TextUtils.isEmpty(password)) {
+                        CommonUtil.showToast("请输入密码",LoginActivity.this);
+                        break;
+                    }
+                    if(!CommonUtil.checkPassword(password)){
+                        CommonUtil.showToast("密码长度为6-20位字母或有效数字组成",LoginActivity.this);
+                        break;
+                    }
+                    String encryptPasswd = CommonUtil.md5(password);
+                    LogUtil.i(this,"登录加密密码 = " + encryptPasswd);
+                    //根据输入的用户名、密码调用接口校验用户名密码是否正确
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("user_phone",phoneNumber);
+                    map.put("user_passwd",encryptPasswd);
+                    RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_USER_LOGIN,map,LoginActivity.this.mNetWorkCallBack,LoginResponse.class);
 
-                    //TODO 测试登录用
-                    intent = new Intent(LoginActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    LoginActivity.this.finish();
+//                    //TODO 测试登录用
+//                    intent = new Intent(LoginActivity.this,MainActivity.class);
+//                    startActivity(intent);
+//                    LoginActivity.this.finish();
                     break;
                 case TYPE_FORGET:
                     intent = new Intent(LoginActivity.this,PasswordActivity.class);
@@ -174,7 +174,7 @@ public class LoginActivity extends BaseActivity {
                 LogUtil.i(this,"loginResponse = " + loginResponse);
                 CommonUtil.showToast("登录成功",LoginActivity.this);
                 UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
-                userInfoBean.setCustId(loginResponse.custId);
+                userInfoBean.setCustId(loginResponse.user_id);
                 userInfoBean.setCustMobile(loginResponse.user_phone);
                 userInfoBean.setUserName(loginResponse.user_name);
                 Intent intent = new Intent(LoginActivity.this,MainActivity.class);
@@ -190,21 +190,4 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    public static String md5(String string) {
-        byte[] hash;
-        try {
-            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Huh, MD5 should be supported?", e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
-        }
-
-        StringBuilder hex = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            if ((b & 0xFF) < 0x10) hex.append("0");
-            hex.append(Integer.toHexString(b & 0xFF));
-        }
-        return hex.toString();
-    }
 }

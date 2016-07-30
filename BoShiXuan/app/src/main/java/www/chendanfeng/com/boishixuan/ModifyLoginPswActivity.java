@@ -71,40 +71,28 @@ public class ModifyLoginPswActivity extends BaseActivity{
                 UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                 String password = userInfoBean.getPassword();
                 if(TextUtils.isEmpty(oldPsw)) {
-                    Toast toast = Toast.makeText(ModifyLoginPswActivity.this,"请输入原密码",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("请输入原密码",ModifyLoginPswActivity.this);
                     return;
                 }
                 if(!password.equals(oldPsw)) {
-                    Toast toast = Toast.makeText(ModifyLoginPswActivity.this,"原密码输入有误",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("原密码输入有误",ModifyLoginPswActivity.this);
                     return;
                 }
 
                 if(TextUtils.isEmpty(newPsw)) {
-                    Toast toast = Toast.makeText(ModifyLoginPswActivity.this,"请输入新密码",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("请输入新密码",ModifyLoginPswActivity.this);
                     return;
                 }
                 if(TextUtils.isEmpty(confirmPassword)) {
-                    Toast toast = Toast.makeText(ModifyLoginPswActivity.this,"请输入确认密码",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("请输入确认密码",ModifyLoginPswActivity.this);
                     return;
                 }
                 if(!newPsw.equals(confirmPassword)){
-                    Toast toast = Toast.makeText(ModifyLoginPswActivity.this,"两次输入密码不一致",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("两次输入密码不一致",ModifyLoginPswActivity.this);
                     return;
                 }
                 if(!CommonUtil.checkPassword(confirmPassword)){
-                    Toast toast = Toast.makeText(ModifyLoginPswActivity.this,"密码长度为6-20位字母或有效数字组成",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("密码长度为6-20位字母或有效数字组成",ModifyLoginPswActivity.this);
                     return;
                 }
 
@@ -113,8 +101,8 @@ public class ModifyLoginPswActivity extends BaseActivity{
                 Map<String,Object> map = new HashMap<>();
                 map.put("passwd_type","1");
                 map.put("modify_type","1");
-                map.put("old_passwd",oldPsw);
-                map.put("new_passwd",newPsw);
+                map.put("old_passwd",CommonUtil.md5(oldPsw));
+                map.put("new_passwd",CommonUtil.md5(newPsw));
                 map.put("user_phone",phoneNo);
                 RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_MODIFY_PWD,map,ModifyLoginPswActivity.this.mNetWorkCallBack, ModifyPswResponse.class);
             }
@@ -135,9 +123,7 @@ public class ModifyLoginPswActivity extends BaseActivity{
             if(object instanceof ModifyPswResponse) {
                 ModifyPswResponse modifyPswResponse = (ModifyPswResponse)object;
                 LogUtil.i(this,"modifyPswResponse = " + modifyPswResponse);
-                Toast toast = Toast.makeText(ModifyLoginPswActivity.this,"密码修改成功",Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
+                CommonUtil.showToast("密码修改成功",ModifyLoginPswActivity.this);
                 finish();
             }
         }

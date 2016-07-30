@@ -72,40 +72,28 @@ public class ModifyPayPswActivity extends BaseActivity{
                 UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                 String password = userInfoBean.getPassword();
                 if(TextUtils.isEmpty(oldPsw)) {
-                    Toast toast = Toast.makeText(ModifyPayPswActivity.this,"请输入原密码",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("请输入原密码",ModifyPayPswActivity.this);
                     return;
                 }
                 if(!password.equals(oldPsw)) {
-                    Toast toast = Toast.makeText(ModifyPayPswActivity.this,"原密码输入有误",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("原密码输入有误",ModifyPayPswActivity.this);
                     return;
                 }
 
                 if(TextUtils.isEmpty(newPsw)) {
-                    Toast toast = Toast.makeText(ModifyPayPswActivity.this,"请输入新密码",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("请输入新密码",ModifyPayPswActivity.this);
                     return;
                 }
                 if(TextUtils.isEmpty(confirmPassword)) {
-                    Toast toast = Toast.makeText(ModifyPayPswActivity.this,"请输入确认密码",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("请输入确认密码",ModifyPayPswActivity.this);
                     return;
                 }
                 if(!newPsw.equals(confirmPassword)){
-                    Toast toast = Toast.makeText(ModifyPayPswActivity.this,"两次输入密码不一致",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("两次输入密码不一致",ModifyPayPswActivity.this);
                     return;
                 }
                 if(!CommonUtil.checkPassword(confirmPassword)){
-                    Toast toast = Toast.makeText(ModifyPayPswActivity.this,"密码长度为6-20位字母或有效数字组成",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    CommonUtil.showToast("密码长度为6-20位字母或有效数字组成",ModifyPayPswActivity.this);
                     return;
                 }
                 String phoneNo = userInfoBean.getCustMobile();

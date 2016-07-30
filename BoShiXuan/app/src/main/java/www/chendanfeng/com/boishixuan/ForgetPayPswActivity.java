@@ -59,9 +59,10 @@ public class ForgetPayPswActivity extends BaseActivity{
         setContentView(R.layout.activity_forget_pay_psw);
         ButterKnife.bind(this);
         initHeader();
+        time = new TimeCount(60000, 1000);
         this.mNetWorkCallBack = new NetWorkCallBack();
-        this.mModifyBtn.setOnClickListener(new MyClickListener(TYPE_SEND_VERIFY_CODE))
-        ;this.mCodeBtn.setOnClickListener(new MyClickListener(TYPE_MODIFY_PASSWORD));
+        this.mModifyBtn.setOnClickListener(new MyClickListener(TYPE_MODIFY_PASSWORD))
+        ;this.mCodeBtn.setOnClickListener(new MyClickListener(TYPE_SEND_VERIFY_CODE));
     }
     private void initHeader() {
         this.mHeader.setText("忘记支付密码");
@@ -102,10 +103,6 @@ public class ForgetPayPswActivity extends BaseActivity{
             CommonUtil.showToast("两次输入密码不一致",ForgetPayPswActivity.this);
             return;
         }
-        if(!CommonUtil.checkPassword(confirmPassword)){
-            CommonUtil.showToast("密码长度为6-20位字母或有效数字组成",ForgetPayPswActivity.this);
-            return;
-        }
         if(TextUtils.isEmpty(verifyCode)) {
             CommonUtil.showToast("请输入验证码",ForgetPayPswActivity.this);
             return;
@@ -137,6 +134,7 @@ public class ForgetPayPswActivity extends BaseActivity{
             return;
         }
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_VERIFY_CODE,map,ForgetPayPswActivity.this.mNetWorkCallBack, VerifyCodeResponse.class);
+        time.start();
     }
     private class NetWorkCallBack implements RequestListener {
 
@@ -153,6 +151,7 @@ public class ForgetPayPswActivity extends BaseActivity{
             if (object instanceof VerifyCodeResponse) {
                 VerifyCodeResponse registerResponse = (VerifyCodeResponse)object;
                 LogUtil.i(this,"registerResponse = " + registerResponse);
+                ForgetPayPswActivity.this.mVerifyCode = registerResponse.verify_code;
             }
             if(object instanceof ModifyPswResponse) {
                 ModifyPswResponse modifyPswResponse = (ModifyPswResponse)object;

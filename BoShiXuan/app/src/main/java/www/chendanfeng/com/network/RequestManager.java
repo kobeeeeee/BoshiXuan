@@ -110,10 +110,12 @@ public class RequestManager {
                             listener.onFailure(body.getString("RSPMSG"));
                         }
                     } catch (Exception e) {
+                        listener.onFailure("程序发生意外情况");
                         e.printStackTrace();
                     }
 
                 } else {
+                    listener.onFailure("网络连接异常");
                 }
             }
         };

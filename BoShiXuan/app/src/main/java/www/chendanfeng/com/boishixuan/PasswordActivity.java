@@ -135,7 +135,7 @@ public class PasswordActivity extends BaseActivity {
                         break;
                     }
 
-                    String encryptNewPasswd = md5(password);
+                    String encryptNewPasswd = CommonUtil.md5(password);
                     LogUtil.i(this,"修改密码加密密码 = " + encryptNewPasswd);
 
                     UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
@@ -222,23 +222,5 @@ public class PasswordActivity extends BaseActivity {
             codeButton.setClickable(false);//防止重复点击
             codeButton.setText(millisUntilFinished / 1000 + "秒");
         }
-    }
-
-    public static String md5(String string) {
-        byte[] hash;
-        try {
-            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Huh, MD5 should be supported?", e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
-        }
-
-        StringBuilder hex = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            if ((b & 0xFF) < 0x10) hex.append("0");
-            hex.append(Integer.toHexString(b & 0xFF));
-        }
-        return hex.toString();
     }
 }

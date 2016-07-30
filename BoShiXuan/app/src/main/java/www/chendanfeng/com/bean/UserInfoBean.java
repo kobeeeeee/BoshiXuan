@@ -6,9 +6,9 @@ package www.chendanfeng.com.bean;
 public class UserInfoBean {
     private static UserInfoBean userInfoBean = null;
     //商户ID
-    private static String custId = "1";
+    private static String custId = "";
     //用户手机号
-    private static String custMobile = "13127629850";
+    private static String custMobile = "";
     //客户端类型
     private static String sysType = "";
     //操作系统版本号
@@ -26,7 +26,7 @@ public class UserInfoBean {
     //支付密码
     private static String payPsw = "";
     //用户名称
-    private static String userName = "于景鹏";
+    private static String userName = "";
 
     private static String isVerity ="";
     public static UserInfoBean getUserInfoBeanInstance() {
