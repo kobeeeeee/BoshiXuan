@@ -21,6 +21,7 @@ import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.BankAddResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 import www.chendanfeng.com.view.pickerview.Picker;
 
@@ -158,7 +159,8 @@ public class BankCardAddActivity extends BaseActivity{
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,BankCardAddActivity.this);
         }
     }
 }

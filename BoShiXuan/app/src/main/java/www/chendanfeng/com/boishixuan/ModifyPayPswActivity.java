@@ -132,7 +132,8 @@ public class ModifyPayPswActivity extends BaseActivity{
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,ModifyPayPswActivity.this);
         }
     }
 }

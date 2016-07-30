@@ -130,7 +130,8 @@ public class ModifyLoginPswActivity extends BaseActivity{
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,ModifyLoginPswActivity.this);
         }
     }
 }

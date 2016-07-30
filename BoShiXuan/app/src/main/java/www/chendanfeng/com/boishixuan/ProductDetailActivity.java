@@ -23,6 +23,7 @@ import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.CertificationResponse;
 import www.chendanfeng.com.network.model.MessageListResponse;
 import www.chendanfeng.com.network.model.PutInOrderResponse;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
 
 /**
@@ -76,12 +77,12 @@ public class ProductDetailActivity extends BaseActivity{
         this.mProductName.setText(productName);
         this.mProductNo.setText(productNo);
         Picasso.with(this).load(Config.ROOT_URL + productImage).error(getResources().getDrawable(R.drawable.product_detail_default_image)).into(this.mProductImage);
-        final String depositPrice = this.mDepositText.getText().toString();
-        final String rentPrice = this.mDayRentText.getText().toString();
-
         this.mCommitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final String depositPrice = ProductDetailActivity.this.mDepositText.getText().toString();
+                final String rentPrice = ProductDetailActivity.this.mDayRentText.getText().toString();
+
                 UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                 String userId = userInfoBean.getCustId();
                 String userPhone = userInfoBean.getCustMobile();
@@ -93,7 +94,7 @@ public class ProductDetailActivity extends BaseActivity{
                 map.put("deposit_price",depositPrice);
                 map.put("rent_price",rentPrice);
                 map.put("goods_Id",productId);
-                RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_PUTIN_ORDER,map,ProductDetailActivity.this.mNetWorkCallBack, MessageListResponse.class);
+                RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_PUTIN_ORDER,map,ProductDetailActivity.this.mNetWorkCallBack, PutInOrderResponse.class);
             }
         });
     }
@@ -112,12 +113,15 @@ public class ProductDetailActivity extends BaseActivity{
             if(object instanceof PutInOrderResponse) {
                 PutInOrderResponse putInOrderResponse = (PutInOrderResponse)object;
                 LogUtil.i(this,"putInOrderResponse = " + putInOrderResponse);
+                CommonUtil.showToast("订单创建成功",ProductDetailActivity.this);
+                finish();
             }
         }
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,ProductDetailActivity.this);
         }
     }
 }

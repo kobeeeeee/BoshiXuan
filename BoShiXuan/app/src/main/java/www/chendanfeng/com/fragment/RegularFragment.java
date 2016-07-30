@@ -141,6 +141,8 @@ public class RegularFragment extends BaseFragment{
 
         @Override
         public void onFailure(Object message) {
+            String msg = (String) message;
+            CommonUtil.showToast(msg,getActivity());
             if(isRefresh) {
                 RegularFragment.this.mRegularRecyclerView.refreshComplete();
                 isRefresh = false;

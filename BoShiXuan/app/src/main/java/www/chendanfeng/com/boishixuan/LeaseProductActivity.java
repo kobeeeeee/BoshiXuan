@@ -199,6 +199,8 @@ public class LeaseProductActivity extends BaseActivity{
 
         @Override
         public void onFailure(Object message) {
+            String msg = (String) message;
+            CommonUtil.showToast(msg,LeaseProductActivity.this);
             if(isLoadMore) {
                 LeaseProductActivity.this.mRecyclerView.loadMoreComplete();
                 isLoadMore = false;

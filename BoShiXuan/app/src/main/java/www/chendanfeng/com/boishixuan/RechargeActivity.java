@@ -152,7 +152,8 @@ public class RechargeActivity extends BaseActivity{
 
         @Override
         public void onFailure(Object message) {
-
+            String msg = (String) message;
+            CommonUtil.showToast(msg,RechargeActivity.this);
         }
     }
 }
