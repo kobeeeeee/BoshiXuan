@@ -49,6 +49,7 @@ public class MatterRecordActivity extends BaseActivity{
     private int mPageNum = 1;
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
+    private int mCurrentListSize = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -131,14 +132,18 @@ public class MatterRecordActivity extends BaseActivity{
                 }
                 MatterRecordActivity.this.mMatterRecordAdapter.setList(MatterRecordActivity.this.mMatterRecordModelList);
                 MatterRecordActivity.this.mMatterRecordAdapter.notifyDataSetChanged();
-            }
-            if(isRefresh) {
-                MatterRecordActivity.this.mMatterRecyclerView.refreshComplete();
-                isRefresh = false;
-            }
-            if(isLoadMore) {
-                MatterRecordActivity.this.mMatterRecyclerView.loadMoreComplete();
-                isLoadMore = false;
+                if(isRefresh) {
+                    MatterRecordActivity.this.mMatterRecyclerView.refreshComplete();
+                    isRefresh = false;
+                }
+                if(isLoadMore) {
+                    if(MatterRecordActivity.this.mCurrentListSize == model.data_list.size()) {
+                        CommonUtil.showToast("亲，就只有这么多了",MatterRecordActivity.this);
+                    }
+                    MatterRecordActivity.this.mMatterRecyclerView.loadMoreComplete();
+                    isLoadMore = false;
+                }
+                MatterRecordActivity.this.mCurrentListSize = model.data_list.size();
             }
         }
 

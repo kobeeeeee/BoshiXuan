@@ -46,6 +46,7 @@ public class RechargeRecordActivity extends BaseActivity{
     private int mPageNum = 1;
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
+    private int mCurrentListSize = -1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,14 +128,18 @@ public class RechargeRecordActivity extends BaseActivity{
                 }
                 RechargeRecordActivity.this.mRechargeRecordAdapter.setList(RechargeRecordActivity.this.mRechargeRecordDetailModelList);
                 RechargeRecordActivity.this.mRechargeRecordAdapter.notifyDataSetChanged();
-            }
-            if(isRefresh) {
-                RechargeRecordActivity.this.mRechargeRecyclerView.refreshComplete();
-                isRefresh = false;
-            }
-            if(isLoadMore) {
-                RechargeRecordActivity.this.mRechargeRecyclerView.loadMoreComplete();
-                isLoadMore = false;
+                if(isRefresh) {
+                    RechargeRecordActivity.this.mRechargeRecyclerView.refreshComplete();
+                    isRefresh = false;
+                }
+                if(isLoadMore) {
+                    if(RechargeRecordActivity.this.mCurrentListSize == model.data_list.size()) {
+                        CommonUtil.showToast("亲，就只有这么多了",RechargeRecordActivity.this);
+                    }
+                    RechargeRecordActivity.this.mRechargeRecyclerView.loadMoreComplete();
+                    isLoadMore = false;
+                }
+                RechargeRecordActivity.this.mCurrentListSize = model.data_list.size();
             }
         }
 

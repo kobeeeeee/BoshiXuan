@@ -113,21 +113,20 @@ public class PasswordActivity extends BaseActivity {
                         CommonUtil.showToast("请输入密码",PasswordActivity.this);
                         break;
                     }
-                    if(TextUtils.isEmpty(confirmPassword)) {
-                        CommonUtil.showToast("请输入确认密码",PasswordActivity.this);
-                        break;
-                    }
-
-                    if(TextUtils.isEmpty(code)) {
-                        CommonUtil.showToast("验证码不能为空",PasswordActivity.this);
-                        break;
-                    }
                     if(!CommonUtil.checkPassword(password)){
                         CommonUtil.showToast("密码长度为6-20位字母或有效数字组成",PasswordActivity.this);
                         break;
                     }
+                    if(TextUtils.isEmpty(confirmPassword)) {
+                        CommonUtil.showToast("请输入确认密码",PasswordActivity.this);
+                        break;
+                    }
                     if(!password.equals(confirmPassword)){
                         CommonUtil.showToast("两次输入密码不一致",PasswordActivity.this);
+                        break;
+                    }
+                    if(TextUtils.isEmpty(code)) {
+                        CommonUtil.showToast("验证码不能为空",PasswordActivity.this);
                         break;
                     }
 

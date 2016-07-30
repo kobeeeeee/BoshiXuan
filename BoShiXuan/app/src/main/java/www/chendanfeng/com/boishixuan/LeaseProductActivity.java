@@ -52,8 +52,7 @@ public class LeaseProductActivity extends BaseActivity{
     private List<ProductDetailModel> mProductDetailModelList;
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
-    private int mCurrentPage = 0;
-    private int mTotalPage = 0;
+    private int mCurrentListSize = -1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,12 +140,6 @@ public class LeaseProductActivity extends BaseActivity{
 
             @Override
             public void onLoadMore() {
-                if(LeaseProductActivity.this.mCurrentPage == LeaseProductActivity.this.mTotalPage) {
-                    CommonUtil.showToast("亲，就只有这么多了",LeaseProductActivity.this);
-                    LeaseProductActivity.this.mRecyclerView.loadMoreComplete();
-                    return;
-                }
-
                 isLoadMore = true;
                 Intent intent = getIntent();
                 int type = intent.getIntExtra("type",0);
@@ -183,22 +176,24 @@ public class LeaseProductActivity extends BaseActivity{
                 ProductResponse productResponse = (ProductResponse)object;
                 LogUtil.i(this,"productResponse = " + productResponse);
                 ProductGoodsModel productGoodsModel = productResponse.goods_list;
-                LeaseProductActivity.this.mTotalPage = productGoodsModel.total_page;
-                LeaseProductActivity.this.mCurrentPage = productGoodsModel.current_page;
                 LeaseProductActivity.this.mProductDetailModelList = productGoodsModel.data_list;
                 if(LeaseProductActivity.this.mProductDetailModelList.size() == 0) {
                     CommonUtil.showToast("暂无产品",LeaseProductActivity.this);
                 }
                 LeaseProductActivity.this.mLeaseProductAdapter.setList(LeaseProductActivity.this.mProductDetailModelList);
                 LeaseProductActivity.this.mLeaseProductAdapter.notifyDataSetChanged();
-            }
-            if(isLoadMore) {
-                LeaseProductActivity.this.mRecyclerView.loadMoreComplete();
-                isLoadMore = false;
-            }
-            if(isRefresh) {
-                LeaseProductActivity.this.mRecyclerView.refreshComplete();
-                isRefresh = false;
+                if(isLoadMore) {
+                    if(LeaseProductActivity.this.mCurrentListSize == LeaseProductActivity.this.mProductDetailModelList.size()) {
+                        CommonUtil.showToast("亲，就只有这么多了",LeaseProductActivity.this);
+                    }
+                    LeaseProductActivity.this.mRecyclerView.loadMoreComplete();
+                    isLoadMore = false;
+                }
+                if(isRefresh) {
+                    LeaseProductActivity.this.mRecyclerView.refreshComplete();
+                    isRefresh = false;
+                }
+                LeaseProductActivity.this.mCurrentListSize = LeaseProductActivity.this.mProductDetailModelList.size();
             }
         }
 

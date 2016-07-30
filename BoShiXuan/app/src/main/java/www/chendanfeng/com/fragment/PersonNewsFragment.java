@@ -44,8 +44,7 @@ public class PersonNewsFragment extends BaseFragment{
     private int mPageSize = 10;
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
-    private int mCurrentPage = 0;
-    private int mTotalPage = 0;
+    private int mCurrentListSize = -1;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,12 +78,6 @@ public class PersonNewsFragment extends BaseFragment{
 
             @Override
             public void onLoadMore() {
-                if(PersonNewsFragment.this.mCurrentPage == PersonNewsFragment.this.mTotalPage) {
-                    CommonUtil.showToast("亲，就只有这么多了",getActivity());
-                    PersonNewsFragment.this.mPersonNewsRecyclerView.loadMoreComplete();
-                    return;
-                }
-
                 isLoadMore = true;
                 PersonNewsFragment.this.mPageSize = PersonNewsFragment.this.mPageSize + 10;
                 getData();
@@ -124,22 +117,24 @@ public class PersonNewsFragment extends BaseFragment{
                 NewsResponse newsResponse = (NewsResponse)object;
                 LogUtil.i(this,"newsResponse = " + newsResponse);
                 NewsModel newsModel = newsResponse.msg_list;
-                PersonNewsFragment.this.mCurrentPage = newsModel.current_page;
-                PersonNewsFragment.this.mTotalPage = newsModel.total_page;
                 List<NewsDetailModel> newsDetailModelList = newsModel.data_list;
                 if(newsDetailModelList.size() == 0) {
                     CommonUtil.showToast("暂无消息",getActivity());
                 }
                 PersonNewsFragment.this.mNewsListAdapter.setList(newsDetailModelList);
                 PersonNewsFragment.this.mNewsListAdapter.notifyDataSetChanged();
-            }
-            if(isRefresh) {
-                PersonNewsFragment.this.mPersonNewsRecyclerView.refreshComplete();
-                isRefresh = false;
-            }
-            if(isLoadMore) {
-                PersonNewsFragment.this.mPersonNewsRecyclerView.loadMoreComplete();
-                isLoadMore = false;
+                if(isRefresh) {
+                    PersonNewsFragment.this.mPersonNewsRecyclerView.refreshComplete();
+                    isRefresh = false;
+                }
+                if(isLoadMore) {
+                    if(PersonNewsFragment.this.mCurrentListSize == newsDetailModelList.size()) {
+                        CommonUtil.showToast("亲，就只有这么多了",getActivity());
+                    }
+                    PersonNewsFragment.this.mPersonNewsRecyclerView.loadMoreComplete();
+                    isLoadMore = false;
+                }
+                PersonNewsFragment.this.mCurrentListSize = newsDetailModelList.size();
             }
         }
 
