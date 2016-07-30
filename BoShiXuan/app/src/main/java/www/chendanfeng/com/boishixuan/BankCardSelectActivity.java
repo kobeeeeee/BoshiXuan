@@ -158,6 +158,7 @@ public class BankCardSelectActivity extends BaseActivity{
                 public void onClick(DialogInterface dialog, int which) {
                     BankDetailModel model = ((BankSelectEvent) event).mBankDetailModel;
                     unBindBankCard(model);
+                    dialog.dismiss();
                 }
             });
             builder.create().show();

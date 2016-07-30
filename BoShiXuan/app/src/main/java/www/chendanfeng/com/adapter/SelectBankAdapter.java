@@ -81,7 +81,8 @@ public class SelectBankAdapter extends BaseAdapter{
             return convertView;
         }
         if(!TextUtils.isEmpty(model.card_number)) {
-            model.card_number = model.card_number.substring(0,4) + "***********" + model.card_number.substring(15,19);
+            int length = model.card_number.length();
+            model.card_number = model.card_number.substring(0,4) + "***********" + model.card_number.substring(length-5,length-1);
         }
         holder.bankName.setText(model.bank_name);
         holder.bankNo.setText(model.card_number);

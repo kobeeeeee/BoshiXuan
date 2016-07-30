@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/login_input_user"
         android:layout_marginTop="200dp"
-        android:layout_marginLeft="65dp">
+        android:layout_centerHorizontal="true">
         <ImageView
             android:id="@+id/user"
             android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         android:background="@drawable/login_input_password"
         android:layout_below="@+id/login_user"
         android:layout_marginTop="17dp"
-        android:layout_marginLeft="65dp">
+        android:layout_centerHorizontal="true">
         <ImageView
             android:id="@+id/password"
             android:layout_width="wrap_content"
@@ -64,40 +64,39 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_password"
         android:layout_marginTop="17dp"
-        android:layout_marginLeft="65dp"
+        android:layout_centerHorizontal="true"
         android:clickable="true"
         android:src="@drawable/login_selector"/>
-
-    <TextView
-        android:id="@+id/login_forget"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="忘记密码?"
         android:layout_marginTop="18dp"
-        android:layout_marginLeft="105dp"
-        android:textSize="15sp"
-        android:textColor="@color/boldwhite"
-        android:layout_below="@+id/login_press" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/login_press">
+        <TextView
+            android:id="@+id/login_forget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="忘记密码?"
+            android:textSize="15sp"
+            android:textColor="@color/boldwhite" />
 
-    <ImageView
-        android:id="@+id/login_line"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/login_divide_line"
-        android:layout_below="@+id/login_press"
-        android:layout_marginTop="18dp"
-        android:layout_toRightOf="@+id/login_forget"
-        android:layout_marginLeft="15dp"/>
+        <ImageView
+            android:id="@+id/login_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/login_divide_line"
+            android:layout_toRightOf="@+id/login_forget"
+            android:layout_marginLeft="15dp"/>
 
-    <TextView
-        android:id="@+id/login_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="立即注册"
-        android:layout_marginTop="18dp"
-        android:textSize="15sp"
-        android:textColor="@color/boldwhite"
-        android:layout_below="@+id/login_press"
-        android:layout_toRightOf="@+id/login_forget"
-        android:layout_marginLeft="30dp"/>
+        <TextView
+            android:id="@+id/login_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="立即注册"
+            android:textSize="15sp"
+            android:textColor="@color/boldwhite"
+            android:layout_toRightOf="@+id/login_forget"
+            android:layout_marginLeft="30dp"/>
+    </RelativeLayout>
 </RelativeLayout>

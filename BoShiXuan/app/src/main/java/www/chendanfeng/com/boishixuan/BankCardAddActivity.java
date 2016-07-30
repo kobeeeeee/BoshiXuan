@@ -100,6 +100,10 @@ public class BankCardAddActivity extends BaseActivity{
         String bankNo = this.mBankNo.getText().toString();
         String bankName = this.mBankName.getText().toString();
         String userName = this.mUserName.getText().toString();
+        if(bankNo.length() != 19) {
+            CommonUtil.showToast("请输入正确的银行卡号",BankCardAddActivity.this);
+            return;
+        }
         //传入参数
         Map<String,Object> map = new HashMap<>();
         map.put("card_number",bankNo);

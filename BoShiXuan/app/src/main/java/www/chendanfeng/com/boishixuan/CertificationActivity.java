@@ -84,10 +84,6 @@ public class CertificationActivity extends BaseActivity{
             CommonUtil.showToast("请输入真实姓名",CertificationActivity.this);
             return;
         }
-        if(!name.equals(realName)) {
-            CommonUtil.showToast("真实姓名输入有误",CertificationActivity.this);
-            return;
-        }
         if(TextUtils.isEmpty(identity)) {
             CommonUtil.showToast("请输入身份证号码",CertificationActivity.this);
             return;
