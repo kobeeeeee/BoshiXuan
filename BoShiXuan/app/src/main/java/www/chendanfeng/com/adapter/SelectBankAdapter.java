@@ -46,11 +46,13 @@ public class SelectBankAdapter extends BaseAdapter{
         this.mType = type;
     }
     public void setList(List<BankDetailModel> modelList) {
-        this.mBankModelList = modelList;
+        if(modelList != null) {
+            this.mBankModelList = modelList;
+        }
     }
     @Override
     public int getCount() {
-        return this.mBankModelList.size();
+        return this.mBankModelList==null?0:this.mBankModelList.size();
     }
 
     @Override

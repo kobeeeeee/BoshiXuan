@@ -16,11 +16,13 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import www.chendanfeng.com.bean.UserInfoBean;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.RegularBuyActivity;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.model.RegularDetailModel;
 import www.chendanfeng.com.network.model.RegularResponse;
+import www.chendanfeng.com.util.CommonUtil;
 
 /**
  * Created by Administrator on 2016/7/17 0017.
@@ -45,7 +47,7 @@ public class RegularListAdapter extends RecyclerView.Adapter<RegularListAdapter.
         holder.mRegularProductName.setText(this.mRegularDetailModelList.get(position).finance_name);
         holder.mRegularProductIncome.setText(this.mRegularDetailModelList.get(position).interest_rate + "%");
         holder.mRegularProductDay.setText(this.mRegularDetailModelList.get(position).invest_days + "天");
-        holder.mRegularProductMin.setText(this.mRegularDetailModelList.get(position).invest_months + "元起投");
+        holder.mRegularProductMin.setText(this.mRegularDetailModelList.get(position).invest_money + "元起投");
         holder.mRegularDesc.setText(this.mRegularDetailModelList.get(position).product_desc);
         Picasso.with(this.mContext).load(Config.ROOT_URL + this.mRegularDetailModelList.get(position).finance_img).error(this.mContext.getResources().getDrawable(R.drawable.regular_default_image)).into(holder.mRegularImage);
     }
@@ -74,6 +76,12 @@ public class RegularListAdapter extends RecyclerView.Adapter<RegularListAdapter.
         ImageView mRegularImage;
         @OnClick(R.id.regularLayout)
         public void OnClick(View view) {
+            UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+            String isVerify = userInfoBean.getIsVerity();
+            if(isVerify.equals("0")) {
+                CommonUtil.showToast("请先实名认证",RegularListAdapter.this.mContext);
+                return;
+            }
             int position = getLayoutPosition() - 1;
             RegularDetailModel regularDetailModel = RegularListAdapter.this.mRegularDetailModelList.get(position);
             Intent intent = new Intent(RegularListAdapter.this.mContext, RegularBuyActivity.class);

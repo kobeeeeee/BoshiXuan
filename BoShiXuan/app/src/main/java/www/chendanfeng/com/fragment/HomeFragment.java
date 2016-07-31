@@ -36,7 +36,9 @@ import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.RequestListener;
 import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.AccountBalanceResponse;
+import www.chendanfeng.com.network.model.UserInfoResponse;
 import www.chendanfeng.com.util.CommonUtil;
+import www.chendanfeng.com.util.LogUtil;
 
 /**
  * Created by Administrator on 2016/7/2 0002.
@@ -124,6 +126,11 @@ public class HomeFragment extends BaseFragment{
         map.put("user_id",userId);
         map.put("user_phone",userPhone);
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_BALANCE_STATISTIC,map,HomeFragment.this.mNetWorkCallBack, AccountBalanceResponse.class);
+
+
+        this.mNetWorkCallBack = new NetWorkCallBack();
+        Map<String,Object> realNameMap = new HashMap<>();
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_USER_INFO_QUERY,realNameMap,HomeFragment.this.mNetWorkCallBack, UserInfoResponse.class);
     }
     private void initHeader() {
         this.mHeader.setVisibility(View.VISIBLE);
@@ -331,6 +338,12 @@ public class HomeFragment extends BaseFragment{
                     startActivity(intent);
                     break;
                 case TYPE_WITHDRAW:
+                    UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                    String isVerify = userInfoBean.getIsVerity();
+                    if(isVerify.equals("0")) {
+                        CommonUtil.showToast("请先实名认证",getActivity());
+                        break;
+                    }
                     intent = new Intent(getActivity(), WithdrawActivity.class);
                     startActivity(intent);
                     break;
@@ -363,10 +376,20 @@ public class HomeFragment extends BaseFragment{
 
         @Override
         public void onResponse(Object object) {
+            if(object == null) {
+                return;
+            }
             if (object != null && object instanceof AccountBalanceResponse) {
                 AccountBalanceResponse accountBalanceResponse = (AccountBalanceResponse)object;
                 HomeFragment.this.mAccountBalance.setText(accountBalanceResponse.balance);
                 HomeFragment.this.mFinancialIncome.setText(accountBalanceResponse.interest);
+            }
+            if(object instanceof UserInfoResponse) {
+                UserInfoResponse userInfoResponse = (UserInfoResponse)object;
+                LogUtil.i(this,"userInfoResponse = " + userInfoResponse);
+                String is_verify = userInfoResponse.is_verify;
+                UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                userInfoBean.setIsVerrity(is_verify);
             }
         }
 

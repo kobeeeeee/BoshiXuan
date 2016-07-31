@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import www.chendanfeng.com.bean.UserInfoBean;
+import www.chendanfeng.com.util.CommonUtil;
 
 /**
  * Created by Administrator on 2016/7/10 0010.
@@ -78,16 +80,26 @@ public class PasswordManageActivity extends BaseActivity{
 
         private void onClickEvent() {
             Intent intent;
+            UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+            String is_verify = userInfoBean.getIsVerity();
             switch (this.mType) {
                 case TYPE_MODIFY_LOGIN_PSW:
                     intent = new Intent(PasswordManageActivity.this,ModifyLoginPswActivity.class);
                     startActivity(intent);
                     break;
                 case TYPE_MODIFY_PAY_PSW:
+                    if(is_verify.equals("0")) {
+                        CommonUtil.showToast("请先实名认证",PasswordManageActivity.this);
+                        break;
+                    }
                     intent = new Intent(PasswordManageActivity.this,ModifyPayPswActivity.class);
                     startActivity(intent);
                     break;
                 case TYPE_FORGET_PAY_PSW:
+                    if(is_verify.equals("0")) {
+                        CommonUtil.showToast("请先实名认证",PasswordManageActivity.this);
+                        break;
+                    }
                     intent = new Intent(PasswordManageActivity.this,ForgetPayPswActivity.class);
                     startActivity(intent);
                     break;

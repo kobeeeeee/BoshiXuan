@@ -78,7 +78,6 @@ public class CertificationActivity extends BaseActivity{
         String payPsw = this.mPayPswText.getText().toString();
         String identity = this.mIdentityText.getText().toString();
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
-        String password = userInfoBean.getPayPsw();
         String name = userInfoBean.getUserName();
         if(TextUtils.isEmpty(realName)) {
             CommonUtil.showToast("请输入真实姓名",CertificationActivity.this);
@@ -96,10 +95,6 @@ public class CertificationActivity extends BaseActivity{
             CommonUtil.showToast("请输入支付密码",CertificationActivity.this);
             return;
         }
-        if(!password.equals(payPsw)) {
-            CommonUtil.showToast("支付密码不正确",CertificationActivity.this);
-            return;
-        }
         String userId = userInfoBean.getCustId();
         String userPhone = userInfoBean.getCustMobile();
 
@@ -108,7 +103,7 @@ public class CertificationActivity extends BaseActivity{
         map.put("user_id",userId);
         map.put("user_name",realName);
         map.put("idcard_num",identity);
-        map.put("pay_passwd",password);
+        map.put("pay_passwd",payPsw);
         map.put("user_phone",userPhone);
         RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_REAL_NAME,map,CertificationActivity.this.mNetWorkCallBack, MessageListResponse.class);
     }
@@ -127,6 +122,8 @@ public class CertificationActivity extends BaseActivity{
             if(object instanceof CertificationResponse) {
                 CertificationResponse certificationResponse = (CertificationResponse)object;
                 LogUtil.i(this,"certificationResponse = " + certificationResponse);
+                UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+                userInfoBean.setIsVerrity("2");
             }
         }
 

@@ -84,10 +84,10 @@ public class WalletListAdapter extends BaseAdapter{
         String isVerify = userInfoBean.getIsVerity();
         if(position == 2) {
             holder.walletTextView2.setVisibility(View.VISIBLE);
-            if(isVerify.equals("1")) {
-                holder.walletTextView2.setText("未认证");
-            } else {
+            if(isVerify.equals("2")) {
                 holder.walletTextView2.setText("审核通过");
+            } else if(isVerify.equals("1")){
+                holder.walletTextView2.setText("未认证");
             }
         } else {
             holder.walletTextView2.setVisibility(View.GONE);
@@ -108,8 +108,14 @@ public class WalletListAdapter extends BaseAdapter{
         @Override
         public void onClick(View view) {
             Intent intent = null;
+            UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+            String isVerify = userInfoBean.getIsVerity();
             switch (this.mType) {
                 case TYPE_WITHDRAW:
+                    if(isVerify.equals("0")) {
+                        CommonUtil.showToast("请先实名认证",WalletListAdapter.this.mContext);
+                        break;
+                    }
                     Date date = new Date();
                     SimpleDateFormat sdf = new SimpleDateFormat("HH");
                     int time = Integer.valueOf(sdf.format(date));
@@ -123,8 +129,6 @@ public class WalletListAdapter extends BaseAdapter{
                     intent = new Intent(WalletListAdapter.this.mContext, PasswordManageActivity.class);
                     break;
                 case TYPE_CERTIFICATION:
-                    UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
-                    String isVerify = userInfoBean.getIsVerity();
                     if(isVerify.equals("2")) {
                         CommonUtil.showToast("已实名认证",WalletListAdapter.this.mContext);
                         return;
