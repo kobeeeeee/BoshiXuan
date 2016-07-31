@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -90,9 +91,9 @@ public class SettingFragment extends BaseFragment{
                 case TYPE_SHARE:
                     break;
                 case TYPE_PHONE:
-                    final String callPhone =  call.getText().toString();
+                    final String phoneNum =  call.getText().toString();
                     StringBuffer message = new StringBuffer();
-                    message.append("确定要拨打").append(callPhone).append("么？");
+                    message.append("确定要拨打").append(phoneNum).append("么？");
                     CustomDialog.Builder builder=new CustomDialog.Builder(getActivity());
                     builder.setTitle("温馨提示");
                     builder.setMessage(message.toString());
@@ -106,14 +107,16 @@ public class SettingFragment extends BaseFragment{
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            Intent intent = new Intent();
-                            intent.setAction(Intent.ACTION_CALL);
-                            intent.setData(Uri.parse("tel:" + callPhone));
+
                             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                               requestPermissions(new String[]{Manifest.permission.CALL_PHONE},CALL_PHONE_REQUEST_CODE);
                             }
-                            //开启系统拨号器
-                            startActivity(intent);
+                            else {
+                                Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_CALL);
+                                intent.setData(Uri.parse("tel:" + phoneNum));
+                                startActivity(intent);
+                            }
                         }
                     });
                     builder.create().show();
