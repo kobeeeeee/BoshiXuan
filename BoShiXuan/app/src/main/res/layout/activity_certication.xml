@@ -90,6 +90,7 @@
             android:textSize="13sp"
             android:gravity="left|center"
             android:padding="10dp"
+            android:maxLength="6"
             android:layout_marginRight="18.5dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/certification_input"

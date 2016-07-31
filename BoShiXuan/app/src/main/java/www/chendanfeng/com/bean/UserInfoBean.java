@@ -27,6 +27,8 @@ public class UserInfoBean {
     private static String payPsw = "";
     //用户名称
     private static String userName = "";
+    //身份证号码
+    private static String identity="";
 
     private static String isVerity ="";
     public static UserInfoBean getUserInfoBeanInstance() {
@@ -121,5 +123,12 @@ public class UserInfoBean {
     }
     public String getIsVerity() {
         return isVerity;
+    }
+
+    public void setIdentity(String idCard) {
+        identity = idCard;
+    }
+    public String getIdentity() {
+        return identity;
     }
 }

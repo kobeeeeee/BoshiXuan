@@ -95,6 +95,11 @@ public class CertificationActivity extends BaseActivity{
             CommonUtil.showToast("请输入支付密码",CertificationActivity.this);
             return;
         }
+        boolean result=payPsw.matches("[0-9]+");
+        if(!result || payPsw.length() != 6) {
+            CommonUtil.showToast("请输入六位纯数字密码",CertificationActivity.this);
+            return;
+        }
         String userId = userInfoBean.getCustId();
         String userPhone = userInfoBean.getCustMobile();
 
@@ -105,7 +110,7 @@ public class CertificationActivity extends BaseActivity{
         map.put("idcard_num",identity);
         map.put("pay_passwd",payPsw);
         map.put("user_phone",userPhone);
-        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_REAL_NAME,map,CertificationActivity.this.mNetWorkCallBack, MessageListResponse.class);
+        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_REAL_NAME,map,CertificationActivity.this.mNetWorkCallBack, CertificationResponse.class);
     }
     private class NetWorkCallBack implements RequestListener {
 
@@ -124,6 +129,14 @@ public class CertificationActivity extends BaseActivity{
                 LogUtil.i(this,"certificationResponse = " + certificationResponse);
                 UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                 userInfoBean.setIsVerrity("2");
+
+                String realName = CertificationActivity.this.mRealNameText.getText().toString();
+                userInfoBean.setUserName(realName);
+                String identity = CertificationActivity.this.mIdentityText.getText().toString();
+                userInfoBean.setIdentity(identity);
+                CertificationActivity.this.finish();
+                CommonUtil.showToast("实名认证成功",CertificationActivity.this);
+
             }
         }
 

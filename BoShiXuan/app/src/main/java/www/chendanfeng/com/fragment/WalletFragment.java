@@ -68,15 +68,11 @@ public class WalletFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         this.mWalletListAdapter.notifyDataSetChanged();
+        getUserInfoData();
     }
 
     public void initData() {
-        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
-        String phone = userInfoBean.getCustMobile();
-        String userName = userInfoBean.getUserName();
-        String phoneNo = phone.substring(0,3) + "****" + phone.substring(7,11);
-        this.mUserName.setText(userName);
-        this.mPhoneNo.setText(phoneNo);
+        getUserInfoData();
         this.mWalletTextList = new ArrayList<>();
         this.mWalletTextList.add("提款到银行账户");
         this.mWalletTextList.add("修改密码");
@@ -96,6 +92,16 @@ public class WalletFragment extends BaseFragment {
         this.mWalletImageList.add(R.drawable.wallet_financing_record);
         this.mWalletImageList.add(R.drawable.wallet_recharge_record);
     }
+
+    private void getUserInfoData() {
+        UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
+        String phone = userInfoBean.getCustMobile();
+        String userName = userInfoBean.getUserName();
+        String phoneNo = phone.substring(0,3) + "****" + phone.substring(7,11);
+        this.mUserName.setText(userName);
+        this.mPhoneNo.setText(phoneNo);
+    }
+
     public void initListView() {
         this.mWalletListAdapter = new WalletListAdapter(getActivity(),this.mWalletTextList,this.mWalletImageList);
         mWalletListView.setAdapter(this.mWalletListAdapter);
