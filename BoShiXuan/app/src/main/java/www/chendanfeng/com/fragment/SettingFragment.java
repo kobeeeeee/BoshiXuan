@@ -30,6 +30,7 @@ import www.chendanfeng.com.boishixuan.PasswordActivity;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.boishixuan.RegisterActivity;
 import www.chendanfeng.com.boishixuan.UsehelpActivity;
+import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.view.CustomDialog;
 
 /**
@@ -57,12 +58,15 @@ public class SettingFragment extends BaseFragment{
     @Bind(R.id.usehelpLayout)
     RelativeLayout usehelp;
 
+    public String phoneNum ;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.mView = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, this.mView);
         initHeader();
+        phoneNum =  call.getText().toString();
         aboutus.setOnClickListener(new MyOnClickListener(TYPE_ABOUT));
         phone.setOnClickListener(new MyOnClickListener(TYPE_PHONE));
         logoutButton.setOnClickListener(new MyOnClickListener(TYPE_LOGOUT));
@@ -91,7 +95,7 @@ public class SettingFragment extends BaseFragment{
                 case TYPE_SHARE:
                     break;
                 case TYPE_PHONE:
-                    final String phoneNum =  call.getText().toString();
+                  //  final String phoneNum =  call.getText().toString();
                     StringBuffer message = new StringBuffer();
                     message.append("确定要拨打").append(phoneNum).append("么？");
                     CustomDialog.Builder builder=new CustomDialog.Builder(getActivity());
@@ -108,15 +112,18 @@ public class SettingFragment extends BaseFragment{
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
 
-                            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                              requestPermissions(new String[]{Manifest.permission.CALL_PHONE},CALL_PHONE_REQUEST_CODE);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                    requestPermissions(new String[]{Manifest.permission.CALL_PHONE},CALL_PHONE_REQUEST_CODE);
+                                }
+                                else {
+                                    callPhone();
+                                }
                             }
-                            else {
-                                Intent intent = new Intent();
-                                intent.setAction(Intent.ACTION_CALL);
-                                intent.setData(Uri.parse("tel:" + phoneNum));
-                                startActivity(intent);
+                            else{
+                                callPhone();
                             }
+
                         }
                     });
                     builder.create().show();
@@ -150,17 +157,42 @@ public class SettingFragment extends BaseFragment{
         }
     }
 
+
+//    public void onRequestPermissionsResult(int requestCode,  String[] permissions,
+//                                            int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == CALL_PHONE_REQUEST_CODE) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                if (!shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)) {
+//                    AskForPermission();
+//                }
+//            }
+//        }
+//    }
+
+    public void callPhone()
+    {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneNum));
+        startActivity(intent);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,  String[] permissions,
-                                            int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                                           int[] grantResults) {
         if (requestCode == CALL_PHONE_REQUEST_CODE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (!shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)) {
-                    AskForPermission();
-                }
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                callPhone();
+            } else
+            {
+                // Permission Denied
+                CommonUtil.showToast("Permission Denied",getActivity());
             }
+            return;
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void AskForPermission() {
