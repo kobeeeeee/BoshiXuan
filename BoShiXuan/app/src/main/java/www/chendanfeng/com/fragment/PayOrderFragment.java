@@ -88,7 +88,7 @@ public class PayOrderFragment extends BaseFragment{
         String userPhone = userInfoBean.getCustMobile();
         //传入参数
         Map<String,Object> map = new HashMap<>();
-        map.put("is_Payment","2");
+        map.put("is_Payment","1");
         map.put("page_size",String.valueOf(this.mPageSize));
         map.put("page_num",String.valueOf(this.mPageNum));
         map.put("user_id",userId);
