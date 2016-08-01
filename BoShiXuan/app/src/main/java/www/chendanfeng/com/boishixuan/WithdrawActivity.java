@@ -1,11 +1,15 @@
 package www.chendanfeng.com.boishixuan;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -27,6 +31,8 @@ import www.chendanfeng.com.network.model.RegularResponse;
 import www.chendanfeng.com.network.model.WithDrawResponse;
 import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
+import www.chendanfeng.com.view.PaypswDialog;
+//import www.chendanfeng.com.view.PaypswDialog;
 
 /**
  * Created by Administrator on 2016/7/6 0006.
@@ -125,18 +131,32 @@ public class WithdrawActivity extends BaseActivity {
             CommonUtil.showToast("余额不足",WithdrawActivity.this);
             return;
         }
-        //传入参数
-        Map<String,Object> map = new HashMap<>();
-        map.put("fetch_money",fetchMoney);
-        map.put("card_number",cardNumber);
-        map.put("user_id",userId);
-        map.put("user_phone",userPhone);
-        map.put("pay_passwd",payPsw);
-        map.put("bank_name",cardNumber);
-        map.put("bank_name",bankNumber);
-        map.put("bank_id",this.mBankId);
-        RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_FETCH_CASH,map,WithdrawActivity.this.mNetWorkCallBack, WithDrawResponse.class);
 
+       final PaypswDialog payDialog = new PaypswDialog(WithdrawActivity.this);
+        payDialog.setOnPositiveListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              payDialog.dismiss();
+          }
+      });
+        payDialog.setOnNegativeListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payDialog.dismiss();
+            }
+        });
+        payDialog.show();
+            //传入参数
+//            Map<String,Object> map = new HashMap<>();
+//            map.put("fetch_money",fetchMoney);
+//            map.put("card_number",cardNumber);
+//            map.put("user_id",userId);
+//            map.put("user_phone",userPhone);
+//            map.put("pay_passwd",payPsw);
+//            map.put("bank_name",cardNumber);
+//            map.put("bank_name",bankNumber);
+//            map.put("bank_id",this.mBankId);
+//            RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_FETCH_CASH,map,WithdrawActivity.this.mNetWorkCallBack, WithDrawResponse.class);
     }
     private void getData() {
         Map<String,Object> map = new HashMap<>();
