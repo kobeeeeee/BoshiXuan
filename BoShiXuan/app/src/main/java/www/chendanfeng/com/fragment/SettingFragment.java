@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,9 @@ import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.wechat.utils.WXMediaMessage;
+import cn.sharesdk.wechat.utils.WXTextObject;
 import www.chendanfeng.com.boishixuan.AboutActivity;
 import www.chendanfeng.com.boishixuan.LoginActivity;
 import www.chendanfeng.com.boishixuan.MainActivity;
@@ -32,6 +36,7 @@ import www.chendanfeng.com.boishixuan.RegisterActivity;
 import www.chendanfeng.com.boishixuan.UsehelpActivity;
 import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.view.CustomDialog;
+import www.chendanfeng.com.view.SharePopupWindow;
 
 /**
  * Created by Administrator on 2016/7/2 0002.
@@ -47,6 +52,8 @@ public class SettingFragment extends BaseFragment{
     public static final int CALL_PHONE_REQUEST_CODE = 10;
     @Bind(R.id.tv_head)
     TextView mHeader;
+    @Bind(R.id.shareLayout)
+    RelativeLayout share;
     @Bind(R.id.aboutLayout)
     RelativeLayout aboutus;
     @Bind(R.id.phoneLayout)
@@ -67,6 +74,7 @@ public class SettingFragment extends BaseFragment{
         ButterKnife.bind(this, this.mView);
         initHeader();
         phoneNum =  call.getText().toString();
+        share.setOnClickListener(new MyOnClickListener(TYPE_SHARE));
         aboutus.setOnClickListener(new MyOnClickListener(TYPE_ABOUT));
         phone.setOnClickListener(new MyOnClickListener(TYPE_PHONE));
         logoutButton.setOnClickListener(new MyOnClickListener(TYPE_LOGOUT));
@@ -93,6 +101,17 @@ public class SettingFragment extends BaseFragment{
                     startActivity(intent);
                     break;
                 case TYPE_SHARE:
+//                    String text = "哈喽";
+//                    WXTextObject textObject = new WXTextObject();
+//                    textObject.text = text;
+//
+//                    WXMediaMessage msg = new WXMediaMessage();
+//                    msg.mediaObject = textObject;
+//                    msg.description = text;
+
+             //       SendMessageToWX.Req req = new SendMessageTpWX.Req();
+                    SharePopupWindow popupwindow = new SharePopupWindow(getActivity(),null);
+                   popupwindow.showAtLocation(getActivity().findViewById(R.id.shareLayout), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0,0);
                     break;
                 case TYPE_PHONE:
                   //  final String phoneNum =  call.getText().toString();
@@ -157,19 +176,6 @@ public class SettingFragment extends BaseFragment{
         }
     }
 
-
-//    public void onRequestPermissionsResult(int requestCode,  String[] permissions,
-//                                            int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == CALL_PHONE_REQUEST_CODE) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                if (!shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)) {
-//                    AskForPermission();
-//                }
-//            }
-//        }
-//    }
-
     public void callPhone()
     {
         Intent intent = new Intent();
@@ -193,25 +199,5 @@ public class SettingFragment extends BaseFragment{
             return;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    private void AskForPermission() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Need Permission!");
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-//                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//                intent.setData(Uri.parse("package:" + getPackageName())); // 根据包名打开对应的设置界面
-//                startActivity(intent);
-            }
-        });
-        builder.create().show();
     }
 }
