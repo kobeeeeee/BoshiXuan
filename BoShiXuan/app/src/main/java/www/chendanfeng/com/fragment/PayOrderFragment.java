@@ -55,8 +55,14 @@ public class PayOrderFragment extends BaseFragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecycleView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getData();
     }
+
     private void initRecycleView() {
         this.mOrderListAdapter = new OrderListAdapter(getActivity(),this.mOrderDetailModelList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());

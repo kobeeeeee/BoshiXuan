@@ -90,6 +90,8 @@
         </activity>
         <activity android:name=".UsehelpActivity">
         </activity>
+        <activity android:name=".OrderDetailActivity">
+        </activity>
         <activity
             android:name="www.chendanfeng.com.wxapi.WXEntryActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

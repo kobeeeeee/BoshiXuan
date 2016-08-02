@@ -1,6 +1,7 @@
 package www.chendanfeng.com.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import www.chendanfeng.com.boishixuan.OrderDetailActivity;
 import www.chendanfeng.com.boishixuan.R;
 import www.chendanfeng.com.config.Config;
 import www.chendanfeng.com.network.model.OrderDetailModel;
@@ -79,6 +82,22 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         TextView mOrderPayTime;
         @Bind(R.id.productImage)
         ImageView mProductImage;
+        @OnClick(R.id.orderLayout)
+        public void OnClick(View view) {
+            int position = getLayoutPosition()-1;
+            OrderDetailModel orderDetailModel = OrderListAdapter.this.mOrderDetailModelList.get(position);
+            String state = orderDetailModel.state;
+//            if(state.equals("B")) {
+//                CommonUtil.showToast("请联系店铺后支付",OrderListAdapter.this.mContext);
+//            } else {
+                Intent intent = new Intent(OrderListAdapter.this.mContext, OrderDetailActivity.class);
+                intent.putExtra("orderId",orderDetailModel.goods_order_id);
+                intent.putExtra("rentPrice",orderDetailModel.rent_price);
+                intent.putExtra("depositPrice",orderDetailModel.deposit_price);
+                intent.putExtra("orderNumber",orderDetailModel.order_number);
+                OrderListAdapter.this.mContext.startActivity(intent);
+//            }
+        }
         public OrderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
