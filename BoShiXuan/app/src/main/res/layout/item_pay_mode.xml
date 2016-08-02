@@ -8,10 +8,10 @@
         android:layout_height="50dp">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="33dp"
             android:layout_height="wrap_content"
             android:id="@+id/payModeImage"
-            android:src="@drawable/recharge_icon_weixin"
+            android:src="@drawable/recharge_icon_unionpay"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
