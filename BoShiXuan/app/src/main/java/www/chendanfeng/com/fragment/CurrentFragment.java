@@ -35,6 +35,7 @@ public class CurrentFragment extends BaseFragment{
         this.mView = inflater.inflate(R.layout.fragment_current, container, false);
         ButterKnife.bind(this, this.mView);
         return this.mView;
+
     }
 
     @Override

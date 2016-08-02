@@ -2,9 +2,11 @@ package www.chendanfeng.com.view;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
@@ -15,10 +17,12 @@ import www.chendanfeng.com.boishixuan.R;
  */
 public class SharePopupWindow extends PopupWindow {
     private View shareView;
-    public SharePopupWindow(Activity context, View.OnClickListener itemclick){
+    public SharePopupWindow(Activity context, View.OnClickListener wechatClick,View.OnClickListener friendClick){
         super(context);
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         shareView = inflater.inflate(R.layout.activity_share, null);
+        ImageView wechatView = (ImageView)shareView.findViewById(R.id.weixin);
+        ImageView friendView = (ImageView)shareView.findViewById(R.id.friend);
         this.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setContentView(shareView);
@@ -39,5 +43,7 @@ public class SharePopupWindow extends PopupWindow {
                 return true;
             }
         });
+        wechatView.setOnClickListener(wechatClick);
+        friendView.setOnClickListener(friendClick);
     }
 }
