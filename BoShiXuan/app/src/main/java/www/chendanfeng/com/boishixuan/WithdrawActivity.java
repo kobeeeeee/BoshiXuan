@@ -107,12 +107,12 @@ public class WithdrawActivity extends BaseActivity {
     }
     private void confirmWithDraw() {
         UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
-        String userId = userInfoBean.getCustId();
-        String userPhone = userInfoBean.getCustMobile();
-        String payPsw = userInfoBean.getPayPsw();
-        String fetchMoney = this.mBalanceInput.getText().toString();
-        String cardNumber = this.mBankNo.getText().toString();
-        String bankNumber = this.mBankName.getText().toString();
+        final String userId = userInfoBean.getCustId();
+        final String userPhone = userInfoBean.getCustMobile();
+      //  final String payPsw = userInfoBean.getPayPsw();
+        final String fetchMoney = this.mBalanceInput.getText().toString();
+        final String cardNumber = this.mBankNo.getText().toString();
+        final String bankNumber = this.mBankName.getText().toString();
         if(TextUtils.isEmpty(cardNumber)) {
             CommonUtil.showToast("请选择银行卡",WithdrawActivity.this);
             return;
@@ -131,12 +131,24 @@ public class WithdrawActivity extends BaseActivity {
             CommonUtil.showToast("余额不足",WithdrawActivity.this);
             return;
         }
-
        final PaypswDialog payDialog = new PaypswDialog(WithdrawActivity.this);
         payDialog.setOnPositiveListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
               payDialog.dismiss();
+              //传入参数
+              String payPsw = payDialog.getText();
+              LogUtil.i(this,"支付密码输入 = " + payPsw);
+              Map<String,Object> map = new HashMap<>();
+              map.put("fetch_money",fetchMoney);
+              map.put("card_number",cardNumber);
+              map.put("user_id",userId);
+              map.put("user_phone",userPhone);
+              map.put("pay_passwd",payPsw);
+              map.put("bank_name",cardNumber);
+              map.put("bank_name",bankNumber);
+              map.put("bank_id",mBankId);
+              RequestManager.getInstance().post(Config.URL + Config.SLASH, Config.BSX_FETCH_CASH,map,WithdrawActivity.this.mNetWorkCallBack, WithDrawResponse.class);
           }
       });
         payDialog.setOnNegativeListener(new View.OnClickListener() {

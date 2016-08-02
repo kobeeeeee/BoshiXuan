@@ -35,6 +35,8 @@ public class PaypswDialog extends Dialog {
         return editText;
     }
 
+    public String getText() { return  editText.getText().toString();}
+
     @Override
     public void setContentView(int layoutResID) {
     }
