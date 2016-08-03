@@ -1,7 +1,10 @@
 package www.chendanfeng.com.util;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Xml;
 import android.view.Gravity;
@@ -28,7 +31,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import www.chendanfeng.com.bean.UserInfoBean;
+import www.chendanfeng.com.boishixuan.CertificationActivity;
+import www.chendanfeng.com.boishixuan.MyOrderActivity;
 import www.chendanfeng.com.config.Config;
+import www.chendanfeng.com.view.CustomDialog;
 
 /**
  * Created by Administrator on 2016/7/3 0003.
@@ -208,5 +214,33 @@ public class CommonUtil {
     public static boolean checkIfInteger(String str) {
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
+    }
+
+    /**
+     * 实名认证提示框
+     * @param activity
+     * @param action
+     */
+    public static void showCertificationDialog(final Activity activity, String action) {
+        StringBuffer message = new StringBuffer();
+        message.append("亲，").append(action).append("前请先实名认证");
+        CustomDialog.Builder builder=new CustomDialog.Builder(activity);
+        builder.setTitle("尚未实名认证");
+        builder.setMessage(message.toString());
+        builder.setNegativeButton("返回",new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("现在就去", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent intent = new Intent(activity,CertificationActivity.class);
+                activity.startActivity(intent);
+            }
+        });
+        builder.create().show();
     }
 }

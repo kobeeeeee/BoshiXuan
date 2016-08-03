@@ -1,5 +1,6 @@
 package www.chendanfeng.com.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -29,8 +30,8 @@ import www.chendanfeng.com.util.CommonUtil;
  */
 public class RegularListAdapter extends RecyclerView.Adapter<RegularListAdapter.RegularView>{
     private List<RegularDetailModel> mRegularDetailModelList;
-    private Context mContext;
-    public RegularListAdapter(Context context, List<RegularDetailModel> modelList) {
+    private Activity mContext;
+    public RegularListAdapter(Activity context, List<RegularDetailModel> modelList) {
         this.mRegularDetailModelList = modelList;
         this.mContext = context;
     }
@@ -79,7 +80,7 @@ public class RegularListAdapter extends RecyclerView.Adapter<RegularListAdapter.
             UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
             String isVerify = userInfoBean.getIsVerity();
             if(isVerify.equals("0")) {
-                CommonUtil.showToast("请先实名认证",RegularListAdapter.this.mContext);
+                CommonUtil.showCertificationDialog(RegularListAdapter.this.mContext,"购买定期");
                 return;
             }
             int position = getLayoutPosition() - 1;

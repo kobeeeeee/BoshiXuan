@@ -114,14 +114,14 @@ public class WalletListAdapter extends BaseAdapter{
                 case TYPE_WITHDRAW:
                     if(isVerify.equals("0")) {
                         CommonUtil.showToast("请先实名认证",WalletListAdapter.this.mContext);
-                        break;
+                        return;
                     }
                     Date date = new Date();
                     SimpleDateFormat sdf = new SimpleDateFormat("HH");
                     int time = Integer.valueOf(sdf.format(date));
                     if(time >= 22 || time <6) {
                         CommonUtil.showToast("晚十点到早六点不能体现哦",WalletListAdapter.this.mContext);
-                        break;
+                        return;
                     }
                     intent = new Intent(WalletListAdapter.this.mContext, WithdrawActivity.class);
                     break;

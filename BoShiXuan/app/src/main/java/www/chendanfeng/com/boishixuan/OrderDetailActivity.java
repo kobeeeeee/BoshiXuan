@@ -1,8 +1,13 @@
 package www.chendanfeng.com.boishixuan;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +27,7 @@ import www.chendanfeng.com.network.RequestManager;
 import www.chendanfeng.com.network.model.OrderPayResponse;
 import www.chendanfeng.com.util.CommonUtil;
 import www.chendanfeng.com.util.LogUtil;
+import www.chendanfeng.com.view.CustomDialog;
 import www.chendanfeng.com.view.PaypswDialog;
 
 /**
@@ -60,7 +66,7 @@ public class OrderDetailActivity extends BaseActivity{
                 final UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                 String isVerify = userInfoBean.getIsVerity();
                 if(!isVerify.equals("2")) {
-                    CommonUtil.showToast("请先实名认证",OrderDetailActivity.this);
+                    CommonUtil.showCertificationDialog(OrderDetailActivity.this,"支付订单");
                     return;
                 }
                 final PaypswDialog payDialog = new PaypswDialog(OrderDetailActivity.this);
@@ -132,10 +138,28 @@ public class OrderDetailActivity extends BaseActivity{
             if(object instanceof OrderPayResponse) {
                 OrderPayResponse orderPayResponse = (OrderPayResponse)object;
                 LogUtil.i(this,"orderPayResponse = " + orderPayResponse);
-                Toast toast = Toast.makeText(OrderDetailActivity.this,"支付成功",Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                finish();
+                StringBuffer message = new StringBuffer();
+                message.append("亲，请到订单页面确认信息");
+                CustomDialog.Builder builder=new CustomDialog.Builder(OrderDetailActivity.this);
+                builder.setTitle("创建订单成功");
+                builder.setMessage(message.toString());
+                builder.setNegativeButton("我再逛逛",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        OrderDetailActivity.this.finish();
+                    }
+                });
+                builder.setPositiveButton("现在就去", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(OrderDetailActivity.this,MyOrderActivity.class);
+                        OrderDetailActivity.this.startActivity(intent);
+                        OrderDetailActivity.this.finish();
+                    }
+                });
+                builder.create().show();
             }
         }
 

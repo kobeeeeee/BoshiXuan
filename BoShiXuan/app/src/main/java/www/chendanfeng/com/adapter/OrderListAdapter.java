@@ -87,16 +87,16 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             int position = getLayoutPosition()-1;
             OrderDetailModel orderDetailModel = OrderListAdapter.this.mOrderDetailModelList.get(position);
             String state = orderDetailModel.state;
-//            if(state.equals("B")) {
-//                CommonUtil.showToast("请联系店铺后支付",OrderListAdapter.this.mContext);
-//            } else {
+            if(state.equals("B")) {
+                CommonUtil.showToast("请联系店铺后支付",OrderListAdapter.this.mContext);
+            } else {
                 Intent intent = new Intent(OrderListAdapter.this.mContext, OrderDetailActivity.class);
                 intent.putExtra("orderId",orderDetailModel.goods_order_id);
                 intent.putExtra("rentPrice",orderDetailModel.rent_price);
                 intent.putExtra("depositPrice",orderDetailModel.deposit_price);
                 intent.putExtra("orderNumber",orderDetailModel.order_number);
                 OrderListAdapter.this.mContext.startActivity(intent);
-//            }
+            }
         }
         public OrderView(View itemView) {
             super(itemView);

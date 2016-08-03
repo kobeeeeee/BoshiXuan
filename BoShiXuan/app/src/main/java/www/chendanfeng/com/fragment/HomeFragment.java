@@ -341,7 +341,7 @@ public class HomeFragment extends BaseFragment{
                     UserInfoBean userInfoBean = UserInfoBean.getUserInfoBeanInstance();
                     String isVerify = userInfoBean.getIsVerity();
                     if(isVerify.equals("0")) {
-                        CommonUtil.showToast("请先实名认证",getActivity());
+                        CommonUtil.showCertificationDialog(getActivity(),"提现");
                         break;
                     }
                     intent = new Intent(getActivity(), WithdrawActivity.class);
